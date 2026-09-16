@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number System Practice</title>
+<style>
+  :root{
+    --dark:#013A40;
+    --primary:#028090;
+    --secondary:#00A896;
+    --accent:#02C39A;
+    --warn:#E85D4C;
+    --ink:#0B2B2E;
+    --muted:#5A6E70;
+    --card:#F0F7F7;
+    --white:#FFFFFF;
+  }
+  *{ box-sizing: border-box; }
+  html,body{
+    margin:0; padding:0; height:100%;
+    font-family: Calibri, "Segoe UI", Arial, sans-serif;
+    background: var(--dark);
+    color: var(--ink);
+  }
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    padding: 20px;
+  }
+  .app{
+    width:100%;
+    max-width: 720px;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom: 16px;
+    color: var(--white);
+  }
+  .brand{
+    font-family: Cambria, Georgia, serif;
+    font-weight:bold;
+    font-size: 22px;
+  }
+  .brand span{ color: var(--accent); }
+
+  .timer-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background: rgba(255,255,255,0.08);
+    padding: 8px 16px;
+    border-radius: 999px;
+  }
+  .timer-dot{
+    width:10px; height:10px; border-radius:50%;
+    background: var(--accent);
+  }
+  .timer-dot.low{ background: var(--warn); }
+  #timer{
+    font-family: Cambria, Georgia, serif;
+    font-weight:bold;
+    font-size: 20px;
+    letter-spacing: 1px;
+    min-width: 64px;
+    text-align:center;
+  }
+
+  /* ---------- Progress ---------- */
+  .progress-track{
+    width:100%;
+    height:8px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+    overflow:hidden;
+    margin-bottom: 22px;
+  }
+  .progress-fill{
+    height:100%;
+    background: var(--accent);
+    width:0%;
+    transition: width .25s ease;
+  }
+
+  /* ---------- Card ---------- */
+  .card{
+    background: var(--white);
+    border-radius: 20px;
+    padding: 32px;
+    min-height: 360px;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .qcount{
+    font-size: 13px;
+    color: var(--muted);
+    font-weight:bold;
+    margin-bottom: 10px;
+  }
+  .question{
+    font-family: Cambria, Georgia, serif;
+    font-size: 26px;
+    font-weight:bold;
+    color: var(--ink);
+    margin: 0 0 26px 0;
+    line-height:1.3;
+  }
+  .question .expr{
+    color: var(--primary);
+  }
+
+  .options{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .opt{
+    background: var(--card);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+    cursor:pointer;
+    text-align:left;
+    transition: transform .1s ease, border-color .15s ease, background .15s ease;
+  }
+  .opt:hover{ transform: translateY(-2px); border-color: var(--secondary); }
+  .opt:disabled{ cursor:default; }
+  .opt.correct{
+    background: #DFF7EF;
+    border-color: var(--accent);
+    color: #036B4C;
+  }
+  .opt.wrong{
+    background: #FBE6E3;
+    border-color: var(--warn);
+    color: #A6382A;
+  }
+  .opt.dim{ opacity: .55; transform:none; }
+
+  .feedback{
+    margin-top: auto;
+    padding-top: 18px;
+    font-size: 15px;
+    font-weight: bold;
+    min-height: 24px;
+  }
+  .feedback.good{ color: #036B4C; }
+  .feedback.bad{ color: #A6382A; }
+
+  .nextbtn{
+    margin-top: 14px;
+    align-self:flex-end;
+    background: var(--primary);
+    color: var(--white);
+    border:none;
+    border-radius: 999px;
+    padding: 12px 26px;
+    font-size: 15px;
+    font-weight:bold;
+    cursor:pointer;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .15s ease, background .15s ease;
+  }
+  .nextbtn.show{ opacity:1; pointer-events:auto; }
+  .nextbtn:hover{ background: var(--secondary); }
+
+  /* ---------- Start screen ---------- */
+  .center-card{
+    background: var(--white);
+    border-radius: 20px;
+    padding: 44px 36px;
+    text-align:center;
+  }
+  .center-card h1{
+    font-family: Cambria, Georgia, serif;
+    font-size: 30px;
+    margin: 0 0 10px 0;
+    color: var(--ink);
+  }
+  .center-card p{
+    font-size: 16px;
+    color: var(--muted);
+    line-height:1.5;
+    max-width: 480px;
+    margin: 0 auto 28px auto;
+  }
+  .bigbtn{
+    background: var(--primary);
+    color: var(--white);
+    border:none;
+    border-radius: 999px;
+    padding: 16px 40px;
+    font-size: 18px;
+    font-weight:bold;
+    cursor:pointer;
+    transition: background .15s ease, transform .1s ease;
+  }
+  .bigbtn:hover{ background: var(--secondary); transform: translateY(-2px); }
+
+  .badge-row{
+    display:flex;
+    justify-content:center;
+    gap: 12px;
+    margin-bottom: 30px;
+    flex-wrap:wrap;
+  }
+  .badge{
+    background: var(--card);
+    color: var(--primary);
+    font-size: 13px;
+    font-weight:bold;
+    padding: 8px 14px;
+    border-radius: 999px;
+  }
+
+  /* ---------- Results screen ---------- */
+  .results-icon{
+    width: 90px; height:90px;
+    border-radius:50%;
+    background: var(--accent);
+    color: var(--white);
+    display:flex; align-items:center; justify-content:center;
+    font-family: Cambria, Georgia, serif;
+    font-size: 36px;
+    font-weight:bold;
+    margin: 0 auto 20px auto;
+  }
+  .score-big{
+    font-family: Cambria, Georgia, serif;
+    font-size: 52px;
+    font-weight:bold;
+    color: var(--primary);
+    margin: 4px 0;
+  }
+  .score-sub{
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 26px;
+  }
+  .stat-row{
+    display:flex;
+    gap: 14px;
+    justify-content:center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+  .stat{
+    background: var(--card);
+    border-radius: 14px;
+    padding: 16px 22px;
+    min-width: 110px;
+  }
+  .stat .num{
+    font-size: 24px;
+    font-weight:bold;
+    font-family: Cambria, Georgia, serif;
+  }
+  .stat .lbl{
+    font-size: 12px;
+    color: var(--muted);
+    font-weight:bold;
+    margin-top: 2px;
+  }
+  .stat.good .num{ color: #036B4C; }
+  .stat.bad .num{ color: #A6382A; }
+  .stat.skip .num{ color: var(--muted); }
+
+  .hidden{ display:none !important; }
+
+  @media (max-width: 480px){
+    .options{ grid-template-columns: 1fr; }
+    .question{ font-size: 22px; }
+    .card{ padding: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- START SCREEN -->
+  <div id="startScreen" class="center-card">
+    <h1>Number System Practice</h1>
+    <p>50 quick-fire questions on natural numbers, integers, rationals, primes, and divisibility. You've got <strong>20 minutes</strong> — the score card shows the moment you finish all 50, or when time runs out, whichever comes first.</p>
+    <div class="badge-row">
+      <span class="badge">Number families</span>
+      <span class="badge">Even &amp; odd</span>
+      <span class="badge">Prime &amp; composite</span>
+      <span class="badge">Divisibility rules</span>
+    </div>
+    <button class="bigbtn" onclick="startQuiz()">Start Practice</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quizScreen" class="hidden">
+    <div class="topbar">
+      <div class="brand">Number<span>System</span> Practice</div>
+      <div class="timer-wrap">
+        <div class="timer-dot" id="timerDot"></div>
+        <div id="timer">20:00</div>
+      </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+    <div class="card">
+      <div class="qcount" id="qcount">Question 1</div>
+      <div class="question" id="questionText"></div>
+      <div class="options" id="optionsWrap"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="nextbtn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div id="resultsScreen" class="center-card hidden">
+    <div class="results-icon" id="resultsIcon">★</div>
+    <div class="score-big" id="scoreBig">0 / 0</div>
+    <div class="score-sub" id="scoreSub">Time's up!</div>
+    <div class="stat-row">
+      <div class="stat good"><div class="num" id="statCorrect">0</div><div class="lbl">CORRECT</div></div>
+      <div class="stat bad"><div class="num" id="statWrong">0</div><div class="lbl">WRONG</div></div>
+      <div class="stat skip"><div class="num" id="statSkipped">0</div><div class="lbl">NOT REACHED</div></div>
+    </div>
+    <button class="bigbtn" onclick="restartQuiz()">Practice Again</button>
+  </div>
+
+</div>
+
+<script>
+/* ---------------- Question bank ---------------- */
+const QUESTIONS = [
+  { q: "Which of these is a natural number?", opts: ["0", "-3", "6", "1/2"], correct: 2 },
+  { q: "Which of these is a whole number but NOT a natural number?", opts: ["0", "1", "5", "-2"], correct: 0 },
+  { q: "Is -8 an integer?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Is 3.5 an integer?", opts: ["Yes", "No"], correct: 1 },
+  { q: "Which of these is irrational?", opts: ["0.75", "√2", "4", "2/3"], correct: 1 },
+  { q: "Which of these is rational?", opts: ["π", "√3", "0.25", "√5"], correct: 2 },
+  { q: "Every integer is also a:", opts: ["Irrational number", "Rational number", "Prime number", "None of these"], correct: 1 },
+  { q: "Is 0 a whole number?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Which number family sits inside all the others?", opts: ["Rational", "Integer", "Natural", "Whole"], correct: 2 },
+  { q: "Is 18 an even number?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Is 27 an even number?", opts: ["Yes", "No"], correct: 1 },
+  { q: "Which is the only even prime number?", opts: ["4", "9", "2", "6"], correct: 2 },
+  { q: "Is 1 a prime number?", opts: ["Yes", "No"], correct: 1 },
+  { q: "How many factors does a prime number have?", opts: ["1", "2", "3", "It varies"], correct: 1 },
+  { q: "Which of these is a composite number?", opts: ["7", "11", "9", "13"], correct: 2 },
+  { q: "Is 23 a prime number?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Is 51 a prime number?", opts: ["Yes", "No"], correct: 1 },
+  { q: "Which number is neither prime nor composite?", opts: ["0", "1", "2", "3"], correct: 1 },
+  { q: "Is 132 divisible by 2?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Is 245 divisible by 5?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Is 342 divisible by 3? (Hint: add the digits)", opts: ["Yes", "No"], correct: 0 },
+  { q: "Is 154 divisible by 9?", opts: ["Yes", "No"], correct: 1 },
+  { q: "Which number ends the way every multiple of 10 must end?", opts: ["Ends in 5", "Ends in 0", "Ends in 2", "Ends in any digit"], correct: 1 },
+  { q: "Sum of digits of 729 is:", opts: ["16", "18", "20", "9"], correct: 1 },
+  { q: "Is 729 divisible by 9?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Which of these is NOT divisible by 3?", opts: ["123", "111", "100", "222"], correct: 2 },
+  { q: "Is 4 a composite number?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Is -15 a rational number?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Which set includes negative numbers?", opts: ["Natural numbers", "Whole numbers", "Integers", "None of these"], correct: 2 },
+  { q: "5 can be written as a fraction as:", opts: ["5/0", "1/5", "5/1", "0/5"], correct: 2 },
+  { q: "Which of these is NOT a natural number?", opts: ["1", "2", "0", "3"], correct: 2 },
+  { q: "Natural numbers start counting from:", opts: ["0", "1", "-1", "10"], correct: 1 },
+  { q: "Is √9 rational or irrational?", opts: ["Rational", "Irrational"], correct: 0 },
+  { q: "Is √7 rational or irrational?", opts: ["Rational", "Irrational"], correct: 1 },
+  { q: "A number with a non-terminating, non-repeating decimal is:", opts: ["Rational", "Irrational", "An integer", "A whole number"], correct: 1 },
+  { q: "Which of these numbers is odd?", opts: ["44", "56", "81", "90"], correct: 2 },
+  { q: "Which of these numbers is even?", opts: ["33", "47", "58", "65"], correct: 2 },
+  { q: "Is 2 a composite number?", opts: ["Yes", "No"], correct: 1 },
+  { q: "Which is a prime number?", opts: ["15", "21", "29", "33"], correct: 2 },
+  { q: "Which is a composite number?", opts: ["17", "19", "24", "31"], correct: 2 },
+  { q: "Is 100 divisible by 10?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Is 88 divisible by 2?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Is 91 divisible by 3?", opts: ["Yes", "No"], correct: 1 },
+  { q: "Sum of digits of 456 is:", opts: ["13", "14", "15", "16"], correct: 2 },
+  { q: "Is 456 divisible by 3?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Is 305 divisible by 5?", opts: ["Yes", "No"], correct: 0 },
+  { q: "Is 217 divisible by 5?", opts: ["Yes", "No"], correct: 1 },
+  { q: "Which digit must be last for a number to be divisible by 10?", opts: ["5", "0", "2", "Any even digit"], correct: 1 },
+  { q: "-1/2 belongs to which family?", opts: ["Natural numbers", "Whole numbers", "Rational numbers", "None of these"], correct: 2 },
+  { q: "Is every whole number also an integer?", opts: ["Yes", "No"], correct: 0 },
+];
+
+/* ---------------- State ---------------- */
+const TOTAL_SECONDS = 20 * 60;
+let timeLeft = TOTAL_SECONDS;
+let timerInterval = null;
+let order = [];
+let currentIndex = 0;
+let answered = false;
+let correctCount = 0;
+let wrongCount = 0;
+let finished = false;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  order = shuffle(QUESTIONS);
+  currentIndex = 0;
+  correctCount = 0;
+  wrongCount = 0;
+  timeLeft = TOTAL_SECONDS;
+  finished = false;
+
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('resultsScreen').classList.add('hidden');
+  document.getElementById('quizScreen').classList.remove('hidden');
+
+  renderQuestion();
+  updateTimerDisplay();
+  timerInterval = setInterval(tick, 1000);
+}
+
+function tick(){
+  timeLeft--;
+  updateTimerDisplay();
+  if(timeLeft <= 0){
+    timeLeft = 0;
+    updateTimerDisplay();
+    endQuiz();
+  }
+}
+
+function updateTimerDisplay(){
+  const m = Math.floor(timeLeft / 60);
+  const s = timeLeft % 60;
+  document.getElementById('timer').textContent =
+    String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  const dot = document.getElementById('timerDot');
+  if(timeLeft <= 60){ dot.classList.add('low'); } else { dot.classList.remove('low'); }
+}
+
+function renderQuestion(){
+  if(currentIndex >= order.length){
+    // all 50 questions answered before time ran out — finish now
+    endQuiz();
+    return;
+  }
+  answered = false;
+  const item = order[currentIndex];
+
+  document.getElementById('qcount').textContent = "Question " + (currentIndex + 1);
+  document.getElementById('questionText').textContent = item.q;
+
+  const wrap = document.getElementById('optionsWrap');
+  wrap.innerHTML = '';
+  item.opts.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = opt;
+    btn.onclick = () => selectAnswer(idx);
+    wrap.appendChild(btn);
+  });
+
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('nextBtn').classList.remove('show');
+
+  const totalSeen = correctCount + wrongCount;
+  const pct = Math.min(100, (totalSeen / QUESTIONS.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function selectAnswer(idx){
+  if(answered || finished) return;
+  answered = true;
+  const item = order[currentIndex];
+  const opts = document.querySelectorAll('.opt');
+  const feedback = document.getElementById('feedback');
+
+  opts.forEach((btn, i) => {
+    btn.disabled = true;
+    if(i === item.correct){
+      btn.classList.add('correct');
+    } else if(i === idx){
+      btn.classList.add('wrong');
+    } else {
+      btn.classList.add('dim');
+    }
+  });
+
+  if(idx === item.correct){
+    correctCount++;
+    feedback.textContent = "Correct! Nice work.";
+    feedback.classList.add('good');
+  } else {
+    wrongCount++;
+    feedback.textContent = "Not quite — the right answer is highlighted above.";
+    feedback.classList.add('bad');
+  }
+
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQuestion(){
+  if(finished) return;
+  currentIndex++;
+  renderQuestion();
+}
+
+function endQuiz(){
+  if(finished) return;
+  finished = true;
+  clearInterval(timerInterval);
+
+  document.getElementById('quizScreen').classList.add('hidden');
+  document.getElementById('resultsScreen').classList.remove('hidden');
+
+  const totalSeen = correctCount + wrongCount;
+  const notReached = Math.max(0, QUESTIONS.length - totalSeen);
+
+  document.getElementById('scoreBig').textContent = correctCount + " / " + totalSeen;
+  document.getElementById('scoreSub').textContent =
+    notReached === 0 ? "All 50 done! Here's how you did." : "Time's up! Here's how you did.";
+  document.getElementById('statCorrect').textContent = correctCount;
+  document.getElementById('statWrong').textContent = wrongCount;
+  document.getElementById('statSkipped').textContent = notReached;
+
+  let icon = "★";
+  const ratio = totalSeen > 0 ? correctCount / totalSeen : 0;
+  if(ratio >= 0.8) icon = "★";
+  else if(ratio >= 0.5) icon = "👍";
+  else icon = "💪";
+  document.getElementById('resultsIcon').textContent = icon;
+}
+
+function restartQuiz(){
+  document.getElementById('resultsScreen').classList.add('hidden');
+  document.getElementById('startScreen').classList.remove('hidden');
+}
+</script>
+
+</body>
+</html>

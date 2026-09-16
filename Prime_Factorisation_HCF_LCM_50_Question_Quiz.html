@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prime Factorisation, HCF & LCM — 50 Question Puzzle</title>
+<style>
+:root{--navy:#12304a;--teal:#167b7b;--gold:#f2c94c;--paper:#f4f7f8;--ink:#203443;--muted:#647785;--line:#d7e0e5;--green:#e5f3e9;--blue:#e7f1fa}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+.wrap{max-width:900px;margin:auto;padding:18px}.hero{background:var(--navy);color:white;border-radius:18px;padding:24px;margin-bottom:16px}
+h1{font-size:clamp(25px,4vw,36px);line-height:1.15;margin:0 0 8px}.hero p{margin:0;color:#d8e7ef}.pill{display:inline-block;background:var(--gold);color:var(--navy);font-weight:800;border-radius:20px;padding:4px 11px;margin-top:14px}
+.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.row>*{flex:1;min-width:0}
+label{display:block;font-weight:700;font-size:14px;margin-bottom:5px}input[type=text]{width:100%;padding:12px;border:1px solid #bac8d1;border-radius:10px;font:inherit}
+button{border:0;border-radius:10px;padding:12px 17px;font:700 15px inherit;cursor:pointer;background:var(--teal);color:white}button:disabled{opacity:.5;cursor:not-allowed}.secondary{background:#e8eef2;color:var(--navy)}.danger{background:#a83232}
+.status{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.timer{font-size:25px;font-weight:850;color:var(--navy);font-variant-numeric:tabular-nums}.timer.warning{color:#b42318}.progress{height:9px;background:#e8eef2;border-radius:99px;overflow:hidden;margin-top:12px}.bar{height:100%;width:0;background:var(--teal);transition:width .15s}
+.qtop{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:14px;font-weight:700}.question{font-size:20px;font-weight:750;margin:10px 0 14px}.options{display:grid;gap:9px}.option{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:11px;cursor:pointer;background:white}.option:hover{border-color:var(--teal)}.option input{margin-top:5px;accent-color:var(--teal)}.option:has(input:checked){background:var(--blue);border-color:var(--teal)}
+.nav{display:flex;gap:8px;justify-content:space-between;margin-top:18px}.nav button{flex:1}.small{font-size:13px;color:var(--muted)}.hidden{display:none!important}
+.scorehead{background:var(--green);border:1px solid #c5e2ce;border-radius:14px;padding:18px;text-align:center}.score{font-size:48px;font-weight:900;color:var(--navy);line-height:1.1}.review-item{border-top:1px solid var(--line);padding:13px 0}.correct{color:#167344;font-weight:800}.incorrect{color:#b42318;font-weight:800}.tag{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+@media(max-width:520px){.wrap{padding:10px}.hero,.panel{padding:15px}.question{font-size:18px}.nav{flex-wrap:wrap}.nav button{min-width:42%}}
+@media print{body{background:white}.hero,.setup,.quiz-controls,.nav,.progress{display:none!important}.panel{break-inside:avoid;border:0}.wrap{max-width:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>Prime Factorisation, HCF &amp; LCM</h1>
+    <p>50-question puzzle • Multiple choice • One attempt</p>
+    <span class="pill">20-minute challenge</span>
+  </header>
+
+  <section class="panel setup" id="setup">
+    <h2 style="margin:0 0 12px">Ready to begin?</h2>
+    <p>Answer all 50 questions. The quiz ends automatically when the 20-minute timer reaches zero or when you submit the 50th question—whichever happens first. Your score card will appear immediately.</p>
+    <div class="row">
+      <div><label for="studentName">Student name (optional)</label><input id="studentName" type="text" maxlength="80" placeholder="Enter your name"></div>
+      <div><label for="studentClass">Class / roll no. (optional)</label><input id="studentClass" type="text" maxlength="50" placeholder="Enter class or roll number"></div>
+    </div>
+    <p class="small">Each correct answer = 1 point. Unanswered or incorrect answers = 0 points. Questions appear in a shuffled order.</p>
+    <button id="startBtn">Start 20-minute quiz</button>
+  </section>
+
+  <section class="panel hidden" id="quiz">
+    <div class="status">
+      <div><div class="tag">Time remaining</div><div class="timer" id="timer" aria-live="polite">20:00</div></div>
+      <div style="text-align:right"><div class="tag">Progress</div><strong id="progressText">Question 1 of 50</strong><div class="small" id="answeredText">0 answered</div></div>
+    </div>
+    <div class="progress"><div class="bar" id="progressBar"></div></div>
+    <div style="height:14px"></div>
+    <div class="qtop"><span id="qNumber">QUESTION 1</span><span id="qTopic">Prime numbers</span></div>
+    <div class="question" id="questionText"></div>
+    <div class="options" id="options"></div>
+    <div class="nav quiz-controls">
+      <button class="secondary" id="prevBtn">← Previous</button>
+      <button class="secondary" id="nextBtn">Next →</button>
+      <button class="danger" id="finishBtn">Finish quiz</button>
+    </div>
+    <p class="small">You can move between questions and change an answer before finishing.</p>
+  </section>
+
+  <section class="panel hidden" id="result" aria-live="polite">
+    <div class="scorehead">
+      <div class="tag">Your score card</div>
+      <div class="score" id="scoreText">0 / 50</div>
+      <div id="scoreMessage"></div>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <div class="panel" style="margin:0;background:#f8fafb"><div class="tag">Student</div><strong id="resultName">—</strong><div class="small" id="resultClass"></div></div>
+      <div class="panel" style="margin:0;background:#f8fafb"><div class="tag">Correct answers</div><strong id="correctCount">0</strong><div class="small" id="incorrectCount">0 incorrect / unanswered</div></div>
+      <div class="panel" style="margin:0;background:#f8fafb"><div class="tag">Time used</div><strong id="timeUsed">00:00</strong><div class="small" id="finishReason"></div></div>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <button id="reviewBtn" class="secondary">Show answer review</button>
+      <button id="printBtn" class="secondary">Print score card</button>
+      <button id="restartBtn">New attempt</button>
+    </div>
+    <div id="review" class="hidden" style="margin-top:18px">
+      <h2>Answer review</h2>
+      <div id="reviewList"></div>
+    </div>
+  </section>
+</div>
+<script>
+(function(){
+'use strict';
+const bank = [
+{t:"Prime numbers",q:"Which number is prime?",o:["1","9","11","21"],a:2,e:"11 has exactly two positive factors: 1 and 11."},
+{t:"Prime numbers",q:"How many positive factors does a prime number have?",o:["1","2","3","Many"],a:1,e:"A prime number has exactly two positive factors: 1 and itself."},
+{t:"Prime numbers",q:"Which statement about 1 is correct?",o:["It is prime","It is composite","It is neither prime nor composite","It is an even prime"],a:2,e:"1 has only one positive factor, so it is neither prime nor composite."},
+{t:"Prime numbers",q:"Which is the only even prime number?",o:["0","2","4","6"],a:1,e:"2 is prime; every other even number greater than 2 has at least three factors."},
+{t:"Prime numbers",q:"Which list contains only prime numbers?",o:["2, 3, 5, 7","2, 4, 5, 7","3, 6, 7, 11","1, 2, 3, 5"],a:0,e:"Each number in 2, 3, 5, 7 has exactly two factors."},
+{t:"Prime numbers",q:"Which number is NOT prime?",o:["13","17","19","27"],a:3,e:"27 = 3 × 9, so it has more than two factors."},
+{t:"Prime numbers",q:"What is the smallest prime number?",o:["0","1","2","3"],a:2,e:"2 is the smallest prime number."},
+{t:"Prime numbers",q:"Which number has factors 1, 5, 25?",o:["5","10","15","25"],a:3,e:"25 = 5 × 5, so its positive factors are 1, 5, and 25."},
+{t:"Prime numbers",q:"Is 29 prime?",o:["Yes","No, it is divisible by 2","No, it is divisible by 3","No, it is divisible by 5"],a:0,e:"29 is divisible only by 1 and 29."},
+{t:"Prime numbers",q:"Which number is composite?",o:["31","37","41","49"],a:3,e:"49 = 7 × 7, so it is composite."},
+{t:"Factorisation",q:"Which is the prime factorisation of 12?",o:["2 × 6","3 × 4","2 × 2 × 3","1 × 12"],a:2,e:"2 and 3 are prime, and 2 × 2 × 3 = 12."},
+{t:"Factorisation",q:"Prime factorisation of 20 is…",o:["2 × 10","4 × 5","2² × 5","2 × 2 × 2 × 5"],a:2,e:"20 = 2 × 2 × 5 = 2² × 5."},
+{t:"Factorisation",q:"Prime factorisation of 36 is…",o:["2² × 3²","2 × 18","4 × 9","6 × 6"],a:0,e:"36 = 2 × 2 × 3 × 3 = 2² × 3²."},
+{t:"Factorisation",q:"Prime factorisation of 45 is…",o:["5 × 9","3² × 5","3 × 15","1 × 45"],a:1,e:"45 = 3 × 3 × 5 = 3² × 5."},
+{t:"Factorisation",q:"Prime factorisation of 100 is…",o:["10 × 10","2² × 5²","2 × 50","4 × 25"],a:1,e:"100 = 2 × 2 × 5 × 5 = 2² × 5²."},
+{t:"Factorisation",q:"Prime factorisation of 24 is…",o:["2³ × 3","2² × 6","4 × 6","3 × 8"],a:0,e:"24 = 2 × 2 × 2 × 3 = 2³ × 3."},
+{t:"Factorisation",q:"Prime factorisation of 60 is…",o:["2 × 30","3 × 20","2² × 3 × 5","6 × 10"],a:2,e:"60 = 2 × 2 × 3 × 5."},
+{t:"Factorisation",q:"Which number is missing? 2 × 2 × 3 × __ = 60",o:["2","3","5","10"],a:2,e:"2 × 2 × 3 = 12; 60 ÷ 12 = 5."},
+{t:"Factorisation",q:"In 2³ × 5, what is the value?",o:["20","30","40","80"],a:2,e:"2³ = 8, and 8 × 5 = 40."},
+{t:"Factorisation",q:"Which is the prime factorisation of 120?",o:["2³ × 3 × 5","2 × 60","12 × 10","2² × 30"],a:0,e:"120 = 8 × 15 = 2³ × 3 × 5."},
+{t:"Factorisation",q:"Which is a prime factor of 42?",o:["4","6","7","21"],a:2,e:"42 = 2 × 3 × 7; 7 is prime."},
+{t:"Factorisation",q:"Complete: 18 = 2 × 3 × __",o:["2","3","6","9"],a:1,e:"2 × 3 × 3 = 18."},
+{t:"Factorisation",q:"Which factor tree correctly ends in primes for 30?",o:["5 × 6","2 × 15, then 3 × 5","3 × 10, then 2 × 5","Both B and C"],a:3,e:"Both routes give the prime factors 2, 3, and 5."},
+{t:"Factorisation",q:"How many prime factors are there in 2² × 3², counting repeats?",o:["2","3","4","5"],a:2,e:"The factors are 2, 2, 3, 3: four factors counting repeats."},
+{t:"HCF",q:"What does HCF stand for?",o:["Highest Common Factor","Highest Counting Formula","Highest Common Fraction","Half Common Factor"],a:0,e:"HCF means Highest Common Factor."},
+{t:"HCF",q:"HCF is useful when you want to…",o:["Find the next repeating time","Divide items into equal groups as large as possible","Multiply two numbers","Find the largest multiple"],a:1,e:"HCF gives the largest number of equal groups with no leftovers."},
+{t:"HCF",q:"Find HCF(12, 18).",o:["2","3","6","9"],a:2,e:"Common factors are 1, 2, 3, 6; the greatest is 6."},
+{t:"HCF",q:"Find HCF(24, 36).",o:["6","12","18","24"],a:1,e:"The greatest factor shared by 24 and 36 is 12."},
+{t:"HCF",q:"Find HCF(15, 25).",o:["3","5","10","15"],a:1,e:"Factors common to 15 and 25 are 1 and 5; HCF = 5."},
+{t:"HCF",q:"Find HCF(8, 14).",o:["1","2","4","7"],a:1,e:"The only common factors are 1 and 2; HCF = 2."},
+{t:"HCF",q:"Find HCF(16, 24).",o:["4","6","8","12"],a:2,e:"16 and 24 are both divisible by 8, and no larger common factor exists."},
+{t:"HCF",q:"Using prime factors, HCF takes…",o:["All primes with largest powers","Common primes with smallest powers","Only prime numbers that are different","The sum of all primes"],a:1,e:"For HCF, choose only shared prime factors, using the smallest exponent."},
+{t:"HCF",q:"12 apples and 18 oranges are divided into the greatest number of identical groups. How many groups?",o:["3","6","9","12"],a:1,e:"HCF(12, 18) = 6, so 6 identical groups can be made."},
+{t:"HCF",q:"With 12 apples and 18 oranges split into 6 equal groups, each group gets…",o:["3 apples and 2 oranges","2 apples and 3 oranges","6 apples and 3 oranges","2 apples and 6 oranges"],a:1,e:"12 ÷ 6 = 2 apples and 18 ÷ 6 = 3 oranges per group."},
+{t:"HCF",q:"Find HCF(20, 30).",o:["5","10","15","20"],a:1,e:"The greatest number that divides both 20 and 30 is 10."},
+{t:"HCF",q:"Find HCF(21, 28).",o:["3","7","14","21"],a:1,e:"21 = 3 × 7 and 28 = 4 × 7, so HCF = 7."},
+{t:"LCM",q:"What does LCM stand for?",o:["Largest Common Measure","Lowest Common Multiple","Least Counting Method","Lowest Common Factor"],a:1,e:"LCM means Lowest Common Multiple."},
+{t:"LCM",q:"LCM is useful for…",o:["Making the largest equal groups","Finding when repeating events coincide","Finding all factors","Dividing into leftovers"],a:1,e:"LCM finds the first shared multiple, useful for repeating events."},
+{t:"LCM",q:"Find LCM(12, 18).",o:["24","30","36","72"],a:2,e:"36 is the smallest number appearing in both multiple lists."},
+{t:"LCM",q:"Find LCM(8, 14).",o:["28","42","56","112"],a:2,e:"8 = 2³ and 14 = 2 × 7; LCM = 2³ × 7 = 56."},
+{t:"LCM",q:"Find LCM(21, 6).",o:["27","42","63","126"],a:1,e:"21 = 3 × 7 and 6 = 2 × 3; LCM = 2 × 3 × 7 = 42."},
+{t:"LCM",q:"Find LCM(4, 10).",o:["14","20","30","40"],a:1,e:"20 is the smallest number divisible by both 4 and 10."},
+{t:"LCM",q:"Using prime factors, LCM takes…",o:["Common primes with smallest powers","All primes with largest powers","Only the common factors","The smallest prime only"],a:1,e:"For LCM, include every prime factor that appears, using its largest exponent."},
+{t:"LCM",q:"Bus A comes every 12 minutes and Bus B every 18 minutes. They start together. When do they next coincide?",o:["18 minutes","24 minutes","30 minutes","36 minutes"],a:3,e:"LCM(12, 18) = 36, so they coincide again after 36 minutes."},
+{t:"LCM",q:"A bell rings every 6 minutes and another every 8 minutes. They ring together again after…",o:["14 minutes","24 minutes","36 minutes","48 minutes"],a:1,e:"LCM(6, 8) = 24 minutes."},
+{t:"LCM",q:"Find LCM(5, 7).",o:["12","25","35","70"],a:2,e:"5 and 7 are distinct primes, so their LCM is 5 × 7 = 35."},
+{t:"Mixed challenge",q:"For 12 and 18, which pair is correct?",o:["HCF 36, LCM 6","HCF 6, LCM 36","HCF 3, LCM 72","HCF 2, LCM 18"],a:1,e:"HCF(12,18) = 6 and LCM(12,18) = 36."},
+{t:"Mixed challenge",q:"If HCF(8, 12) = 4, what is LCM(8, 12)?",o:["12","16","24","48"],a:2,e:"8 × 12 = HCF × LCM, so LCM = 96 ÷ 4 = 24."},
+{t:"Mixed challenge",q:"Find HCF and LCM of 48 and 72.",o:["HCF 12, LCM 288","HCF 24, LCM 144","HCF 24, LCM 120","HCF 6, LCM 576"],a:1,e:"48 = 2⁴ × 3 and 72 = 2³ × 3². HCF = 2³ × 3 = 24; LCM = 2⁴ × 3² = 144."},
+{t:"Mixed challenge",q:"Which phrase is a useful memory aid?",o:["HCF = meet; LCM = share","HCF = share/divide; LCM = meet/repeat","Both mean largest factor","Both mean smallest multiple"],a:1,e:"HCF is for equal sharing/dividing; LCM is for repeating or meeting together."}
+];
+let questions=[], answers=[], index=0, startedAt=0, deadline=0, interval=null, finished=false;
+const $=id=>document.getElementById(id);
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+function start(){
+  questions=shuffle(bank.map(q=>({...q, o:q.o.map((text,old)=>({text,old})).sort(()=>Math.random()-.5)})));
+  // Preserve the correct option after shuffling.
+  questions.forEach(q=>{q.a=q.o.findIndex(x=>x.old===q.a);q.o=q.o.map(x=>x.text);});
+  answers=Array(questions.length).fill(null);index=0;finished=false;
+  startedAt=Date.now();deadline=startedAt+20*60*1000;
+  $('setup').classList.add('hidden');$('result').classList.add('hidden');$('quiz').classList.remove('hidden');
+  render();tick();clearInterval(interval);interval=setInterval(tick,250);
+}
+function render(){
+ const q=questions[index];
+ $('qNumber').textContent='QUESTION '+(index+1);
+ $('qTopic').textContent=q.t;
+ $('questionText').textContent=q.q;
+ $('options').innerHTML='';
+ q.o.forEach((opt,i)=>{
+   const label=document.createElement('label');label.className='option';
+   const radio=document.createElement('input');radio.type='radio';radio.name='answer';radio.value=i;radio.checked=answers[index]===i;
+   radio.addEventListener('change',()=>{answers[index]=i;updateProgress();});
+   const span=document.createElement('span');span.textContent=String.fromCharCode(65+i)+'. '+opt;
+   label.append(radio,span);$('options').appendChild(label);
+ });
+ $('prevBtn').disabled=index===0;$('nextBtn').disabled=index===questions.length-1;
+ updateProgress();
+}
+function updateProgress(){
+ const count=answers.filter(x=>x!==null).length;
+ $('progressText').textContent=`Question ${index+1} of ${questions.length}`;
+ $('answeredText').textContent=`${count} answered`;
+ $('progressBar').style.width=(count/questions.length*100)+'%';
+}
+function tick(){
+ if(finished)return;
+ const left=Math.max(0,deadline-Date.now());
+ const sec=Math.ceil(left/1000),m=Math.floor(sec/60),s=sec%60;
+ $('timer').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+ $('timer').classList.toggle('warning',left<=60000);
+ if(left<=0)finish('Time limit reached');
+}
+function finish(reason){
+ if(finished)return;finished=true;clearInterval(interval);
+ const elapsed=Math.min(20*60*1000,Date.now()-startedAt);
+ const score=questions.reduce((n,q,i)=>n+(answers[i]===q.a?1:0),0);
+ $('quiz').classList.add('hidden');$('result').classList.remove('hidden');
+ $('scoreText').textContent=score+' / '+questions.length;
+ $('scoreMessage').textContent=score===50?'Perfect score!':score>=40?'Excellent work!':score>=30?'Good effort—keep practising!': 'Keep practising—you can improve!';
+ $('resultName').textContent=$('studentName').value.trim()||'Not provided';
+ $('resultClass').textContent=$('studentClass').value.trim()||'';
+ $('correctCount').textContent=score;
+ $('incorrectCount').textContent=(questions.length-score)+' incorrect / unanswered';
+ const sec=Math.floor(elapsed/1000);
+ $('timeUsed').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+ $('finishReason').textContent=reason;
+ $('review').classList.add('hidden');$('reviewBtn').textContent='Show answer review';
+ $('reviewList').innerHTML='';
+ questions.forEach((q,i)=>{
+   const item=document.createElement('div');item.className='review-item';
+   const status=document.createElement('div');status.className=answers[i]===q.a?'correct':'incorrect';
+   status.textContent=answers[i]===q.a?'✓ Correct':answers[i]===null?'— Not answered':'✗ Incorrect';
+   const prompt=document.createElement('strong');prompt.textContent=`${i+1}. ${q.q}`;
+   const chosen=document.createElement('div');chosen.textContent='Your answer: '+(answers[i]===null?'Not answered':q.o[answers[i]]);
+   const right=document.createElement('div');right.textContent='Correct answer: '+q.o[q.a];
+   const exp=document.createElement('div');exp.className='small';exp.textContent=q.e;
+   item.append(status,prompt,chosen,right,exp);$('reviewList').appendChild(item);
+ });
+}
+$('startBtn').addEventListener('click',start);
+$('prevBtn').addEventListener('click',()=>{if(index>0){index--;render();}});
+$('nextBtn').addEventListener('click',()=>{if(index<questions.length-1){index++;render();}else finish('All 50 questions completed');});
+$('finishBtn').addEventListener('click',()=>finish('Submitted by student'));
+$('reviewBtn').addEventListener('click',()=>{const hidden=$('review').classList.toggle('hidden');$('reviewBtn').textContent=hidden?'Show answer review':'Hide answer review';});
+$('printBtn').addEventListener('click',()=>window.print());
+$('restartBtn').addEventListener('click',()=>{clearInterval(interval);$('result').classList.add('hidden');$('setup').classList.remove('hidden');$('quiz').classList.add('hidden');$('timer').textContent='20:00';$('timer').classList.remove('warning');});
+})();
+</script>
+</body>
+</html>

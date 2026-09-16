@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prime Factorisation · LCM · HCF — Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#10161d;
+    --grid:#182029;
+    --surface:#1a2430;
+    --card:#202c3a;
+    --border:#2c3a48;
+    --text:#eceff3;
+    --muted:#8195a8;
+    --gold:#e8b923;
+    --gold-dim:#5a4a1c;
+    --good:#5fbf83;
+    --good-bg:#1c3327;
+    --bad:#e2574c;
+    --bad-bg:#3a2020;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(0deg, var(--grid) 0 1px, transparent 1px 42px),
+      repeating-linear-gradient(90deg, var(--grid) 0 1px, transparent 1px 42px),
+      var(--bg);
+    color:var(--text);
+    font-family:'JetBrains Mono', monospace;
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:32px 16px 60px;
+  }
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:600; margin:0;}
+  .wrap{width:100%; max-width:640px;}
+  .top{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:18px;
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-size:1.05rem; font-weight:600; color:var(--text);
+    letter-spacing:0.2px;
+  }
+  .timer{
+    font-size:1.35rem; font-weight:600; color:var(--gold);
+    background:var(--surface); border:1px solid var(--border);
+    padding:6px 14px; border-radius:8px; min-width:88px; text-align:center;
+    transition:color .3s, border-color .3s;
+  }
+  .timer.low{ color:var(--bad); border-color:var(--bad); animation:pulse 1s infinite; }
+  @keyframes pulse{ 50%{ opacity:.55; } }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:32px 30px;
+  }
+
+  /* ---------- START SCREEN ---------- */
+  .start h1{ font-size:1.9rem; line-height:1.25; margin-bottom:10px; }
+  .start p.lede{ color:var(--muted); font-family:'Fraunces', serif; font-size:1.05rem; line-height:1.55; margin:0 0 22px; }
+  .rules{ list-style:none; padding:0; margin:0 0 26px; display:grid; gap:10px; }
+  .rules li{
+    display:flex; gap:12px; align-items:baseline;
+    font-size:0.92rem; color:var(--text); line-height:1.5;
+  }
+  .rules li .n{ color:var(--gold); font-weight:700; min-width:20px; }
+  .field{ margin-bottom:14px; }
+  .field label{
+    display:block; font-size:0.78rem; color:var(--muted);
+    font-family:'Fraunces', serif; margin-bottom:6px;
+  }
+  .field input{
+    width:100%; font-family:'JetBrains Mono', monospace; font-size:0.95rem;
+    background:var(--surface); color:var(--text);
+    border:1px solid var(--border); border-radius:8px;
+    padding:11px 13px; outline:none;
+  }
+  .field input:focus{ border-color:var(--gold); }
+  .field-error{ color:var(--bad); font-size:0.82rem; min-height:1.2em; margin-bottom:10px; }
+  .score-sub .who{ color:var(--text); }
+  .btn{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:600; font-size:0.95rem;
+    background:var(--gold); color:#1b1404;
+    border:none; border-radius:8px;
+    padding:13px 22px; cursor:pointer;
+    transition:transform .12s ease, opacity .12s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn:active{ transform:translateY(0); }
+  .btn.ghost{
+    background:transparent; color:var(--text);
+    border:1px solid var(--border);
+  }
+  .btn.full{ width:100%; }
+
+  /* ---------- QUIZ SCREEN ---------- */
+  .progress-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+  .qcount{ color:var(--muted); font-size:0.85rem; }
+  .catbadge{
+    display:inline-block; font-size:0.72rem; letter-spacing:.3px;
+    color:var(--gold); border:1px solid var(--gold-dim); background:#241d0f;
+    padding:3px 9px; border-radius:20px; margin-bottom:14px;
+  }
+  .progress-track{
+    height:4px; background:var(--surface); border-radius:3px; overflow:hidden; margin-bottom:22px;
+  }
+  .progress-fill{ height:100%; background:var(--gold); width:0%; transition:width .25s ease; }
+
+  .qtext{
+    font-family:'Fraunces', serif; font-size:1.35rem; line-height:1.5;
+    margin:0 0 22px; color:var(--text);
+  }
+  .qtext sup{ font-size:0.65em; }
+
+  .options{ display:grid; gap:10px; }
+  .opt{
+    text-align:left;
+    font-family:'JetBrains Mono', monospace; font-size:0.98rem;
+    background:var(--surface); color:var(--text);
+    border:1px solid var(--border); border-radius:10px;
+    padding:13px 16px; cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .opt sup{ font-size:0.7em; }
+  .opt:hover:not(:disabled){ border-color:var(--gold); }
+  .opt:disabled{ cursor:default; }
+  .opt.correct{ background:var(--good-bg); border-color:var(--good); color:#d4f5df; }
+  .opt.wrong{ background:var(--bad-bg); border-color:var(--bad); color:#ffd9d5; }
+
+  .feedback{
+    margin-top:16px; font-family:'Fraunces', serif; font-size:0.98rem;
+    min-height:1.4em;
+  }
+  .feedback.good{ color:var(--good); }
+  .feedback.bad{ color:var(--bad); }
+
+  .next-row{ margin-top:20px; display:flex; justify-content:flex-end; }
+
+  /* ---------- SCORE SCREEN ---------- */
+  .score-hero{ text-align:center; padding:6px 0 20px; }
+  .score-big{ font-family:'Fraunces', serif; font-weight:700; font-size:3.4rem; color:var(--gold); line-height:1; }
+  .score-sub{ color:var(--muted); margin-top:6px; font-size:0.95rem; }
+  .stat-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:22px 0 6px;
+  }
+  .stat{
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:14px 10px; text-align:center;
+  }
+  .stat .val{ font-size:1.3rem; font-weight:600; color:var(--text); }
+  .stat .lbl{ font-size:0.72rem; color:var(--muted); margin-top:4px; font-family:'Fraunces', serif; }
+  .divider{ height:1px; background:var(--border); margin:26px 0; }
+  .review-title{ font-family:'Fraunces', serif; font-size:1.1rem; margin-bottom:12px; }
+  .review-list{ display:grid; gap:10px; max-height:340px; overflow-y:auto; padding-right:4px; }
+  .review-item{
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:12px 14px; font-size:0.87rem; line-height:1.55;
+  }
+  .review-item .q{ color:var(--text); margin-bottom:6px; }
+  .review-item .a-line{ color:var(--muted); }
+  .review-item .a-line .wrong-ans{ color:var(--bad); }
+  .review-item .a-line .right-ans{ color:var(--good); }
+  .empty-review{ color:var(--muted); font-family:'Fraunces', serif; font-style:italic; }
+  .actions{ margin-top:26px; display:flex; gap:10px; }
+  .actions .btn{ flex:1; }
+
+  ::-webkit-scrollbar{ width:8px; }
+  ::-webkit-scrollbar-thumb{ background:var(--border); border-radius:4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">Factors, LCM &amp; HCF</div>
+    <div class="timer" id="timerDisplay">25:00</div>
+  </div>
+
+  <div class="card" id="app"></div>
+</div>
+
+<script>
+/* ---------------- math helpers ---------------- */
+function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ [a,b]=[b, a % b]; } return a; }
+function lcm(a,b){ return (a / gcd(a,b)) * b; }
+function isPrime(n){
+  if(n<2) return true; // treat trivially small as excluded elsewhere
+  for(let i=2;i*i<=n;i++){ if(n%i===0) return false; }
+  return true;
+}
+function primeFactorize(n){
+  let f={}, x=n, d=2;
+  while(d*d<=x){
+    while(x % d === 0){ f[d]=(f[d]||0)+1; x/=d; }
+    d++;
+  }
+  if(x>1) f[x]=(f[x]||0)+1;
+  return f;
+}
+function factorStr(f){
+  const primes = Object.keys(f).map(Number).sort((a,b)=>a-b);
+  return primes.map(p => f[p]>1 ? `${p}<sup>${f[p]}</sup>` : `${p}`).join(' &times; ');
+}
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=randInt(0,i); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function mutateFactor(f){
+  const clone = {...f};
+  const primes = Object.keys(clone).map(Number);
+  const mode = randInt(0,2);
+  if(mode===0){
+    const p = primes[randInt(0, primes.length-1)];
+    const delta = Math.random()<0.5 ? 1 : -1;
+    const newExp = clone[p] + delta;
+    if(newExp<=0) delete clone[p]; else clone[p]=newExp;
+    if(Object.keys(clone).length===0) clone[primes[0]]=1;
+  } else if(mode===1 && primes.length>=2){
+    const [p1,p2] = shuffle(primes).slice(0,2);
+    const tmp = clone[p1]; clone[p1]=clone[p2]; clone[p2]=tmp;
+  } else {
+    const extras = [2,3,5,7,11,13].filter(p=>!primes.includes(p));
+    const p = extras[randInt(0, extras.length-1)] || 17;
+    clone[p] = (clone[p]||0)+1;
+  }
+  return clone;
+}
+
+/* ---------------- question generation (easy → hard) ---------------- */
+function makePF(rangeMin, rangeMax, used){
+  let n;
+  do { n = randInt(rangeMin,rangeMax); } while(isPrime(n) || used.has('pf'+n));
+  used.add('pf'+n);
+  const f = primeFactorize(n);
+  const correct = factorStr(f);
+  const opts = new Set([correct]);
+  let tries=0;
+  while(opts.size<4 && tries<40){
+    tries++;
+    const s = factorStr(mutateFactor(f));
+    if(s!==correct) opts.add(s);
+  }
+  while(opts.size<4){
+    opts.add(factorStr(primeFactorize(randInt(rangeMin,rangeMax))));
+  }
+  return {
+    category:'Prime Factorisation',
+    text:`Find the prime factorisation of <strong>${n}</strong>.`,
+    options: shuffle([...opts]),
+    answer: correct
+  };
+}
+
+function makeLCM(rangeMin, rangeMax, used){
+  let a,b,key;
+  do { a=randInt(rangeMin,rangeMax); b=randInt(rangeMin,rangeMax); key='lcm'+Math.min(a,b)+'_'+Math.max(a,b); }
+  while(a===b || used.has(key));
+  used.add(key);
+  const correct = lcm(a,b);
+  const g = gcd(a,b);
+  const raw = [g, a*b, correct+g, Math.max(1, correct-g), correct+a, Math.max(1, correct-b)];
+  const opts = new Set([correct]);
+  for(const c of raw){ if(opts.size>=4) break; if(c>0 && c!==correct) opts.add(c); }
+  let guard=0;
+  while(opts.size<4 && guard<20){ guard++; opts.add(correct + randInt(1,10)*Math.max(1,g)); }
+  return {
+    category:'LCM',
+    text:`Using the prime factorisation method, find the <strong>LCM</strong> of <strong>${a}</strong> and <strong>${b}</strong>.`,
+    options: shuffle([...opts].map(String)),
+    answer: String(correct)
+  };
+}
+
+function makeHCF(rangeMin, rangeMax, used){
+  let a,b,key;
+  do { a=randInt(rangeMin,rangeMax); b=randInt(rangeMin,rangeMax); key='hcf'+Math.min(a,b)+'_'+Math.max(a,b); }
+  while(a===b || used.has(key));
+  used.add(key);
+  const correct = gcd(a,b);
+  const l = lcm(a,b);
+  const raw = [l, a*b, correct+1, Math.max(1,correct-1), correct+2, Math.max(1,correct+3)];
+  const opts = new Set([correct]);
+  for(const c of raw){ if(opts.size>=4) break; if(c>0 && c!==correct) opts.add(c); }
+  let guard=0;
+  while(opts.size<4 && guard<20){ guard++; opts.add(correct + randInt(1,6)); }
+  return {
+    category:'HCF',
+    text:`Using the prime factorisation method, find the <strong>HCF</strong> of <strong>${a}</strong> and <strong>${b}</strong>.`,
+    options: shuffle([...opts].map(String)),
+    answer: String(correct)
+  };
+}
+
+function generateQuestions(){
+  // Five difficulty tiers, easy to hard. Each tier gives its own number
+  // ranges plus how many pf/lcm/hcf questions to draw from it (10 per tier, 50 total).
+  const tiers = [
+    { pfRange:[12, 40],   numRange:[4, 20],    counts:{pf:4, lcm:3, hcf:3} },
+    { pfRange:[30, 80],   numRange:[10, 35],   counts:{pf:3, lcm:4, hcf:3} },
+    { pfRange:[60, 150],  numRange:[20, 60],   counts:{pf:4, lcm:3, hcf:3} },
+    { pfRange:[120, 260], numRange:[40, 90],   counts:{pf:3, lcm:4, hcf:3} },
+    { pfRange:[200, 500], numRange:[60, 150],  counts:{pf:3, lcm:3, hcf:4} }
+  ];
+
+  const used = new Set();
+  const ordered = [];
+
+  tiers.forEach(tier=>{
+    const tierQs = [];
+    for(let i=0;i<tier.counts.pf;i++) tierQs.push(makePF(tier.pfRange[0], tier.pfRange[1], used));
+    for(let i=0;i<tier.counts.lcm;i++) tierQs.push(makeLCM(tier.numRange[0], tier.numRange[1], used));
+    for(let i=0;i<tier.counts.hcf;i++) tierQs.push(makeHCF(tier.numRange[0], tier.numRange[1], used));
+    ordered.push(...shuffle(tierQs)); // mix categories within a tier, keep tiers in order
+  });
+
+  return ordered;
+}
+
+/* ---------------- app state ---------------- */
+const TOTAL_TIME = 25*60;
+let state = {};
+
+function resetState(name, branch){
+  state = {
+    student: { name: name || '', branch: branch || '' },
+    questions: generateQuestions(),
+    idx: 0,
+    score: 0,
+    log: [],
+    timeLeft: TOTAL_TIME,
+    timerId: null,
+    finished: false,
+    answeredCurrent: false
+  };
+}
+
+function fmtTime(s){
+  const m = Math.floor(s/60), sec = s%60;
+  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+function startTimer(){
+  updateTimerDisplay();
+  state.timerId = setInterval(()=>{
+    state.timeLeft--;
+    updateTimerDisplay();
+    if(state.timeLeft<=0){
+      clearInterval(state.timerId);
+      finishQuiz();
+    }
+  },1000);
+}
+function updateTimerDisplay(){
+  const el = document.getElementById('timerDisplay');
+  el.textContent = fmtTime(Math.max(0,state.timeLeft));
+  el.classList.toggle('low', state.timeLeft<=60);
+}
+
+/* ---------------- rendering ---------------- */
+function renderStart(){
+  document.getElementById('app').innerHTML = `
+    <div class="start">
+      <h1>Prime Factorisation, LCM &amp; HCF</h1>
+      <p class="lede">A quick-fire practice round — 50 questions mixing prime factorisation, LCM and HCF by the prime factorisation method.</p>
+      <ul class="rules">
+        <li><span class="n">1</span> 50 questions, 25 minutes on the clock.</li>
+        <li><span class="n">2</span> Starts simple and gets progressively harder — the run doubles as a walk-through of the method, one step at a time.</li>
+        <li><span class="n">3</span> One attempt per question — the right answer is revealed the moment you answer.</li>
+        <li><span class="n">4</span> The round ends the instant you finish all 50, or when time runs out — whichever comes first.</li>
+        <li><span class="n">5</span> A full scorecard with a review of every miss appears at the end.</li>
+      </ul>
+      <div class="field">
+        <label for="nameInput">Name</label>
+        <input type="text" id="nameInput" placeholder="Your name" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="branchInput">Branch</label>
+        <input type="text" id="branchInput" placeholder="e.g. Mechanical, CSE, ECE" autocomplete="off">
+      </div>
+      <div class="field-error" id="fieldError"></div>
+      <button class="btn full" id="startBtn">Start practice</button>
+    </div>
+  `;
+  document.getElementById('startBtn').onclick = ()=>{
+    const name = document.getElementById('nameInput').value.trim();
+    const branch = document.getElementById('branchInput').value.trim();
+    if(!name || !branch){
+      document.getElementById('fieldError').textContent = 'Enter your name and branch to start.';
+      return;
+    }
+    beginQuiz(name, branch);
+  };
+}
+
+function beginQuiz(name, branch){
+  resetState(name, branch);
+  startTimer();
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = state.questions[state.idx];
+  state.answeredCurrent = false;
+  const pct = (state.idx/state.questions.length)*100;
+  document.getElementById('app').innerHTML = `
+    <div class="progress-row">
+      <span class="qcount">Question ${state.idx+1} / ${state.questions.length}</span>
+      <span class="qcount">Score: ${state.score}</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="catbadge">${q.category}</div>
+    <p class="qtext">${q.text}</p>
+    <div class="options" id="optionsWrap">
+      ${q.options.map((opt,i)=>`<button class="opt" data-i="${i}">${opt}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div class="next-row" id="nextRow"></div>
+  `;
+  document.querySelectorAll('.opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>handleAnswer(btn, q));
+  });
+}
+
+function handleAnswer(btn, q){
+  if(state.answeredCurrent) return;
+  state.answeredCurrent = true;
+
+  const chosenText = btn.textContent.trim();
+  const chosenHTML = btn.innerHTML;
+  const isCorrect = chosenHTML === q.answer;
+
+  document.querySelectorAll('.opt').forEach(b=>{
+    b.disabled = true;
+    if(b.innerHTML === q.answer) b.classList.add('correct');
+  });
+  if(!isCorrect) btn.classList.add('wrong');
+
+  if(isCorrect) state.score++;
+
+  state.log.push({
+    category: q.category,
+    text: q.text,
+    correctAnswer: q.answer,
+    chosenAnswer: chosenHTML,
+    isCorrect
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'good' : 'bad');
+  fb.innerHTML = isCorrect ? 'Correct.' : `Incorrect — the right answer is <strong>${q.answer}</strong>.`;
+
+  const isLast = state.idx+1 >= state.questions.length;
+  document.getElementById('nextRow').innerHTML =
+    `<button class="btn" id="nextBtn">${isLast ? 'See scorecard' : 'Next question →'}</button>`;
+  document.getElementById('nextBtn').onclick = ()=>{
+    if(isLast){ clearInterval(state.timerId); finishQuiz(); }
+    else { state.idx++; renderQuestion(); }
+  };
+}
+
+function finishQuiz(){
+  if(state.finished) return;
+  state.finished = true;
+  clearInterval(state.timerId);
+
+  const answered = state.log.length;
+  const timeUsed = TOTAL_TIME - Math.max(0,state.timeLeft);
+  const byCat = {};
+  ['Prime Factorisation','LCM','HCF'].forEach(c=>byCat[c]={correct:0,total:0});
+  state.log.forEach(e=>{ byCat[e.category].total++; if(e.isCorrect) byCat[e.category].correct++; });
+
+  const wrongItems = state.log.filter(e=>!e.isCorrect);
+
+  document.getElementById('app').innerHTML = `
+    <div class="score-hero">
+      <div class="score-big">${state.score} / ${state.questions.length}</div>
+      <div class="score-sub"><span class="who">${state.student.name}</span> · ${state.student.branch}</div>
+      <div class="score-sub">${answered} of ${state.questions.length} answered · finished at ${fmtTime(timeUsed)}</div>
+    </div>
+    <div class="stat-grid">
+      ${['Prime Factorisation','LCM','HCF'].map(c=>`
+        <div class="stat">
+          <div class="val">${byCat[c].correct}/${byCat[c].total}</div>
+          <div class="lbl">${c}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="divider"></div>
+    <div class="review-title">Questions to revisit</div>
+    <div class="review-list">
+      ${ wrongItems.length ? wrongItems.map(e=>`
+        <div class="review-item">
+          <div class="q">${e.text}</div>
+          <div class="a-line">Your answer: <span class="wrong-ans">${e.chosenAnswer}</span> &nbsp;·&nbsp; Correct: <span class="right-ans">${e.correctAnswer}</span></div>
+        </div>
+      `).join('') : `<div class="empty-review">No misses — every attempted question was correct.</div>` }
+    </div>
+    <div class="actions">
+      <button class="btn ghost full" id="restartBtn">Practice again</button>
+    </div>
+  `;
+  document.getElementById('restartBtn').onclick = ()=>{
+    document.getElementById('timerDisplay').textContent = fmtTime(TOTAL_TIME);
+    document.getElementById('timerDisplay').classList.remove('low');
+    renderStart();
+  };
+}
+
+renderStart();
+</script>
+</body>
+</html>

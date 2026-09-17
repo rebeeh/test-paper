@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3-Number HCF & LCM Interactive Explorer</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#151515;color:#eee;font-family:Arial,sans-serif}
+.app{max-width:1050px;margin:auto;padding:18px}
+.card{background:#242424;border-radius:24px;padding:22px;box-shadow:0 8px 30px #0005}
+h1{text-align:center;font-size:27px;margin:4px 0 20px}
+.factorRows{margin-bottom:18px}
+.factorRow{display:flex;align-items:center;gap:15px;margin:16px 0;overflow-x:auto}
+.name{width:82px;flex:none;font-size:21px}
+.factors{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.ball{width:48px;height:48px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#4d8df7;font-size:20px;font-weight:bold;flex:none}
+.sign{font-size:21px;color:#aaa}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.box{background:#303030;border-radius:17px;padding:15px;text-align:center;min-height:105px}
+.box.all{border:2px solid #4d8df7}
+.box h3{font-size:16px;margin:0 0 13px}
+.boxballs{display:flex;justify-content:center;gap:7px;flex-wrap:wrap}
+.box .ball{width:40px;height:40px;font-size:17px}
+.aonly .ball{background:#b79af0}.bonly .ball{background:#59b864}.conly .ball{background:#e5a34d}
+.pair .ball{background:#707070}
+.formula{background:#2d2d2d;border-radius:18px;padding:18px;text-align:center;font-family:Georgia,serif;font-size:22px;line-height:1.75;margin:20px 0}
+.controls{margin-top:20px}
+.control{display:grid;grid-template-columns:45px 58px 1fr;gap:13px;align-items:center;margin:16px 0}
+.control label{font-family:Georgia,serif;font-size:25px;font-style:italic}
+.value{text-align:right;font-size:19px}
+input[type=range]{width:100%;accent-color:#eee}
+.focus{display:grid;grid-template-columns:repeat(3,1fr);background:#333;border-radius:28px;overflow:hidden;margin-top:18px}
+.focus button{border:0;background:transparent;color:#ddd;padding:13px;font-size:17px;cursor:pointer}
+.focus button.active{background:#f1f1f1;color:#111;border-radius:26px}
+.help{color:#aaa;text-align:center;font-size:14px;margin-top:16px}
+@media(max-width:700px){
+ .app{padding:10px}.card{padding:15px}
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .formula{font-size:18px}
+ .control{grid-template-columns:38px 45px 1fr}
+}
+</style>
+</head>
+<body>
+<div class="app"><div class="card">
+<h1>3-Number HCF & LCM — Interactive Explorer</h1>
+
+<div id="factorRows" class="factorRows"></div>
+
+<div class="grid">
+ <div class="box aonly"><h3>A only</h3><div id="aonly" class="boxballs"></div></div>
+ <div class="box bonly"><h3>B only</h3><div id="bonly" class="boxballs"></div></div>
+ <div class="box conly"><h3>C only</h3><div id="conly" class="boxballs"></div></div>
+ <div class="box pair"><h3>A + B only</h3><div id="ab" class="boxballs"></div></div>
+ <div class="box pair"><h3>A + C only</h3><div id="ac" class="boxballs"></div></div>
+ <div class="box pair"><h3>B + C only</h3><div id="bc" class="boxballs"></div></div>
+ <div class="box all" style="grid-column:1/-1"><h3>Shared by ALL 3</h3><div id="all" class="boxballs"></div></div>
+</div>
+
+<div id="formula" class="formula"></div>
+
+<div class="controls">
+ <div class="control"><label>A</label><div id="av" class="value">12</div><input id="a" type="range" min="1" max="200" value="12"></div>
+ <div class="control"><label>B</label><div id="bv" class="value">18</div><input id="b" type="range" min="1" max="200" value="18"></div>
+ <div class="control"><label>C</label><div id="cv" class="value">24</div><input id="c" type="range" min="1" max="200" value="24"></div>
+
+ <div class="focus">
+  <button data-focus="gcf">GCF</button>
+  <button data-focus="lcm">LCM</button>
+  <button data-focus="both" class="active">Both</button>
+ </div>
+</div>
+
+<div class="help">Move A, B or C to explore. GCF uses the prime factors common to all three with the smallest powers. LCM uses the largest power required by any of the three.</div>
+</div></div>
+
+<script>
+const A=document.getElementById('a'),B=document.getElementById('b'),C=document.getElementById('c');
+let focus='both';
+
+function pf(n){
+ let x=n,o={};
+ for(let p=2;p*p<=x;p+=(p===2?1:2)){
+  while(x%p===0){o[p]=(o[p]||0)+1;x/=p}
+ }
+ if(x>1)o[x]=(o[x]||0)+1;
+ return o;
+}
+function list(f){let r=[];for(const p in f)for(let i=0;i<f[p];i++)r.push(+p);return r}
+function gcd(a,b){while(b){let t=a%b;a=b;b=t}return a}
+function lcm(a,b){return a/gcd(a,b)*b}
+function mult(xs){
+ return xs.map((x,i)=>i?`<span class="sign">×</span><span class="ball">${x}</span>`:`<span class="ball">${x}</span>`).join('');
+}
+function chips(xs){
+ return xs.length?xs.map(x=>`<span class="ball">${x}</span>`).join(' '):'<span style="color:#888">None</span>';
+}
+function update(){
+ const a=+A.value,b=+B.value,c=+C.value;
+ const fa=pf(a),fb=pf(b),fc=pf(c);
+ av.textContent=a;bv.textContent=b;cv.textContent=c;
+
+ factorRows.innerHTML=
+ `<div class="factorRow"><div class="name">A = ${a}</div><div class="factors">${mult(list(fa))}</div></div>`+
+ `<div class="factorRow"><div class="name">B = ${b}</div><div class="factors">${mult(list(fb))}</div></div>`+
+ `<div class="factorRow"><div class="name">C = ${c}</div><div class="factors">${mult(list(fc))}</div></div>`;
+
+ // Categorize prime copies by exact membership after reserving copies shared by all 3.
+ let cats={a:[],b:[],c:[],ab:[],ac:[],bc:[],all:[]};
+ const primes=[...new Set([...Object.keys(fa),...Object.keys(fb),...Object.keys(fc)])].map(Number).sort((x,y)=>x-y);
+
+ primes.forEach(p=>{
+   let ca=fa[p]||0, cb=fb[p]||0, cc=fc[p]||0;
+   let all=Math.min(ca,cb,cc);
+   for(let i=0;i<all;i++)cats.all.push(p);
+   ca-=all;cb-=all;cc-=all;
+   let ab=Math.min(ca,cb); for(let i=0;i<ab;i++)cats.ab.push(p); ca-=ab;cb-=ab;
+   let ac=Math.min(ca,cc); for(let i=0;i<ac;i++)cats.ac.push(p); ca-=ac;cc-=ac;
+   let bc=Math.min(cb,cc); for(let i=0;i<bc;i++)cats.bc.push(p); cb-=bc;cc-=bc;
+   for(let i=0;i<ca;i++)cats.a.push(p);
+   for(let i=0;i<cb;i++)cats.b.push(p);
+   for(let i=0;i<cc;i++)cats.c.push(p);
+ });
+
+ ['a','b','c','ab','ac','bc','all'].forEach(k=>document.getElementById(k).innerHTML=chips(cats[k]));
+
+ const h=gcd(gcd(a,b),c), l=lcm(lcm(a,b),c);
+ const hFactors=list(pf(h));
+ const lFactors=list(pf(l));
+ const eqG=`GCF(${a}, ${b}, ${c}) = ${hFactors.length?hFactors.join(' × '):'1'} = ${h}`;
+ const eqL=`LCM(${a}, ${b}, ${c}) = ${lFactors.length?lFactors.join(' × '):'1'} = ${l}`;
+ formula.innerHTML=focus==='gcf'?eqG:focus==='lcm'?eqL:eqG+'<br>'+eqL;
+}
+A.oninput=B.oninput=C.oninput=update;
+document.querySelectorAll('.focus button').forEach(btn=>{
+ btn.onclick=()=>{
+  focus=btn.dataset.focus;
+  document.querySelectorAll('.focus button').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');update();
+ }
+});
+update();
+</script>
+</body>
+</html>

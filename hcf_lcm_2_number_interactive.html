@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HCF & LCM Interactive Explorer</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#151515;color:#eee;font-family:Arial,sans-serif}
+.app{max-width:980px;margin:auto;padding:22px}
+.card{background:#242424;border-radius:24px;padding:24px;box-shadow:0 8px 30px #0005}
+h1{text-align:center;font-size:28px;margin:4px 0 22px}
+.factorRows{margin-bottom:20px}
+.factorRow{display:flex;align-items:center;gap:18px;margin:18px 0;overflow-x:auto}
+.name{width:80px;flex:none;font-size:22px}
+.factors{display:flex;align-items:center;gap:9px;white-space:nowrap}
+.ball{width:52px;height:52px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#4d8df7;font-size:21px;font-weight:bold}
+.ball.extraA{background:#b79af0}.ball.extraB{background:#59b864}
+.sign{font-size:22px;color:#bbb}
+.boxes{display:flex;gap:14px;margin:22px 0}
+.box{flex:1;min-height:130px;background:#303030;border-radius:18px;padding:18px;text-align:center}
+.box h3{margin:0 0 16px;font-size:19px}
+.box.shared{border:2px solid #4d8df7}
+.boxballs{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.formula{background:#2d2d2d;border-radius:18px;padding:20px;text-align:center;font-family:Georgia,serif;font-size:25px;line-height:1.7;margin:18px 0}
+.controls{margin-top:24px}
+.control{display:grid;grid-template-columns:55px 60px 1fr;gap:14px;align-items:center;margin:18px 0}
+.control label{font-family:Georgia,serif;font-size:25px;font-style:italic}
+.value{text-align:right;font-size:20px}
+input[type=range]{width:100%;accent-color:#eee}
+.focus{display:grid;grid-template-columns:1fr 1fr 1fr;background:#333;border-radius:28px;overflow:hidden;margin-top:18px}
+.focus button{border:0;background:transparent;color:#ddd;padding:14px;font-size:18px;cursor:pointer}
+.focus button.active{background:#f1f1f1;color:#111;border-radius:26px}
+.help{color:#aaa;text-align:center;font-size:14px;margin-top:18px}
+@media(max-width:650px){
+ .app{padding:12px}.card{padding:16px}
+ .boxes{gap:8px}.box{padding:12px;min-height:115px}
+ .box h3{font-size:16px}.formula{font-size:19px}
+ .control{grid-template-columns:42px 48px 1fr}
+}
+</style>
+</head>
+<body>
+<div class="app"><div class="card">
+<h1>HCF & LCM — Interactive Explorer</h1>
+
+<div id="factorRows" class="factorRows"></div>
+<div id="boxes" class="boxes"></div>
+<div id="formula" class="formula"></div>
+
+<div class="controls">
+  <div class="control">
+    <label>A</label><div id="av" class="value">60</div>
+    <input id="a" type="range" min="1" max="200" value="60">
+  </div>
+  <div class="control">
+    <label>B</label><div id="bv" class="value">90</div>
+    <input id="b" type="range" min="1" max="200" value="90">
+  </div>
+
+  <div class="focus">
+    <button data-focus="gcf">GCF</button>
+    <button data-focus="lcm">LCM</button>
+    <button data-focus="both" class="active">Both</button>
+  </div>
+</div>
+
+<div class="help">Move A or B to explore. Change Focus to study GCF, LCM, or both.</div>
+</div></div>
+
+<script>
+let focus='both';
+const A=document.getElementById('a'),B=document.getElementById('b');
+
+function pf(n){
+ let x=n,o={};
+ for(let p=2;p*p<=x;p+=(p===2?1:2)){
+  while(x%p===0){o[p]=(o[p]||0)+1;x/=p}
+ }
+ if(x>1)o[x]=(o[x]||0)+1;
+ return o;
+}
+function list(f){let r=[];for(const p in f)for(let i=0;i<f[p];i++)r.push(+p);return r}
+function gcd(a,b){while(b){let t=a%b;a=b;b=t}return a}
+function lcm(a,b){return a/gcd(a,b)*b}
+function balls(xs,cls=''){
+ return xs.length?xs.map(x=>`<span class="ball ${cls}">${x}</span>`).join(''): '<span style="color:#888">None</span>';
+}
+function mult(xs){
+ return xs.map((x,i)=>i?`<span class="sign">×</span><span class="ball">${x}</span>`:`<span class="ball">${x}</span>`).join('');
+}
+function update(){
+ let a=+A.value,b=+B.value,fa=pf(a),fb=pf(b);
+ document.getElementById('av').textContent=a;
+ document.getElementById('bv').textContent=b;
+
+ let common=[],onlyA=[],onlyB=[];
+ const primes=[...new Set([...Object.keys(fa),...Object.keys(fb)])].map(Number).sort((x,y)=>x-y);
+ primes.forEach(p=>{
+   let ca=fa[p]||0, cb=fb[p]||0, c=Math.min(ca,cb);
+   for(let i=0;i<c;i++)common.push(p);
+   for(let i=c;i<ca;i++)onlyA.push(p);
+   for(let i=c;i<cb;i++)onlyB.push(p);
+ });
+
+ document.getElementById('factorRows').innerHTML=
+ `<div class="factorRow"><div class="name">A = ${a}</div><div class="factors">${mult(list(fa))}</div></div>`+
+ `<div class="factorRow"><div class="name">B = ${b}</div><div class="factors">${mult(list(fb))}</div></div>`;
+
+ document.getElementById('boxes').innerHTML=
+ `<div class="box"><h3>A only</h3><div class="boxballs">${balls(onlyA,'extraA')}</div></div>`+
+ `<div class="box shared"><h3>Shared</h3><div class="boxballs">${balls(common)}</div></div>`+
+ `<div class="box"><h3>B only</h3><div class="boxballs">${balls(onlyB,'extraB')}</div></div>`;
+
+ let h=gcd(a,b), l=lcm(a,b);
+ let eqG=`GCF(${a}, ${b}) = ${common.length?common.join(' × '):'1'} = ${h}`;
+ let eqL=`LCM(${a}, ${b}) = ${[...common,...onlyA,...onlyB].join(' × ') || '1'} = ${l}`;
+ let formula=document.getElementById('formula');
+ formula.innerHTML=focus==='gcf'?eqG:focus==='lcm'?eqL:eqG+'<br>'+eqL;
+}
+A.oninput=B.oninput=update;
+document.querySelectorAll('.focus button').forEach(btn=>{
+ btn.onclick=()=>{
+  focus=btn.dataset.focus;
+  document.querySelectorAll('.focus button').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active'); update();
+ }
+});
+update();
+</script>
+</body>
+</html>

@@ -260,22 +260,90 @@
 
     .nav-toggle {
       display: none;
-      background: transparent;
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--card-border);
-      border-radius: 8px;
+      border-radius: 10px;
       color: var(--text);
       width: 44px;
       height: 44px;
+      min-width: 44px;
+      min-height: 44px;
       cursor: pointer;
       align-items: center;
       justify-content: center;
       padding: 0;
-      transition: background-color 0.2s ease, border-color 0.2s ease;
+      transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+      z-index: 960;
     }
     .nav-toggle:hover,
     .nav-toggle:focus-visible {
       background: var(--card-hover);
       border-color: var(--primary-light);
+      outline: none;
+    }
+    .nav-toggle:focus-visible {
+      box-shadow: 0 0 0 3px rgba(2, 195, 154, 0.35);
+    }
+
+    /* Animated 3-Line Hamburger to '✕' (Close) */
+    .hamburger-box {
+      width: 22px;
+      height: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      pointer-events: none;
+    }
+
+    .hamburger-line {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background-color: var(--text);
+      border-radius: 2px;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, background-color 0.2s ease;
+      transform-origin: center;
+    }
+
+    .nav-toggle.active .hamburger-line {
+      background-color: var(--accent);
+    }
+    .nav-toggle.active .line-1 {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .nav-toggle.active .line-2 {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .nav-toggle.active .line-3 {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Backdrop Overlay for Mobile Navigation Drawer */
+    .nav-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 8, 15, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 890;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+    }
+    .nav-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    @media (min-width: 769px) {
+      .nav-backdrop {
+        display: none !important;
+      }
     }
 
     /* ==========================================================================
@@ -544,11 +612,9 @@
       gap: clamp(16px, 2vw, 24px);
     }
 
-    /* Portal Card: Scalable Flexbox Uniform Height & Performance */
+    /* Portal Card: Scalable Flexbox Uniform Height & WebKit-Safe Counters */
     .portal-card {
       counter-increment: card-count;
-      content-visibility: auto;
-      contain-intrinsic-size: 1px 320px;
       background-color: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 18px;
@@ -588,30 +654,32 @@
       gap: 8px;
     }
 
-    /* Automated Number Badge via CSS Counters */
+    /* Automated Number Badge via CSS Counters (Optimized for Mobile Retina) */
     .card-num-badge {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 700;
       letter-spacing: 0.5px;
       padding: 3px 8px;
       border-radius: 6px;
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text-muted);
-      border: 1px solid var(--card-border);
+      background: rgba(2, 195, 154, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(2, 195, 154, 0.25);
       display: inline-flex;
       align-items: center;
-      line-height: 1;
+      line-height: 1.2;
+      flex-shrink: 0;
     }
 
     .card-num-badge::before {
       content: "#" counter(card-count, decimal-leading-zero);
     }
 
-    .portal-card:hover .card-num-badge {
-      color: var(--accent);
-      border-color: rgba(2, 195, 154, 0.4);
-      background: rgba(2, 195, 154, 0.08);
+    .portal-card:hover .card-num-badge,
+    .cheat-card:hover .card-num-badge {
+      color: #ffffff;
+      border-color: var(--accent);
+      background: rgba(2, 195, 154, 0.25);
     }
 
     .card-icon {
@@ -759,11 +827,6 @@
       transform: translateY(-2px);
     }
 
-    .cheat-card:hover .card-num-badge {
-      color: var(--accent);
-      border-color: rgba(2, 195, 154, 0.4);
-      background: rgba(2, 195, 154, 0.08);
-    }
 
     .cheat-card-left {
       display: flex;
@@ -932,6 +995,8 @@
        Modern 4-Column Responsive Footer
        ========================================================================== */
     .site-footer {
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 320px;
       background: #080d15;
       border-top: 1px solid var(--card-border);
       padding: var(--sp-7) 0 var(--sp-4);
@@ -1151,39 +1216,76 @@
 
       .nav-menu {
         position: fixed;
-        top: 64px;
+        top: calc(64px + env(safe-area-inset-top, 0px));
         left: 0;
         right: 0;
-        background: #0e1724;
+        width: 100%;
+        max-height: calc(100vh - (64px + env(safe-area-inset-top, 0px)));
+        max-height: calc(100dvh - (64px + env(safe-area-inset-top, 0px)));
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        background: rgba(11, 19, 30, 0.96);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border-bottom: 1px solid var(--card-border);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65);
+        display: flex;
         flex-direction: column;
         align-items: stretch;
-        padding: var(--sp-2) var(--sp-3) var(--sp-3);
-        gap: var(--sp-1);
-        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
-        display: none;
-        transform: translateY(-8px);
+        padding: var(--sp-2) var(--sp-3) calc(var(--sp-4) + env(safe-area-inset-bottom, 0px));
+        gap: 0;
+        z-index: 950;
+        visibility: hidden;
+        transform: translateY(-14px);
         opacity: 0;
-        transition: transform 0.2s ease, opacity 0.2s ease;
+        pointer-events: none;
+        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s ease, visibility 0.28s;
+        list-style: none;
       }
 
       .nav-menu.open {
-        display: flex;
+        visibility: visible;
         transform: translateY(0);
         opacity: 1;
+        pointer-events: auto;
+      }
+
+      .nav-menu li {
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        list-style: none;
+      }
+      .nav-menu li:last-child {
+        border-bottom: none;
       }
 
       .nav-link {
-        padding: 12px 16px;
-        border-radius: 10px;
-        background: var(--card-bg);
-        border: 1px solid var(--card-border);
-        font-size: 15px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 48px;
+        padding: 14px 16px;
+        border-radius: 8px;
+        background: transparent;
+        border: none;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text);
         justify-content: flex-start;
+        text-decoration: none;
+        transition: color 0.15s ease, background-color 0.15s ease, padding-left 0.15s ease;
+        -webkit-tap-highlight-color: transparent;
       }
-      .nav-link:hover {
-        background: var(--card-hover);
+      .nav-link:hover,
+      .nav-link:focus-visible {
+        background: rgba(2, 195, 154, 0.1);
         color: var(--accent);
+        padding-left: 20px;
+        outline: none;
+      }
+      .nav-link:active {
+        background: rgba(2, 195, 154, 0.18);
       }
     }
 
@@ -1303,6 +1405,16 @@
       }
     }
 
+    @media (max-width: 480px) {
+      .nav-container {
+        padding: 0 var(--sp-2);
+      }
+      .nav-brand {
+        font-size: 16px;
+        gap: 6px;
+      }
+    }
+
     @media (max-width: 380px) {
       .container {
         padding: var(--sp-2) 10px var(--sp-5);
@@ -1340,16 +1452,16 @@
       </a>
 
       <!-- Mobile Hamburger Toggle Button -->
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
+      <button class="nav-toggle" id="navToggle" aria-label="Open Navigation Menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span class="hamburger-box" aria-hidden="true">
+          <span class="hamburger-line line-1"></span>
+          <span class="hamburger-line line-2"></span>
+          <span class="hamburger-line line-3"></span>
+        </span>
       </button>
 
       <!-- Navigation Links -->
-      <ul class="nav-menu" id="navMenu">
+      <ul class="nav-menu" id="mobile-nav">
         <li><a href="#learning-materials" class="nav-link">📚 Concepts</a></li>
         <li><a href="#visualizers" class="nav-link">📝 Drills &amp; Tools</a></li>
         <li><a href="#mocks" class="nav-link">🎯 Timed Tests</a></li>
@@ -1357,6 +1469,9 @@
       </ul>
     </nav>
   </header>
+
+  <!-- Navigation Backdrop Overlay (for Mobile Menu) -->
+  <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 
   <!-- Main Landmark -->
   <main id="main-content" class="container">
@@ -1992,7 +2107,8 @@
     (function () {
       // --- Accessible Mobile Drawer Navigation ---
       const navToggle = document.getElementById('navToggle');
-      const navMenu = document.getElementById('navMenu');
+      const navMenu = document.getElementById('mobile-nav') || document.getElementById('navMenu');
+      const navBackdrop = document.getElementById('navBackdrop');
 
       function toggleMenu(forceClose) {
         if (!navMenu || !navToggle) return;
@@ -2001,10 +2117,20 @@
 
         if (shouldOpen) {
           navMenu.classList.add('open');
+          navToggle.classList.add('active');
           navToggle.setAttribute('aria-expanded', 'true');
+          navToggle.setAttribute('aria-label', 'Close Navigation Menu');
+          if (navBackdrop) navBackdrop.classList.add('active');
+          document.body.style.overflow = 'hidden';
         } else {
           navMenu.classList.remove('open');
+          navToggle.classList.remove('active');
           navToggle.setAttribute('aria-expanded', 'false');
+          navToggle.setAttribute('aria-label', 'Open Navigation Menu');
+          if (navBackdrop) navBackdrop.classList.remove('active');
+          if (!document.querySelector('.modal-overlay.active')) {
+            document.body.style.overflow = '';
+          }
         }
       }
 
@@ -2014,16 +2140,41 @@
           toggleMenu();
         });
 
-        // Close drawer when any nav link is tapped
+        // Close drawer when any nav link is tapped & smooth-scroll to anchor
         navMenu.querySelectorAll('.nav-link').forEach(function (link) {
-          link.addEventListener('click', function () {
+          link.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
             toggleMenu(true);
+            if (href && href.startsWith('#')) {
+              const target = document.querySelector(href);
+              if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+                if (history.pushState) {
+                  history.pushState(null, '', href);
+                }
+              }
+            }
           });
         });
 
+        // Close drawer on tap on backdrop overlay
+        if (navBackdrop) {
+          navBackdrop.addEventListener('click', function () {
+            toggleMenu(true);
+          });
+        }
+
         // Close drawer on tap outside
         document.addEventListener('click', function (e) {
-          if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
+          if (navMenu.classList.contains('open') && !navMenu.contains(e.target) && !navToggle.contains(e.target)) {
+            toggleMenu(true);
+          }
+        }, { passive: true });
+
+        // Reset scroll lock and close menu if viewport resized to desktop
+        window.addEventListener('resize', function () {
+          if (window.innerWidth > 768 && navMenu.classList.contains('open')) {
             toggleMenu(true);
           }
         }, { passive: true });

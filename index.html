@@ -8,7 +8,7 @@
   <!-- Standard SEO Metadata -->
   <meta name="description" content="Free quantitative aptitude portal with high-yield study notes, interactive HCF/LCM visualizers, speed drills, and 50-question timed mocks for placement exams.">
   <meta name="keywords" content="quantitative aptitude, number system, prime factorisation, HCF and LCM, placement preparation, CAT quant, banking aptitude, speed math, mock test">
-  <meta name="author" content="Quantitative Aptitude Assessment Portal">
+  <meta name="author" content="Quantitative Aptitude Assessment Suite">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0b131e">
 
@@ -94,27 +94,26 @@
 
   <style>
     /* ==========================================================================
-       CSS Variables & Design Tokens (8px Rhythm Scale)
+       CSS Variables & Design Tokens (WCAG 2.1 AA Compliant Contrast)
        ========================================================================== */
     :root {
       --bg: #0b131e;
       --card-bg: #142030;
       --card-border: #22344a;
-      --card-hover: #1b2c42;
-      --primary: #028090;
-      --primary-light: #00a896;
-      --accent: #02c39a;
-      --gold: #f2c94c;
-      --coral: #ff7b72;
-      --text: #f0f7f7;
-      --text-muted: #8ca3b8;
+      --card-hover: #1a2c42;
+      --primary: #016f7d;         /* Luminance ~0.128, Contrast against #fff = 5.90:1 (Passes AA) */
+      --primary-light: #028090;
+      --accent: #02c39a;          /* Luminance ~0.46, Contrast against #0b131e = 9.2:1 (Passes AAA) */
+      --gold: #f2c94c;            /* Contrast against #142030 = 10.4:1 (Passes AAA) */
+      --coral: #ff7b72;           /* Contrast against #142030 = 5.8:1 (Passes AA) */
+      --text: #f0f7f7;            /* Contrast against #0b131e = 14.5:1 (Passes AAA) */
+      --text-muted: #94acc0;      /* Contrast against #0b131e = 8.0:1, against #142030 = 7.1:1 (Passes AAA) */
       --tag-bg: #1a293d;
       --modal-bg: #111a26;
       --shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
       --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.25);
-      --font-main: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-      --font-serif: "Georgia", serif;
-      --font-mono: "Consolas", "Courier New", monospace;
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 
       /* 8px Spacing Scale */
       --sp-1: 8px;
@@ -147,6 +146,14 @@
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Universal Keyboard Accessibility Focus Ring */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
     /* Accessibility Skip Link */
@@ -168,7 +175,6 @@
     }
     .skip-link:focus {
       top: var(--sp-2);
-      outline: 3px solid #ffffff;
     }
 
     /* ==========================================================================
@@ -179,18 +185,18 @@
       top: 0;
       z-index: 900;
       width: 100%;
-      background: rgba(11, 19, 30, 0.88);
+      height: 64px;
+      background: rgba(11, 19, 30, 0.9);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--card-border);
-      transition: background-color 0.2s ease;
     }
 
     .nav-container {
       max-width: 1140px;
       margin: 0 auto;
       padding: 0 var(--sp-3);
-      height: 64px;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -208,6 +214,7 @@
       letter-spacing: -0.2px;
       min-height: 44px;
       min-width: 44px;
+      border-radius: 8px;
       transition: opacity 0.2s ease;
     }
     .nav-brand:hover {
@@ -269,11 +276,10 @@
     .nav-toggle:focus-visible {
       background: var(--card-hover);
       border-color: var(--primary-light);
-      outline: none;
     }
 
     /* ==========================================================================
-       Main Container & Automated Card Counter
+       Main Landmark & Section Hierarchy
        ========================================================================== */
     .container {
       max-width: 1140px;
@@ -286,6 +292,7 @@
     .portal-section {
       scroll-margin-top: 84px;
       margin-bottom: var(--sp-8);
+      contain-intrinsic-size: 1px 320px;
     }
 
     /* Hero Header */
@@ -311,6 +318,7 @@
       letter-spacing: 1px;
       text-transform: uppercase;
       padding: 6px 14px;
+      min-height: 28px;
       border-radius: 999px;
       margin-bottom: var(--sp-2);
       border: 1px solid rgba(2, 195, 154, 0.35);
@@ -335,7 +343,7 @@
     }
 
     /* ==========================================================================
-       Discovery Bar: Live Search & Category Filter Pills
+       Discovery Bar: Search & Category Filter Pills
        ========================================================================== */
     .discovery-section {
       margin-bottom: var(--sp-7);
@@ -361,6 +369,8 @@
     .search-icon {
       position: absolute;
       left: 14px;
+      width: 20px;
+      height: 20px;
       color: var(--text-muted);
       pointer-events: none;
       display: flex;
@@ -371,6 +381,7 @@
     .search-input {
       width: 100%;
       height: 48px;
+      min-height: 48px;
       background: #0d1520;
       border: 1px solid var(--card-border);
       border-radius: 12px;
@@ -447,14 +458,13 @@
       color: #ffffff;
       border-color: var(--primary-light);
       background: var(--card-hover);
-      outline: none;
     }
 
     .filter-pill.active {
       background: var(--primary);
       color: #ffffff;
       border-color: var(--primary-light);
-      box-shadow: 0 2px 10px rgba(2, 128, 144, 0.35);
+      box-shadow: 0 2px 10px rgba(1, 111, 125, 0.35);
     }
 
     .discovery-meta {
@@ -464,6 +474,7 @@
       font-size: 13px;
       color: var(--text-muted);
       padding: 2px 4px 0;
+      min-height: 20px;
     }
 
     .results-count {
@@ -492,7 +503,7 @@
     }
 
     /* ==========================================================================
-       Scalable Card Grid & Automated Sequential Numbering
+       Scalable Card Grid & Automated Numbering (Per Section)
        ========================================================================== */
     .section-title {
       display: flex;
@@ -537,7 +548,7 @@
     .portal-card {
       counter-increment: card-count;
       content-visibility: auto;
-      contain-intrinsic-size: 340px;
+      contain-intrinsic-size: 1px 320px;
       background-color: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 18px;
@@ -703,7 +714,6 @@
     .btn-primary:focus-visible {
       background: var(--primary-light);
       color: #ffffff;
-      outline: none;
     }
 
     .btn-secondary {
@@ -716,7 +726,6 @@
     .btn-secondary:focus-visible {
       background: var(--card-hover);
       border-color: var(--primary-light);
-      outline: none;
     }
 
     /* Quick Formulas / Cheat Sheet Section */
@@ -748,7 +757,6 @@
       border-color: var(--accent);
       background: var(--card-hover);
       transform: translateY(-2px);
-      outline: none;
     }
 
     .cheat-card:hover .card-num-badge {
@@ -765,6 +773,7 @@
 
     .cheat-card-icon {
       font-size: 22px;
+      line-height: 1;
     }
 
     .cheat-card-title {
@@ -857,7 +866,6 @@
       color: #ffffff;
       background: rgba(255, 255, 255, 0.08);
       border-color: var(--card-border);
-      outline: none;
     }
 
     .modal-body {
@@ -868,7 +876,7 @@
       color: #d1dbe5;
     }
 
-    .modal-body h4 {
+    .modal-body h3 {
       color: var(--accent);
       font-size: 16px;
       margin: var(--sp-3) 0 var(--sp-1);
@@ -877,7 +885,7 @@
       gap: 6px;
     }
 
-    .modal-body h4:first-child {
+    .modal-body h3:first-child {
       margin-top: 0;
     }
 
@@ -944,7 +952,7 @@
       margin-bottom: var(--sp-6);
     }
 
-    .footer-col h4 {
+    .footer-col h3 {
       color: #ffffff;
       font-size: 15px;
       font-weight: 700;
@@ -964,7 +972,7 @@
       line-height: 1;
     }
 
-    .footer-brand h3 {
+    .footer-brand .footer-brand-title {
       font-size: 18px;
       font-weight: 800;
       color: #ffffff;
@@ -1078,7 +1086,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      color: #71879c;
+      color: #94acc0;
       font-size: 12.5px;
     }
 
@@ -1118,9 +1126,8 @@
       background: var(--primary);
       color: #ffffff;
       border-color: var(--primary-light);
-      box-shadow: 0 8px 24px rgba(2, 128, 144, 0.5);
+      box-shadow: 0 8px 24px rgba(1, 111, 125, 0.5);
       transform: translateY(-3px) scale(1.05);
-      outline: none;
     }
 
     .floating-back-to-top:active {
@@ -1218,6 +1225,7 @@
 
       .search-input {
         height: 44px;
+        min-height: 44px;
         font-size: 14px;
       }
 
@@ -1329,11 +1337,12 @@
     <nav class="nav-container" id="navbar" aria-label="Main Navigation">
       <a href="#top" class="nav-brand">
         <span>🎯 Aptitude Portal</span>
+        <span class="nav-brand-badge">Suite</span>
       </a>
 
       <!-- Mobile Hamburger Toggle Button -->
       <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <line x1="3" y1="6" x2="21" y2="6"></line>
           <line x1="3" y1="12" x2="21" y2="12"></line>
           <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -1350,10 +1359,10 @@
     </nav>
   </header>
 
-  <!-- Main Landmark with Global Card Numbering Counter -->
+  <!-- Main Landmark -->
   <main id="main-content" class="container">
 
-    <!-- Hero Header -->
+    <!-- Hero Header with Single H1 -->
     <header class="hero" id="top">
       <span class="hero-badge">🎯 Quantitative Aptitude Prep</span>
       <h1>Master Number Systems, Factors &amp; HCF-LCM</h1>
@@ -1365,7 +1374,7 @@
       <div class="discovery-bar">
         <div class="search-wrap">
           <span class="search-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
@@ -1404,11 +1413,11 @@
     </div>
 
     <!-- SECTION 1: LEARNING MATERIALS -->
-    <section id="learning-materials" class="portal-section" data-section-name="concepts">
+    <section id="learning-materials" class="portal-section" aria-labelledby="heading-learning-materials">
       <div class="section-title">
         <div class="title-left">
-          <span>📚</span>
-          <h2>Learning Materials</h2>
+          <span aria-hidden="true">📚</span>
+          <h2 id="heading-learning-materials">Learning Materials</h2>
         </div>
         <span class="section-hint">High-Yield Concept Notes &amp; Formulas</span>
       </div>
@@ -1419,8 +1428,8 @@
           <div class="card-top">
             <div class="card-header-bar">
               <div class="card-badge-group">
-                <span class="card-num-badge" aria-label="Card index"></span>
-                <span class="card-icon">🔢</span>
+                <span class="card-num-badge" aria-hidden="true"></span>
+                <span class="card-icon" aria-hidden="true">🔢</span>
               </div>
               <span class="card-tag">Concept Notes</span>
             </div>
@@ -1442,8 +1451,8 @@
           <div class="card-top">
             <div class="card-header-bar">
               <div class="card-badge-group">
-                <span class="card-num-badge" aria-label="Card index"></span>
-                <span class="card-icon">🔢</span>
+                <span class="card-num-badge" aria-hidden="true"></span>
+                <span class="card-icon" aria-hidden="true">🔢</span>
               </div>
               <span class="card-tag">Concept Notes</span>
             </div>
@@ -1465,8 +1474,8 @@
           <div class="card-top">
             <div class="card-header-bar">
               <div class="card-badge-group">
-                <span class="card-num-badge" aria-label="Card index"></span>
-                <span class="card-icon">➗</span>
+                <span class="card-num-badge" aria-hidden="true"></span>
+                <span class="card-icon" aria-hidden="true">➗</span>
               </div>
               <span class="card-tag">Concept Notes</span>
             </div>
@@ -1483,13 +1492,13 @@
           </div>
         </div>
 
-        <!-- Card: Factors -->
+        <!-- Card: Factors & Divisors -->
         <div class="portal-card" data-category="factors" data-title="Factors & Divisors" data-keywords="factors divisors total number of factors formula odd even perfect square factor pairs">
           <div class="card-top">
             <div class="card-header-bar">
               <div class="card-badge-group">
-                <span class="card-num-badge" aria-label="Card index"></span>
-                <span class="card-icon">🧮</span>
+                <span class="card-num-badge" aria-hidden="true"></span>
+                <span class="card-icon" aria-hidden="true">🧮</span>
               </div>
               <span class="card-tag">Concept Notes</span>
             </div>
@@ -1510,11 +1519,11 @@
     </section>
 
     <!-- SECTION 2: PRACTICE & VISUALIZERS -->
-    <section id="visualizers" class="portal-section" data-section-name="tools">
+    <section id="visualizers" class="portal-section" aria-labelledby="heading-visualizers">
       <div class="section-title">
         <div class="title-left">
-          <span>📝</span>
-          <h2>Practice &amp; Visualizers</h2>
+          <span aria-hidden="true">📝</span>
+          <h2 id="heading-visualizers">Practice &amp; Visualizers</h2>
         </div>
         <span class="section-hint">Speed Drills &amp; Interactive Tools</span>
       </div>
@@ -1525,8 +1534,8 @@
           <div class="card-top">
             <div class="card-header-bar">
               <div class="card-badge-group">
-                <span class="card-num-badge" aria-label="Card index"></span>
-                <span class="card-icon">⚡</span>
+                <span class="card-num-badge" aria-hidden="true"></span>
+                <span class="card-icon" aria-hidden="true">⚡</span>
               </div>
               <span class="card-tag">50 Questions • Speed Drill</span>
             </div>
@@ -1548,8 +1557,8 @@
           <div class="card-top">
             <div class="card-header-bar">
               <div class="card-badge-group">
-                <span class="card-num-badge" aria-label="Card index"></span>
-                <span class="card-icon">➗</span>
+                <span class="card-num-badge" aria-hidden="true"></span>
+                <span class="card-icon" aria-hidden="true">➗</span>
               </div>
               <span class="card-tag">Interactive Explorers</span>
             </div>
@@ -1571,11 +1580,11 @@
     </section>
 
     <!-- SECTION 3: TIMED SECTIONAL TESTS -->
-    <section id="mocks" class="portal-section" data-section-name="mocks">
+    <section id="mocks" class="portal-section" aria-labelledby="heading-mocks">
       <div class="section-title">
         <div class="title-left">
-          <span>🎯</span>
-          <h2>Timed Sectional Tests</h2>
+          <span aria-hidden="true">🎯</span>
+          <h2 id="heading-mocks">Timed Sectional Tests</h2>
         </div>
         <span class="section-hint">20-Min Exam-Calibrated Mocks</span>
       </div>
@@ -1586,8 +1595,8 @@
           <div class="card-top">
             <div class="card-header-bar">
               <div class="card-badge-group">
-                <span class="card-num-badge" aria-label="Card index"></span>
-                <span class="card-icon">⏱️</span>
+                <span class="card-num-badge" aria-hidden="true"></span>
+                <span class="card-icon" aria-hidden="true">⏱️</span>
               </div>
               <span class="card-tag gold">20-Min Mock • 50 Qs</span>
             </div>
@@ -1609,8 +1618,8 @@
           <div class="card-top">
             <div class="card-header-bar">
               <div class="card-badge-group">
-                <span class="card-num-badge" aria-label="Card index"></span>
-                <span class="card-icon">🏆</span>
+                <span class="card-num-badge" aria-hidden="true"></span>
+                <span class="card-icon" aria-hidden="true">🏆</span>
               </div>
               <span class="card-tag coral">20-Min Mock • 50 Qs</span>
             </div>
@@ -1632,8 +1641,8 @@
           <div class="card-top">
             <div class="card-header-bar">
               <div class="card-badge-group">
-                <span class="card-num-badge" aria-label="Card index"></span>
-                <span class="card-icon">🏃</span>
+                <span class="card-num-badge" aria-hidden="true"></span>
+                <span class="card-icon" aria-hidden="true">🏃</span>
               </div>
               <span class="card-tag gold">20-Min Mock • 50 Qs</span>
             </div>
@@ -1655,8 +1664,8 @@
           <div class="card-top">
             <div class="card-header-bar">
               <div class="card-badge-group">
-                <span class="card-num-badge" aria-label="Card index"></span>
-                <span class="card-icon">🎯</span>
+                <span class="card-num-badge" aria-hidden="true"></span>
+                <span class="card-icon" aria-hidden="true">🎯</span>
               </div>
               <span class="card-tag coral">20-Min Mock • 50 Qs</span>
             </div>
@@ -1677,49 +1686,49 @@
     </section>
 
     <!-- SECTION 4: QUICK FORMULAS & CHEAT SHEETS -->
-    <section id="cheat-sheets" class="portal-section" data-section-name="formulas">
+    <section id="cheat-sheets" class="portal-section" aria-labelledby="heading-cheat-sheets">
       <div class="section-title">
         <div class="title-left">
-          <span>📖</span>
-          <h2>Quick Formulas &amp; Cheat Sheets</h2>
+          <span aria-hidden="true">📖</span>
+          <h2 id="heading-cheat-sheets">Quick Formulas &amp; Cheat Sheets</h2>
         </div>
         <span class="section-hint">1-Click Concept Reference Cards</span>
       </div>
       <div class="cheat-sheets-grid">
         <div class="cheat-card" onclick="openModal('modal-number-system')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){openModal('modal-number-system');event.preventDefault();}">
           <div class="cheat-card-left">
-            <span class="card-num-badge" aria-label="Card index"></span>
-            <span class="cheat-card-icon">🔢</span>
+            <span class="card-num-badge" aria-hidden="true"></span>
+            <span class="cheat-card-icon" aria-hidden="true">🔢</span>
             <span class="cheat-card-title">Number System &amp; Divisibility</span>
           </div>
-          <span class="cheat-card-arrow">→</span>
+          <span class="cheat-card-arrow" aria-hidden="true">→</span>
         </div>
 
         <div class="cheat-card" onclick="openModal('modal-pf')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){openModal('modal-pf');event.preventDefault();}">
           <div class="cheat-card-left">
-            <span class="card-num-badge" aria-label="Card index"></span>
-            <span class="cheat-card-icon">🔢</span>
+            <span class="card-num-badge" aria-hidden="true"></span>
+            <span class="cheat-card-icon" aria-hidden="true">🔢</span>
             <span class="cheat-card-title">Prime Powers &amp; Trailing Zeroes</span>
           </div>
-          <span class="cheat-card-arrow">→</span>
+          <span class="cheat-card-arrow" aria-hidden="true">→</span>
         </div>
 
         <div class="cheat-card" onclick="openModal('modal-hcf-lcm')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){openModal('modal-hcf-lcm');event.preventDefault();}">
           <div class="cheat-card-left">
-            <span class="card-num-badge" aria-label="Card index"></span>
-            <span class="cheat-card-icon">➗</span>
+            <span class="card-num-badge" aria-hidden="true"></span>
+            <span class="cheat-card-icon" aria-hidden="true">➗</span>
             <span class="cheat-card-title">HCF, LCM &amp; Fractions</span>
           </div>
-          <span class="cheat-card-arrow">→</span>
+          <span class="cheat-card-arrow" aria-hidden="true">→</span>
         </div>
 
         <div class="cheat-card" onclick="openModal('modal-factors')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){openModal('modal-factors');event.preventDefault();}">
           <div class="cheat-card-left">
-            <span class="card-num-badge" aria-label="Card index"></span>
-            <span class="cheat-card-icon">🧮</span>
+            <span class="card-num-badge" aria-hidden="true"></span>
+            <span class="cheat-card-icon" aria-hidden="true">🧮</span>
             <span class="cheat-card-title">Factors &amp; Square Rule</span>
           </div>
-          <span class="cheat-card-arrow">→</span>
+          <span class="cheat-card-arrow" aria-hidden="true">→</span>
         </div>
       </div>
     </section>
@@ -1734,11 +1743,11 @@
   <div class="modal-overlay" id="modal-number-system" onclick="handleBackdropClick(event, 'modal-number-system')">
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-ns-title">
       <div class="modal-header">
-        <h2 id="modal-ns-title"><span>🔢</span> Number System — Aptitude Cheat Sheet</h2>
+        <h2 id="modal-ns-title"><span aria-hidden="true">🔢</span> Number System — Aptitude Cheat Sheet</h2>
         <button class="modal-close" onclick="closeModal('modal-number-system')" aria-label="Close modal">&times;</button>
       </div>
       <div class="modal-body">
-        <h4>1. Number Classifications</h4>
+        <h3>1. Number Classifications</h3>
         <ul>
           <li><strong>Natural Numbers (&naturals;):</strong> Counting numbers <code>{1, 2, 3, 4, ...}</code>.</li>
           <li><strong>Whole Numbers (&integers;<sub>0</sub>):</strong> <code>{0, 1, 2, 3, ...}</code>. Note: 0 is whole, but NOT natural.</li>
@@ -1747,7 +1756,7 @@
           <li><strong>Irrational Numbers:</strong> Non-terminating, non-repeating decimals (e.g. <code>&radic;2, &radic;3, &pi;</code>). Note: <code>&radic;9 = 3</code> and <code>22/7</code> are rational.</li>
         </ul>
 
-        <h4>2. Fast Divisibility Tests (Aptitude Shortcuts)</h4>
+        <h3>2. Fast Divisibility Tests (Aptitude Shortcuts)</h3>
         <ul>
           <li><strong>Divisibility by 2:</strong> Last digit is even <code>{0, 2, 4, 6, 8}</code>.</li>
           <li><strong>Divisibility by 3:</strong> Sum of digits is divisible by 3.</li>
@@ -1759,7 +1768,7 @@
           <li><strong>Divisibility by 11:</strong> Difference between (Sum of digits at odd places) and (Sum of digits at even places) is 0 or a multiple of 11.</li>
         </ul>
 
-        <h4>3. Recurring Decimals to Fractions Trick</h4>
+        <h3>3. Recurring Decimals to Fractions Trick</h3>
         <div class="formula-box">
           Pure recurring: 0.aaaa... = a / 9<br>
           Two digits: 0.abab... = ab / 99<br>
@@ -1777,30 +1786,30 @@
   <div class="modal-overlay" id="modal-pf" onclick="handleBackdropClick(event, 'modal-pf')">
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-pf-title">
       <div class="modal-header">
-        <h2 id="modal-pf-title"><span>🔢</span> Prime Factorisation — Aptitude Cheat Sheet</h2>
+        <h2 id="modal-pf-title"><span aria-hidden="true">🔢</span> Prime Factorisation — Aptitude Cheat Sheet</h2>
         <button class="modal-close" onclick="closeModal('modal-pf')" aria-label="Close modal">&times;</button>
       </div>
       <div class="modal-body">
-        <h4>1. Fundamental Theorem of Arithmetic</h4>
+        <h3>1. Fundamental Theorem of Arithmetic</h3>
         <p>Every composite number can be uniquely factored into a product of prime powers:</p>
         <div class="formula-box">
           N = p<sub>1</sub><sup>a<sub>1</sub></sup> &times; p<sub>2</sub><sup>a<sub>2</sub></sup> &times; ... &times; p<sub>k</sub><sup>a<sub>k</sub></sup>
         </div>
 
-        <h4>2. Coprime Numbers (Relatively Prime)</h4>
+        <h3>2. Coprime Numbers (Relatively Prime)</h3>
         <ul>
           <li>Two integers <code>a</code> and <code>b</code> are <strong>coprime</strong> if their <code>HCF(a, b) = 1</code>.</li>
           <li>They do not need to be prime individually (e.g., 8 and 9 are both composite, but coprime).</li>
           <li>Any two consecutive integers <code>n</code> and <code>n + 1</code> are <strong>always coprime</strong>.</li>
         </ul>
 
-        <h4>3. Counting Trailing Zeroes Shortcut</h4>
+        <h3>3. Counting Trailing Zeroes Shortcut</h3>
         <div class="note-box">
           A trailing zero is produced by a factor of <code>10 = 2 &times; 5</code>.<br>
           In any product or factorial, the number of trailing zeroes equals <strong>min(power of 2, power of 5)</strong>. Since 2s are typically more abundant, count the power of 5.
         </div>
 
-        <h4>4. Standard Prime Factorisations to Memorize</h4>
+        <h3>4. Standard Prime Factorisations to Memorize</h3>
         <ul>
           <li><code>60 = 2&sup2; &times; 3 &times; 5</code></li>
           <li><code>100 = 2&sup2; &times; 5&sup2;</code></li>
@@ -1816,31 +1825,31 @@
   <div class="modal-overlay" id="modal-hcf-lcm" onclick="handleBackdropClick(event, 'modal-hcf-lcm')">
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-hl-title">
       <div class="modal-header">
-        <h2 id="modal-hl-title"><span>➗</span> HCF &amp; LCM — Aptitude Cheat Sheet</h2>
+        <h2 id="modal-hl-title"><span aria-hidden="true">➗</span> HCF &amp; LCM — Aptitude Cheat Sheet</h2>
         <button class="modal-close" onclick="closeModal('modal-hcf-lcm')" aria-label="Close modal">&times;</button>
       </div>
       <div class="modal-body">
-        <h4>1. Definitions &amp; Prime Power Rules</h4>
+        <h3>1. Definitions &amp; Prime Power Rules</h3>
         <ul>
           <li><strong>HCF (Highest Common Factor):</strong> Product of <em>common</em> prime factors with their <em>lowest</em> exponents.</li>
           <li><strong>LCM (Lowest Common Multiple):</strong> Product of <em>all</em> prime factors with their <em>highest</em> exponents.</li>
         </ul>
 
-        <h4>2. Two-Number Product Property</h4>
+        <h3>2. Two-Number Product Property</h3>
         <div class="formula-box">
           Product of two numbers = HCF &times; LCM<br>
           A &times; B = HCF(A, B) &times; LCM(A, B)
         </div>
         <p><em>Warning:</em> This product identity is valid strictly for <strong>two</strong> numbers. It does NOT hold for three or more numbers.</p>
 
-        <h4>3. HCF &amp; LCM of Fractions</h4>
+        <h3>3. HCF &amp; LCM of Fractions</h3>
         <div class="formula-box">
           HCF(a/b, c/d) = HCF(a, c) / LCM(b, d)<br>
           LCM(a/b, c/d) = LCM(a, c) / HCF(b, d)
         </div>
         <p><em>Note:</em> Ensure fractions are reduced to lowest terms before applying the formula.</p>
 
-        <h4>4. Classic Aptitude Application Models</h4>
+        <h3>4. Classic Aptitude Application Models</h3>
         <ul>
           <li><strong>Simultaneous Bells / Traffic Lights / Circular Tracks:</strong> When will events coincide next? &rarr; <code>Time = LCM(individual cycle times)</code>.</li>
           <li><strong>Equal Distribution / Largest Size:</strong> Maximum capacity of measuring vessel or greatest number of identical packs with no remainder &rarr; <code>HCF(quantities)</code>.</li>
@@ -1857,29 +1866,29 @@
   <div class="modal-overlay" id="modal-factors" onclick="handleBackdropClick(event, 'modal-factors')">
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-fac-title">
       <div class="modal-header">
-        <h2 id="modal-fac-title"><span>🧮</span> Factors &amp; Multiples — Aptitude Cheat Sheet</h2>
+        <h2 id="modal-fac-title"><span aria-hidden="true">🧮</span> Factors &amp; Multiples — Aptitude Cheat Sheet</h2>
         <button class="modal-close" onclick="closeModal('modal-factors')" aria-label="Close modal">&times;</button>
       </div>
       <div class="modal-body">
-        <h4>1. Total Number of Factors Formula</h4>
+        <h3>1. Total Number of Factors Formula</h3>
         <p>If the prime factorisation of <code>N = p<sup>a</sup> &times; q<sup>b</sup> &times; r<sup>c</sup></code>, then:</p>
         <div class="formula-box">
           Total Factors T(N) = (a + 1)(b + 1)(c + 1)
         </div>
         <p><em>Example:</em> 72 = 2<sup>3</sup> &times; 3<sup>2</sup> &rarr; Factors = (3 + 1)(2 + 1) = 4 &times; 3 = <strong>12 factors</strong>.</p>
 
-        <h4>2. Odd and Even Factors</h4>
+        <h3>2. Odd and Even Factors</h3>
         <ul>
           <li><strong>Odd Factors:</strong> Ignore the power of 2: <code>(b + 1)(c + 1)</code>. For 72: (2 + 1) = 3 odd factors (1, 3, 9).</li>
           <li><strong>Even Factors:</strong> <code>a &times; (b + 1)(c + 1)</code>. For 72: 3 &times; 3 = 9 even factors.</li>
         </ul>
 
-        <h4>3. Perfect Square Rule</h4>
+        <h3>3. Perfect Square Rule</h3>
         <div class="note-box">
           <strong>Crucial Aptitude Rule:</strong> A number has an <strong>odd number of factors</strong> if and only if it is a <strong>perfect square</strong> (e.g., 36 has 9 factors; 25 has 3 factors). All non-square numbers have an even number of factors.
         </div>
 
-        <h4>4. Pairs of Factors</h4>
+        <h3>4. Pairs of Factors</h3>
         <p>The number of ways to write <code>N</code> as a product of two factors:</p>
         <div class="formula-box">
           For non-squares: T(N) / 2<br>
@@ -1899,8 +1908,8 @@
         <!-- Column 1: Brand & Status -->
         <div class="footer-col brand-col">
           <div class="footer-brand">
-            <span class="footer-logo">🎯</span>
-            <h3>Aptitude Portal</h3>
+            <span class="footer-logo" aria-hidden="true">🎯</span>
+            <span class="footer-brand-title">Aptitude Portal Suite</span>
           </div>
           <p class="footer-desc">
             Engineered for high-yield speed and recall across Quantitative Aptitude assessments, Campus Placements, CAT, GATE, Banking, SSC &amp; CSAT exams.
@@ -1918,7 +1927,7 @@
 
         <!-- Column 2: Curriculum Concept Notes -->
         <div class="footer-col">
-          <h4>📚 Curriculum Notes</h4>
+          <h3>📚 Curriculum Notes</h3>
           <ul class="footer-links">
             <li><button type="button" onclick="openModal('modal-number-system')">Number System &amp; Divisibility</button></li>
             <li><button type="button" onclick="openModal('modal-pf')">Prime Factorisation &amp; Primes</button></li>
@@ -1930,7 +1939,7 @@
 
         <!-- Column 3: Sectional Tests & Tools -->
         <div class="footer-col">
-          <h4>🎯 Tests &amp; Visualizers</h4>
+          <h3>🎯 Tests &amp; Visualizers</h3>
           <ul class="footer-links">
             <li><a href="Number_System_Practice-2.html">Number System 50Q Mock</a></li>
             <li><a href="Prime_Factorisation_HCF_LCM_50_Question_Quiz.html">HCF &amp; LCM 50Q Assessment</a></li>
@@ -1944,7 +1953,7 @@
 
         <!-- Column 4: Exam Frameworks -->
         <div class="footer-col">
-          <h4>🏆 Exam Frameworks</h4>
+          <h3>🏆 Exam Frameworks</h3>
           <ul class="footer-links">
             <li><span>Campus Placements (TCS, Infosys, CTS)</span></li>
             <li><span>CAT, XAT &amp; Management Entrances</span></li>
@@ -1959,10 +1968,10 @@
 
       <!-- Sub-Footer / Bottom Bar -->
       <div class="footer-bottom">
-        <p>© 2026 Quantitative Aptitude Portal. Free &amp; Open Educational Resource for Placements &amp; Competitive Exams.</p>
+        <p>© 2026 Quantitative Aptitude Portal Suite. Free &amp; Open Educational Resource for Placements &amp; Competitive Exams.</p>
         <div class="footer-bottom-meta">
           <span>Client-Side Architecture</span>
-          <span>•</span>
+          <span aria-hidden="true">•</span>
           <span>Zero Dependencies</span>
         </div>
       </div>
@@ -2018,10 +2027,10 @@
           if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
             toggleMenu(true);
           }
-        });
+        }, { passive: true });
       }
 
-      // --- Client-side Live Search & Category Filtering ---
+      // --- Client-side Live Search & Category Filtering (rAF Optimized) ---
       const searchInput = document.getElementById('catalogSearch');
       const clearSearchBtn = document.getElementById('clearSearch');
       const filterPills = document.querySelectorAll('.filter-pill');
@@ -2033,6 +2042,7 @@
 
       let currentCategory = 'all';
       let currentQuery = '';
+      let filterRafId = null;
 
       function applyFilters() {
         let visibleCount = 0;
@@ -2092,6 +2102,11 @@
         }
       }
 
+      function scheduleFilter() {
+        if (filterRafId) cancelAnimationFrame(filterRafId);
+        filterRafId = requestAnimationFrame(applyFilters);
+      }
+
       if (searchInput) {
         searchInput.addEventListener('input', function () {
           currentQuery = this.value;
@@ -2102,7 +2117,7 @@
               clearSearchBtn.classList.add('hidden');
             }
           }
-          applyFilters();
+          scheduleFilter();
         });
       }
 
@@ -2113,7 +2128,7 @@
             currentQuery = '';
             this.classList.add('hidden');
             searchInput.focus();
-            applyFilters();
+            scheduleFilter();
           }
         });
       }
@@ -2127,7 +2142,7 @@
           this.classList.add('active');
           this.setAttribute('aria-selected', 'true');
           currentCategory = this.getAttribute('data-filter') || 'all';
-          applyFilters();
+          scheduleFilter();
         });
       });
 
@@ -2145,7 +2160,7 @@
             p.setAttribute('aria-selected', 'false');
           }
         });
-        applyFilters();
+        scheduleFilter();
       };
 
       // --- Floating Back to Top Button Scroll Interaction ---

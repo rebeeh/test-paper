@@ -24,7 +24,7 @@
   .nav{display:flex;gap:10px;justify-content:space-between;margin-top:15px}
   button{border:0;border-radius:10px;padding:12px 18px;font-size:15px;cursor:pointer}
   .primary{background:#172033;color:#fff}
-  .secondary{background:#e5e7eb;color:#111827}
+  .secondary, .secondary:visited{background:#e5e7eb;color:#111827}
   button:disabled{opacity:.5;cursor:not-allowed}
   #quiz{display:none}
   #startScreen{text-align:center}
@@ -50,11 +50,15 @@
     <p><b>Time Limit: 20 minutes</b></p>
     <p>Choose one answer for each question. If you choose a wrong answer, the explanation will appear immediately.</p>
     <button class="primary" onclick="startQuiz()">Start Quiz</button>
+    <div style="margin-top:14px;"><a href="index.html" style="color:#172033; text-decoration:none; font-weight:bold; font-size:14px;">← Back to Home</a></div>
   </div>
 
   <div id="quiz">
     <div class="topbar">
-      <div id="progress">Question 1 of 50</div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="index.html" style="color:#e9eefc; text-decoration:none; font-size:13px; font-weight:bold;">← Home</a>
+        <div id="progress">Question 1 of 50</div>
+      </div>
       <div id="timer">20:00</div>
     </div>
     <div class="card">
@@ -82,7 +86,10 @@
       <h2>Question Review</h2>
       <div id="reviewList"></div>
     </div>
-    <button class="primary" onclick="location.reload()">Try Again</button>
+    <div style="display:flex; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap;">
+      <button class="primary" onclick="location.reload()" style="min-width:140px;">Try Again</button>
+      <a href="index.html" class="secondary" style="display:inline-flex; align-items:center; justify-content:center; text-decoration:none; border-radius:10px; padding:12px 18px; font-size:15px; font-weight:bold; min-width:140px;">← Home</a>
+    </div>
   </div>
 </div>
 

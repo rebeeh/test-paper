@@ -118,10 +118,29 @@
     width:100%;
   }
   button.primary:hover{ filter:brightness(1.06); }
-  button.secondary{
+  button.secondary, a.secondary, a.secondary:visited{
     font-family:-apple-system,"Segoe UI",Roboto,sans-serif;
     background:transparent; color:var(--ink); border:1px solid var(--line);
     border-radius:8px; padding:11px 20px; font-size:0.9rem; cursor:pointer;
+    text-decoration:none;
+    display:inline-flex; align-items:center; justify-content:center;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    box-sizing:border-box;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  button.secondary:hover, a.secondary:hover{
+    background:var(--track);
+    color:var(--ink);
+    border-color:var(--ink-soft);
+  }
+
+  .home-link, .home-link:visited{
+    color:var(--accent);
+    text-decoration:none;
+  }
+  .home-link:hover{
+    text-decoration:underline;
   }
 
   /* ---------- Quiz header ---------- */
@@ -223,7 +242,10 @@
 <div class="app">
 
   <div class="brand">
-    <h1>Quant Sprint</h1>
+    <div>
+      <a href="index.html" class="home-link" style="font-size:0.85rem; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; font-weight:600; display:inline-block; margin-bottom:4px;">← Back to Home</a>
+      <h1>Quant Sprint</h1>
+    </div>
     <span class="tag">Time & Work · Time, Speed & Distance · Percentage</span>
   </div>
 
@@ -242,6 +264,9 @@
       <div class="stat-box"><div class="num">3</div><div class="lbl">Topics</div></div>
     </div>
     <button class="primary" id="startBtn">Start the test</button>
+    <div style="text-align:center; margin-top:14px;">
+      <a href="index.html" class="home-link" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; font-size:0.88rem; font-weight:600;">← Back to Home</a>
+    </div>
   </div>
 
   <!-- QUIZ SCREEN -->
@@ -285,7 +310,10 @@
       <div id="topicBreakdown"></div>
     </div>
 
-    <button class="secondary" id="restartBtn" style="width:100%; margin-top:6px;">Retake the test</button>
+    <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+      <button class="secondary" id="restartBtn" style="flex:1; min-width:140px;">Retake the test</button>
+      <a href="index.html" class="secondary" style="flex:1; min-width:140px;">← Home</a>
+    </div>
   </div>
 
 </div>

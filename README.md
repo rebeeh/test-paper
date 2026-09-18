@@ -57,6 +57,14 @@ Modal-accessible reference guides loaded with speed-math shortcuts and exam form
   * **Duration**: 20 Minutes • **Questions**: 50 MCQs.
   * **Syllabus**: Prime identification, factor tree end-nodes, prime factorization, HCF/LCM calculations, and real-world aptitude word problems.
   * **Features**: Randomized questions and answer options, question navigation, comprehensive scorecard with explanation review, and print-ready results.
+* **Quant Sprint Mock** ([`quant_quiz.html`](quant_quiz.html)):
+  * **Duration**: 20 Minutes • **Questions**: 50 MCQs.
+  * **Syllabus**: Time & Work (rates, efficiency), Time, Speed & Distance (relative speed, trains), and Percentages.
+  * **Features**: Live timer, immediate explanation on incorrect choices, and topic-wise performance breakdown.
+* **Aptitude Foundations Challenge** ([`aptitude_50_questions_20min.html`](aptitude_50_questions_20min.html)):
+  * **Duration**: 20 Minutes • **Questions**: 50 MCQs.
+  * **Syllabus**: Foundational arithmetic (worker-days, pipes & cisterns, speeds, percentages).
+  * **Features**: Prev/Next question navigation, instant worked solutions, and final review list.
 * **Factors Speed Practice** ([`factors-practice.html`](factors-practice.html)):
   * **Duration**: Self-paced / timed drill • **Questions**: 50 dynamic questions.
   * **Syllabus**: Prime factorisation, LCM, and HCF across 5 progressive difficulty tiers.
@@ -69,8 +77,10 @@ Modal-accessible reference guides loaded with speed-math shortcuts and exam form
 ```text
 test-paper/
 ├── index.html                                        # Aptitude Portal Dashboard (Homepage)
-├── Number_System_Practice-2.html                     # 50-Question Timed Number System Sectional Mock
-├── Prime_Factorisation_HCF_LCM_50_Question_Quiz.html # 50-Question Timed HCF & LCM Sectional Mock
+├── Number_System_Practice-2.html                     # 50-Question Number System Sectional Mock
+├── Prime_Factorisation_HCF_LCM_50_Question_Quiz.html # 50-Question HCF & LCM Sectional Mock
+├── quant_quiz.html                                   # 50-Question Quant Sprint (Work, Speed, %)
+├── aptitude_50_questions_20min.html                  # 50-Question Aptitude Foundations Challenge
 ├── factors-practice.html                             # 5-Tier Generated Factors & Primes Speed Drill
 ├── hcf_lcm_2_number_interactive.html                 # 2-Number Prime Factor & LCM Interactive Tool
 ├── hcf_lcm_3_number_interactive.html                 # 3-Number Prime Factor & LCM Interactive Tool

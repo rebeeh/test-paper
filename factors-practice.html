@@ -193,7 +193,7 @@
 function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ [a,b]=[b, a % b]; } return a; }
 function lcm(a,b){ return (a / gcd(a,b)) * b; }
 function isPrime(n){
-  if(n<2) return true; // treat trivially small as excluded elsewhere
+  if(n<2) return false;
   for(let i=2;i*i<=n;i++){ if(n%i===0) return false; }
   return true;
 }
@@ -390,6 +390,7 @@ function renderStart(){
       </div>
       <div class="field-error" id="fieldError"></div>
       <button class="btn full" id="startBtn">Start practice</button>
+      <div style="text-align:center; margin-top:14px;"><a href="index.html" style="color:var(--gold); text-decoration:none; font-size:0.88rem; font-weight:600;">← Back to Home Portal</a></div>
     </div>
   `;
   document.getElementById('startBtn').onclick = ()=>{
@@ -436,13 +437,13 @@ function handleAnswer(btn, q){
   if(state.answeredCurrent) return;
   state.answeredCurrent = true;
 
-  const chosenText = btn.textContent.trim();
-  const chosenHTML = btn.innerHTML;
-  const isCorrect = chosenHTML === q.answer;
+  const idx = +btn.dataset.i;
+  const chosenOpt = q.options[idx];
+  const isCorrect = chosenOpt === q.answer;
 
   document.querySelectorAll('.opt').forEach(b=>{
     b.disabled = true;
-    if(b.innerHTML === q.answer) b.classList.add('correct');
+    if(q.options[+b.dataset.i] === q.answer) b.classList.add('correct');
   });
   if(!isCorrect) btn.classList.add('wrong');
 
@@ -452,7 +453,7 @@ function handleAnswer(btn, q){
     category: q.category,
     text: q.text,
     correctAnswer: q.answer,
-    chosenAnswer: chosenHTML,
+    chosenAnswer: chosenOpt,
     isCorrect
   });
 
@@ -508,6 +509,7 @@ function finishQuiz(){
     </div>
     <div class="actions">
       <button class="btn ghost full" id="restartBtn">Practice again</button>
+      <a href="index.html" class="btn ghost full" style="display:inline-flex; align-items:center; justify-content:center; text-decoration:none;">← Home Portal</a>
     </div>
   `;
   document.getElementById('restartBtn').onclick = ()=>{

@@ -38,6 +38,7 @@ button{border:0;border-radius:10px;padding:12px 17px;font:700 15px inherit;curso
     </div>
     <p class="small">Each correct answer = 1 point. Unanswered or incorrect answers = 0 points. Questions appear in a shuffled order.</p>
     <button id="startBtn">Start 20-minute quiz</button>
+    <div style="margin-top:14px; text-align:center;"><a href="index.html" style="color:var(--teal); text-decoration:none; font-weight:700; font-size:14px;">← Back to Home Portal</a></div>
   </section>
 
   <section class="panel hidden" id="quiz">
@@ -73,6 +74,7 @@ button{border:0;border-radius:10px;padding:12px 17px;font:700 15px inherit;curso
       <button id="reviewBtn" class="secondary">Show answer review</button>
       <button id="printBtn" class="secondary">Print score card</button>
       <button id="restartBtn">New attempt</button>
+      <a href="index.html" class="secondary" style="display:inline-flex; align-items:center; justify-content:center; padding:12px 17px; border-radius:10px; font-weight:700; text-decoration:none; text-align:center;">← Home Portal</a>
     </div>
     <div id="review" class="hidden" style="margin-top:18px">
       <h2>Answer review</h2>
@@ -106,7 +108,7 @@ const bank = [
 {t:"Factorisation",q:"Which is the prime factorisation of 120?",o:["2³ × 3 × 5","2 × 60","12 × 10","2² × 30"],a:0,e:"120 = 8 × 15 = 2³ × 3 × 5."},
 {t:"Factorisation",q:"Which is a prime factor of 42?",o:["4","6","7","21"],a:2,e:"42 = 2 × 3 × 7; 7 is prime."},
 {t:"Factorisation",q:"Complete: 18 = 2 × 3 × __",o:["2","3","6","9"],a:1,e:"2 × 3 × 3 = 18."},
-{t:"Factorisation",q:"Which factor tree correctly ends in primes for 30?",o:["5 × 6","2 × 15, then 3 × 5","3 × 10, then 2 × 5","Both B and C"],a:3,e:"Both routes give the prime factors 2, 3, and 5."},
+{t:"Factorisation",q:"Which factor tree correctly ends in primes for 30?",o:["5 × 6","2 × 15, then 3 × 5","3 × 10, then 2 × 5","Both 2 × 15 and 3 × 10 routes"],a:3,e:"Both routes give the prime factors 2, 3, and 5."},
 {t:"Factorisation",q:"How many prime factors are there in 2² × 3², counting repeats?",o:["2","3","4","5"],a:2,e:"The factors are 2, 2, 3, 3: four factors counting repeats."},
 {t:"HCF",q:"What does HCF stand for?",o:["Highest Common Factor","Highest Counting Formula","Highest Common Fraction","Half Common Factor"],a:0,e:"HCF means Highest Common Factor."},
 {t:"HCF",q:"HCF is useful when you want to…",o:["Find the next repeating time","Divide items into equal groups as large as possible","Multiply two numbers","Find the largest multiple"],a:1,e:"HCF gives the largest number of equal groups with no leftovers."},

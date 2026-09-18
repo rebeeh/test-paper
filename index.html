@@ -2,31 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Math Learning & Practice Portal — Number Systems, Factors & Primes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Quantitative Aptitude Portal — Numbers, Factors, Primes, HCF & LCM</title>
   <style>
     :root {
-      --bg: #0d151f;
-      --card-bg: #162232;
-      --card-border: #24354a;
-      --card-hover: #1e2e42;
+      --bg: #0b131e;
+      --card-bg: #142030;
+      --card-border: #22344a;
+      --card-hover: #1b2c42;
       --primary: #028090;
       --primary-light: #00a896;
       --accent: #02c39a;
       --gold: #f2c94c;
+      --coral: #ff7b72;
       --text: #f0f7f7;
       --text-muted: #8ca3b8;
-      --tag-bg: #1c2c3e;
-      --modal-bg: #131c28;
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --tag-bg: #1a293d;
+      --modal-bg: #111a26;
+      --shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
       --font-main: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
       --font-serif: "Georgia", serif;
+      --font-mono: "Consolas", "Courier New", monospace;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -37,6 +44,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
 
     .container {
@@ -50,50 +58,55 @@
     /* Hero header */
     header.hero {
       text-align: center;
-      margin-bottom: 48px;
-      padding: 36px 20px;
-      background: linear-gradient(180deg, rgba(2, 128, 144, 0.18) 0%, rgba(22, 34, 50, 0) 100%);
+      margin-bottom: 40px;
+      padding: 38px 24px 32px;
+      background: linear-gradient(180deg, rgba(2, 128, 144, 0.22) 0%, rgba(20, 32, 48, 0.4) 100%);
       border-radius: 24px;
       border: 1px solid var(--card-border);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
     }
 
     .hero-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       background: var(--tag-bg);
       color: var(--accent);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
       padding: 6px 14px;
       border-radius: 999px;
       margin-bottom: 16px;
-      border: 1px solid rgba(2, 195, 154, 0.3);
+      border: 1px solid rgba(2, 195, 154, 0.35);
     }
 
     .hero h1 {
-      font-size: clamp(28px, 5vw, 44px);
+      font-size: clamp(26px, 5vw, 42px);
       font-weight: 800;
-      line-height: 1.2;
+      line-height: 1.25;
       margin-bottom: 12px;
-      background: linear-gradient(90deg, #ffffff, #cbe5ea);
+      background: linear-gradient(90deg, #ffffff 0%, #bdecf0 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .hero p {
       color: var(--text-muted);
-      font-size: 17px;
-      max-width: 680px;
-      margin: 0 auto;
+      font-size: clamp(15px, 2.5vw, 17px);
+      max-width: 740px;
+      margin: 0 auto 20px;
     }
+
 
     /* Sections */
     .section-title {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 12px;
-      font-size: 24px;
+      font-size: clamp(20px, 3.5vw, 24px);
       font-weight: 700;
       margin: 40px 0 20px;
       padding-bottom: 10px;
@@ -101,15 +114,23 @@
       color: #fff;
     }
 
-    .section-title span.icon {
-      font-size: 26px;
+    .section-title .title-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title .section-hint {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
     }
 
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     /* Card styling */
@@ -160,7 +181,14 @@
 
     .card-tag.gold {
       color: var(--gold);
-      border-color: rgba(242, 201, 76, 0.3);
+      border-color: rgba(242, 201, 76, 0.35);
+      background: rgba(242, 201, 76, 0.08);
+    }
+
+    .card-tag.coral {
+      color: var(--coral);
+      border-color: rgba(255, 123, 114, 0.35);
+      background: rgba(255, 123, 114, 0.08);
     }
 
     .portal-card h3 {
@@ -173,8 +201,9 @@
     .portal-card p {
       font-size: 14px;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.55;
     }
+
 
     .card-actions {
       margin-top: 20px;
@@ -188,7 +217,8 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 10px 18px;
+      padding: 11px 16px;
+      min-height: 42px;
       border-radius: 10px;
       font-size: 14px;
       font-weight: 600;
@@ -196,9 +226,8 @@
       cursor: pointer;
       border: 1px solid transparent;
       transition: all 0.2s ease;
-      flex: 1;
+      flex: 1 1 120px;
       text-align: center;
-      white-space: nowrap;
     }
 
     .btn-primary {
@@ -226,8 +255,8 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(4, 8, 14, 0.75);
-      backdrop-filter: blur(5px);
+      background: rgba(3, 8, 15, 0.82);
+      backdrop-filter: blur(6px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -244,8 +273,8 @@
       border: 1px solid var(--card-border);
       border-radius: 20px;
       width: 100%;
-      max-width: 680px;
-      max-height: 85vh;
+      max-width: 720px;
+      max-height: 88vh;
       display: flex;
       flex-direction: column;
       box-shadow: var(--shadow);
@@ -266,7 +295,7 @@
     }
 
     .modal-header h2 {
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -280,11 +309,13 @@
       font-size: 28px;
       line-height: 1;
       cursor: pointer;
-      padding: 0 4px;
+      padding: 4px 8px;
+      border-radius: 6px;
     }
 
     .modal-close:hover {
       color: #fff;
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .modal-body {
@@ -298,6 +329,9 @@
       color: var(--accent);
       font-size: 16px;
       margin: 18px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .modal-body h4:first-child {
@@ -310,48 +344,175 @@
     }
 
     .modal-body li {
-      margin-bottom: 6px;
+      margin-bottom: 7px;
     }
 
     .modal-body .note-box {
-      background: rgba(2, 128, 144, 0.12);
+      background: rgba(2, 128, 144, 0.14);
       border-left: 4px solid var(--primary-light);
       padding: 12px 16px;
       border-radius: 0 8px 8px 0;
       margin: 14px 0;
     }
 
+    .modal-body .formula-box {
+      background: #182638;
+      border: 1px solid #293f58;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      color: #a5f3fc;
+      margin: 10px 0 14px;
+      font-size: 14px;
+    }
+
     .modal-body code {
-      background: #1e2c3c;
+      background: #1a2839;
       color: #9feaf9;
       padding: 2px 6px;
       border-radius: 4px;
-      font-size: 14px;
+      font-family: var(--font-mono);
+      font-size: 13.5px;
     }
 
     /* Footer */
     footer {
       border-top: 1px solid var(--card-border);
-      padding: 24px;
+      padding: 28px 24px;
       text-align: center;
       color: var(--text-muted);
       font-size: 14px;
+      background: rgba(13, 21, 31, 0.5);
     }
 
-    footer a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    footer a:hover {
-      text-decoration: underline;
+    footer p {
+      margin-bottom: 6px;
     }
 
-    @media (max-width: 600px) {
+    footer .footer-badges {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    footer .footer-badge {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: var(--tag-bg);
+      border: 1px solid var(--card-border);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* Responsive breakpoints */
+    @media (max-width: 900px) {
       .container {
-        padding: 24px 16px;
+        padding: 32px 20px;
       }
       .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 20px 14px;
+      }
+
+      header.hero {
+        padding: 26px 16px 20px;
+        margin-bottom: 28px;
+        border-radius: 18px;
+      }
+
+      .hero-badge {
+        font-size: 11px;
+        padding: 5px 12px;
+        margin-bottom: 12px;
+      }
+
+      .hero h1 {
+        font-size: 25px;
+      }
+
+      .hero p {
+        font-size: 14.5px;
+      }
+
+      .section-title {
+        font-size: 20px;
+        margin: 28px 0 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .card-grid {
         grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .portal-card {
+        padding: 20px 16px;
+        border-radius: 16px;
+      }
+
+      .card-actions {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .card-actions .btn {
+        width: 100%;
+        flex: none;
+      }
+
+      .modal-overlay {
+        padding: 12px;
+      }
+
+      .modal-dialog {
+        max-height: 90vh;
+        border-radius: 16px;
+      }
+
+      .modal-header {
+        padding: 16px 18px;
+      }
+
+      .modal-header h2 {
+        font-size: 18px;
+      }
+
+      .modal-body {
+        padding: 16px 18px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .container {
+        padding: 16px 10px;
+      }
+
+      .hero h1 {
+        font-size: 22px;
+      }
+
+      .hero p {
+        font-size: 13.5px;
+      }
+
+      .portal-card {
+        padding: 16px 12px;
+      }
+
+      .btn {
+        font-size: 13px;
+        padding: 9px 12px;
       }
     }
   </style>
@@ -360,14 +521,20 @@
 
   <div class="container">
     <header class="hero">
-      <span class="hero-badge">Mathematics Interactive Portal</span>
-      <h1>Master Number Systems, Factors &amp; Primes</h1>
-      <p>Interactive study materials, dynamic practice generators, and 20-minute timed assessment quizzes for Middle School &amp; Olympiad Math.</p>
+      <span class="hero-badge">🎯 Quantitative Aptitude Prep</span>
+      <h1>Master Number Systems, Factors &amp; HCF-LCM</h1>
+      <p>High-yield concept sheets, speed-math tricks, interactive visualizers, and timed 20-minute sectional mocks designed for Campus Placements, CAT, GATE, Banking, SSC &amp; CSAT exams.</p>
     </header>
 
     <!-- SECTION 1: LEARNING MATERIALS -->
     <section>
-      <h2 class="section-title"><span class="icon">📚</span> Learning Materials</h2>
+      <div class="section-title">
+        <div class="title-left">
+          <span>📚</span>
+          <h2>Learning Materials</h2>
+        </div>
+        <span class="section-hint">High-Yield Concept Notes &amp; Formulas</span>
+      </div>
       <div class="card-grid">
 
         <!-- Card: Number System -->
@@ -375,30 +542,13 @@
           <div class="card-top">
             <div class="card-icon-tag">
               <span class="card-icon">🔢</span>
-              <span class="card-tag">Concept Guide</span>
             </div>
             <h3>Number System</h3>
-            <p>Classifications of numbers: Natural (&naturals;), Whole (&integers;<sub>0</sub>), Integers (&integers;), Rational (&rationals;), Irrational numbers, and divisibility rules.</p>
+            <p>Number classifications (&naturals;, &integers;<sub>0</sub>, &integers;, &rationals;, irrationals), recurring decimals, unit digits, and fast divisibility tests (2, 3, 4, 5, 8, 9, 10, 11).</p>
           </div>
           <div class="card-actions">
             <button class="btn btn-primary" onclick="openModal('modal-number-system')">📖 Study Notes</button>
-            <a href="Number_System_Practice-2.html" class="btn btn-secondary">Take Test</a>
-          </div>
-        </div>
-
-        <!-- Card: Factors -->
-        <div class="portal-card">
-          <div class="card-top">
-            <div class="card-icon-tag">
-              <span class="card-icon">🧮</span>
-              <span class="card-tag">Concept Guide</span>
-            </div>
-            <h3>Factors</h3>
-            <p>Understanding factors, multiples, factor pairs, divisibility tests for 2, 3, 5, 9, 10, and common factor concepts.</p>
-          </div>
-          <div class="card-actions">
-            <button class="btn btn-primary" onclick="openModal('modal-factors')">📖 Study Notes</button>
-            <a href="factors-practice.html" class="btn btn-secondary">Practice</a>
+            <a href="Number_System_Practice-2.html" class="btn btn-secondary">Take Mock</a>
           </div>
         </div>
 
@@ -407,14 +557,13 @@
           <div class="card-top">
             <div class="card-icon-tag">
               <span class="card-icon">🔢</span>
-              <span class="card-tag">Concept Guide</span>
             </div>
             <h3>Prime Factorisation</h3>
-            <p>Fundamental Theorem of Arithmetic, factor trees, repeated division ladder method, and prime exponent power notation.</p>
+            <p>Canonical decomposition, prime power notation, coprime properties, counting trailing zeroes (min powers of 2 &amp; 5), and prime sieve principles.</p>
           </div>
           <div class="card-actions">
             <button class="btn btn-primary" onclick="openModal('modal-pf')">📖 Study Notes</button>
-            <a href="factors-practice.html" class="btn btn-secondary">Practice</a>
+            <a href="factors-practice.html" class="btn btn-secondary">Practice Drill</a>
           </div>
         </div>
 
@@ -423,14 +572,28 @@
           <div class="card-top">
             <div class="card-icon-tag">
               <span class="card-icon">➗</span>
-              <span class="card-tag">Concept Guide</span>
             </div>
             <h3>HCF &amp; LCM</h3>
-            <p>Highest Common Factor (HCF / GCF) and Lowest Common Multiple (LCM), prime power rules, and product relationships.</p>
+            <p>HCF &amp; LCM of fractions, product rule <code>A &times; B = HCF &times; LCM</code>, circular track meeting times, bell ringing cycles, and equal sharing models.</p>
           </div>
           <div class="card-actions">
             <button class="btn btn-primary" onclick="openModal('modal-hcf-lcm')">📖 Study Notes</button>
-            <a href="hcf_lcm_2_number_interactive.html" class="btn btn-secondary">Explorer</a>
+            <a href="hcf_lcm_2_number_interactive.html" class="btn btn-secondary">Visual Explorer</a>
+          </div>
+        </div>
+
+        <!-- Card: Factors -->
+        <div class="portal-card">
+          <div class="card-top">
+            <div class="card-icon-tag">
+              <span class="card-icon">🧮</span>
+            </div>
+            <h3>Factors</h3>
+            <p>Total number of factors formula <code>(a+1)(b+1)(c+1)</code>, odd/even factor splits, sum of factors, factor pairs, and perfect square factor parity.</p>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-primary" onclick="openModal('modal-factors')">📖 Study Notes</button>
+            <a href="factors-practice.html" class="btn btn-secondary">Practice Drill</a>
           </div>
         </div>
 
@@ -439,37 +602,28 @@
 
     <!-- SECTION 2: PRACTICE -->
     <section>
-      <h2 class="section-title"><span class="icon">📝</span> Practice</h2>
-      <div class="card-grid">
-
-        <!-- Factors Practice -->
-        <div class="portal-card">
-          <div class="card-top">
-            <div class="card-icon-tag">
-              <span class="card-icon">🧮</span>
-              <span class="card-tag">50 Questions</span>
-            </div>
-            <h3>Factors Practice</h3>
-            <p>A quick-fire practice round mixing prime factorisation, LCM, and HCF across 5 progressive tiers of difficulty with instant feedback.</p>
-          </div>
-          <div class="card-actions">
-            <a href="factors-practice.html" class="btn btn-primary">Start Factors Practice →</a>
-          </div>
+      <div class="section-title">
+        <div class="title-left">
+          <span>📝</span>
+          <h2>Practice</h2>
         </div>
+        <span class="section-hint">Speed Drills &amp; Visual Explorers</span>
+      </div>
+      <div class="card-grid">
 
         <!-- HCF & LCM Practice -->
         <div class="portal-card">
           <div class="card-top">
             <div class="card-icon-tag">
               <span class="card-icon">➗</span>
-              <span class="card-tag">Interactive Tools</span>
+              <span class="card-tag">Interactive Explorers</span>
             </div>
             <h3>HCF &amp; LCM Practice</h3>
-            <p>Interactive prime factor ball visualizer for 2 and 3 numbers. Adjust sliders to see shared vs unique prime factors and step-by-step formulas.</p>
+            <p>Interactive Venn &amp; prime-power ball visualizers for 2 and 3 numbers. Move sliders to build deep intuitive understanding of shared vs unique prime factors.</p>
           </div>
           <div class="card-actions">
             <a href="hcf_lcm_2_number_interactive.html" class="btn btn-primary">2-Number Explorer</a>
-            <a href="hcf_lcm_3_number_interactive.html" class="btn btn-secondary">3-Number Explorer</a>
+            <a href="hcf_lcm_3_number_interactive.html" class="btn btn-primary">3-Number Explorer</a>
           </div>
         </div>
 
@@ -478,7 +632,13 @@
 
     <!-- SECTION 3: TESTS -->
     <section>
-      <h2 class="section-title"><span class="icon">🎯</span> Tests</h2>
+      <div class="section-title">
+        <div class="title-left">
+          <span>🎯</span>
+          <h2>Tests</h2>
+        </div>
+        <span class="section-hint">Timed 20-Min Sectional Mocks</span>
+      </div>
       <div class="card-grid">
 
         <!-- Number System Test -->
@@ -486,28 +646,43 @@
           <div class="card-top">
             <div class="card-icon-tag">
               <span class="card-icon">⏱️</span>
-              <span class="card-tag gold">20-Min Challenge</span>
+              <span class="card-tag gold">20-Min Mock • 50 Qs</span>
             </div>
             <h3>Number System Test</h3>
-            <p>50 quick-fire timed questions on natural numbers, whole numbers, integers, rationals, irrationals, primes, and divisibility rules.</p>
+            <p>Timed sectional test on number classifications, divisibility rules, even/odd properties, primes, and fraction forms. Evaluates speed, accuracy, and foundational recall.</p>
           </div>
           <div class="card-actions">
-            <a href="Number_System_Practice-2.html" class="btn btn-primary">Start Number System Test →</a>
+            <a href="Number_System_Practice-2.html" class="btn btn-primary">Start Number System Mock →</a>
           </div>
         </div>
 
-        <!-- 50 Question HCF/LCM Quiz -->
+        <!-- Prime Factorisation, HCF & LCM Quiz -->
         <div class="portal-card">
           <div class="card-top">
             <div class="card-icon-tag">
               <span class="card-icon">🏆</span>
-              <span class="card-tag gold">50 Questions • 20 Min</span>
+              <span class="card-tag coral">20-Min Mock • 50 Qs</span>
             </div>
-            <h3>50 Question HCF/LCM Quiz</h3>
-            <p>Comprehensive timed quiz covering prime numbers, factor trees, HCF, LCM, and word problems. Includes instant scoring, review, and print option.</p>
+            <h3>Prime Factorisation, HCF &amp; LCM Quiz</h3>
+            <p>Full-length aptitude sectional challenge covering prime numbers, factor trees, HCF, LCM, and real-world cycle problems. Generates an instant performance scorecard with full review.</p>
           </div>
           <div class="card-actions">
-            <a href="Prime_Factorisation_HCF_LCM_50_Question_Quiz.html" class="btn btn-primary">Start 50-Question Quiz →</a>
+            <a href="Prime_Factorisation_HCF_LCM_50_Question_Quiz.html" class="btn btn-primary">Start HCF/LCM Mock →</a>
+          </div>
+        </div>
+
+        <!-- Factors Practice -->
+        <div class="portal-card">
+          <div class="card-top">
+            <div class="card-icon-tag">
+              <span class="card-icon">⚡</span>
+              <span class="card-tag gold">50 Questions • Speed Drill</span>
+            </div>
+            <h3>Factors Practice</h3>
+            <p>A 5-tier progressive aptitude drill mixing prime factorisation, LCM, and HCF by the prime factorisation method. Instant answer validation and error review.</p>
+          </div>
+          <div class="card-actions">
+            <a href="factors-practice.html" class="btn btn-primary">Start Factors Drill →</a>
           </div>
         </div>
 
@@ -516,131 +691,175 @@
 
   </div>
 
-  <!-- STUDY MODALS -->
+  <!-- APTITUDE STUDY MODALS -->
 
   <!-- Modal 1: Number System -->
   <div class="modal-overlay" id="modal-number-system" onclick="handleBackdropClick(event, 'modal-number-system')">
     <div class="modal-dialog">
       <div class="modal-header">
-        <h2><span>🔢</span> Number System Reference</h2>
+        <h2><span>🔢</span> Number System — Aptitude Cheat Sheet</h2>
         <button class="modal-close" onclick="closeModal('modal-number-system')">&times;</button>
       </div>
       <div class="modal-body">
-        <h4>Number Families</h4>
+        <h4>1. Number Classifications</h4>
         <ul>
-          <li><strong>Natural Numbers (N):</strong> Counting numbers starting from 1: <code>1, 2, 3, 4, ...</code></li>
-          <li><strong>Whole Numbers (W):</strong> Natural numbers together with zero: <code>0, 1, 2, 3, ...</code> (0 is a whole number, but NOT a natural number).</li>
-          <li><strong>Integers (Z):</strong> Positive whole numbers, zero, and negative whole numbers: <code>..., -3, -2, -1, 0, 1, 2, 3, ...</code></li>
-          <li><strong>Rational Numbers (Q):</strong> Numbers that can be written in the form <code>p/q</code> where <code>p</code> and <code>q</code> are integers and <code>q &ne; 0</code> (e.g., <code>0.75</code>, <code>-3/4</code>, <code>5 = 5/1</code>).</li>
-          <li><strong>Irrational Numbers:</strong> Numbers that cannot be written as simple fractions. Their decimals are non-terminating and non-repeating (e.g., <code>&radic;2</code>, <code>&radic;3</code>, <code>&pi;</code>). Note that <code>&radic;9 = 3</code> is rational.</li>
+          <li><strong>Natural Numbers (&naturals;):</strong> Counting numbers <code>{1, 2, 3, 4, ...}</code>.</li>
+          <li><strong>Whole Numbers (&integers;<sub>0</sub>):</strong> <code>{0, 1, 2, 3, ...}</code>. Note: 0 is whole, but NOT natural.</li>
+          <li><strong>Integers (&integers;):</strong> <code>{..., -3, -2, -1, 0, 1, 2, 3, ...}</code>.</li>
+          <li><strong>Rational Numbers (&rationals;):</strong> Form <code>p/q</code> (where <code>q &ne; 0</code> and <code>p, q &isin; &integers;</code>). Decimals either terminate (e.g. <code>1/4 = 0.25</code>) or repeat infinitely (e.g. <code>1/3 = 0.333...</code>).</li>
+          <li><strong>Irrational Numbers:</strong> Non-terminating, non-repeating decimals (e.g. <code>&radic;2, &radic;3, &pi;</code>). Note: <code>&radic;9 = 3</code> and <code>22/7</code> are rational.</li>
         </ul>
 
-        <h4>Divisibility Rules</h4>
+        <h4>2. Fast Divisibility Tests (Aptitude Shortcuts)</h4>
         <ul>
-          <li><strong>Divisible by 2:</strong> Last digit is even (0, 2, 4, 6, or 8).</li>
-          <li><strong>Divisible by 3:</strong> The sum of all digits is divisible by 3.</li>
-          <li><strong>Divisible by 5:</strong> Last digit is 0 or 5.</li>
-          <li><strong>Divisible by 9:</strong> The sum of all digits is divisible by 9.</li>
-          <li><strong>Divisible by 10:</strong> Last digit is strictly 0.</li>
+          <li><strong>Divisibility by 2:</strong> Last digit is even <code>{0, 2, 4, 6, 8}</code>.</li>
+          <li><strong>Divisibility by 3:</strong> Sum of digits is divisible by 3.</li>
+          <li><strong>Divisibility by 4:</strong> Number formed by last two digits is divisible by 4 (e.g., 73<strong>24</strong>).</li>
+          <li><strong>Divisibility by 5:</strong> Last digit is 0 or 5.</li>
+          <li><strong>Divisibility by 8:</strong> Number formed by last three digits is divisible by 8 (e.g., 5<strong>120</strong>).</li>
+          <li><strong>Divisibility by 9:</strong> Sum of all digits is divisible by 9.</li>
+          <li><strong>Divisibility by 10:</strong> Units digit is 0.</li>
+          <li><strong>Divisibility by 11:</strong> Difference between (Sum of digits at odd places) and (Sum of digits at even places) is 0 or a multiple of 11.</li>
         </ul>
+
+        <h4>3. Recurring Decimals to Fractions Trick</h4>
+        <div class="formula-box">
+          Pure recurring: 0.aaaa... = a / 9<br>
+          Two digits: 0.abab... = ab / 99<br>
+          Mixed: 0.abcc... = (abc - ab) / 900
+        </div>
 
         <div class="note-box">
-          <strong>Hierarchy:</strong> Natural numbers &sub; Whole numbers &sub; Integers &sub; Rational numbers &sub; Real numbers.
+          <strong>Aptitude Fact:</strong> Every prime number greater than 3 can be written in the form <code>6k &plusmn; 1</code> (where k is a positive integer). The converse is not necessarily true (e.g., 25 = 6(4)+1 is composite).
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal 2: Factors -->
-  <div class="modal-overlay" id="modal-factors" onclick="handleBackdropClick(event, 'modal-factors')">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h2><span>🧮</span> Factors &amp; Multiples Reference</h2>
-        <button class="modal-close" onclick="closeModal('modal-factors')">&times;</button>
-      </div>
-      <div class="modal-body">
-        <h4>Key Definitions</h4>
-        <ul>
-          <li><strong>Factor:</strong> A number that divides another number completely without leaving a remainder. For example, factors of 12 are <code>1, 2, 3, 4, 6, 12</code>.</li>
-          <li><strong>Multiple:</strong> The result of multiplying a number by an integer. Multiples of 4 are <code>4, 8, 12, 16, 20, ...</code></li>
-          <li><strong>Prime Number:</strong> A positive integer greater than 1 having exactly two factors: 1 and itself (e.g., <code>2, 3, 5, 7, 11, 13, 17, 19, ...</code>).</li>
-          <li><strong>Composite Number:</strong> A positive integer greater than 1 that has more than two factors (e.g., <code>4, 6, 8, 9, 10, 12, ...</code>).</li>
-          <li><strong>Special Case:</strong> The number <code>1</code> has only one factor, so it is <em>neither prime nor composite</em>. <code>2</code> is the only even prime number.</li>
-        </ul>
-
-        <h4>Finding Factors in Pairs</h4>
-        <p>List factors systematically from 1 upwards:</p>
-        <p>Example for 24: <code>1 &times; 24, 2 &times; 12, 3 &times; 8, 4 &times; 6</code> &rarr; Factors: <code>{1, 2, 3, 4, 6, 8, 12, 24}</code>.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal 3: Prime Factorisation -->
+  <!-- Modal 2: Prime Factorisation -->
   <div class="modal-overlay" id="modal-pf" onclick="handleBackdropClick(event, 'modal-pf')">
     <div class="modal-dialog">
       <div class="modal-header">
-        <h2><span>🔢</span> Prime Factorisation Reference</h2>
+        <h2><span>🔢</span> Prime Factorisation — Aptitude Cheat Sheet</h2>
         <button class="modal-close" onclick="closeModal('modal-pf')">&times;</button>
       </div>
       <div class="modal-body">
-        <h4>Fundamental Theorem of Arithmetic</h4>
-        <p>Every composite number can be uniquely expressed as a product of prime factors (disregarding the order of the primes).</p>
+        <h4>1. Fundamental Theorem of Arithmetic</h4>
+        <p>Every composite number can be uniquely factored into a product of prime powers:</p>
+        <div class="formula-box">
+          N = p<sub>1</sub><sup>a<sub>1</sub></sup> &times; p<sub>2</sub><sup>a<sub>2</sub></sup> &times; ... &times; p<sub>k</sub><sup>a<sub>k</sub></sup>
+        </div>
 
-        <h4>Methods of Prime Factorisation</h4>
-        <ol>
-          <li><strong>Factor Tree:</strong> Split the number into any two factor branches and continue branching composite factors until only prime leaves remain.</li>
-          <li><strong>Ladder / Repeated Division:</strong> Divide the number repeatedly by the smallest prime factor that divides it evenly until the quotient is 1.</li>
-        </ol>
-
-        <h4>Exponent / Index Notation</h4>
-        <p>Repeated prime factors are written using exponents:</p>
+        <h4>2. Coprime Numbers (Relatively Prime)</h4>
         <ul>
-          <li><code>24 = 2 &times; 2 &times; 2 &times; 3 = 2&sup3; &times; 3</code></li>
-          <li><code>60 = 2 &times; 2 &times; 3 &times; 5 = 2&sup2; &times; 3 &times; 5</code></li>
-          <li><code>120 = 2 &times; 2 &times; 2 &times; 3 &times; 5 = 2&sup3; &times; 3 &times; 5</code></li>
+          <li>Two integers <code>a</code> and <code>b</code> are <strong>coprime</strong> if their <code>HCF(a, b) = 1</code>.</li>
+          <li>They do not need to be prime individually (e.g., 8 and 9 are both composite, but coprime).</li>
+          <li>Any two consecutive integers <code>n</code> and <code>n + 1</code> are <strong>always coprime</strong>.</li>
+        </ul>
+
+        <h4>3. Counting Trailing Zeroes Shortcut</h4>
+        <div class="note-box">
+          A trailing zero is produced by a factor of <code>10 = 2 &times; 5</code>.<br>
+          In any product or factorial, the number of trailing zeroes equals <strong>min(power of 2, power of 5)</strong>. Since 2s are typically more abundant, count the power of 5.
+        </div>
+
+        <h4>4. Standard Prime Factorisations to Memorize</h4>
+        <ul>
+          <li><code>60 = 2&sup2; &times; 3 &times; 5</code></li>
+          <li><code>100 = 2&sup2; &times; 5&sup2;</code></li>
+          <li><code>120 = 2&sup3; &times; 3 &times; 5</code></li>
+          <li><code>360 = 2&sup3; &times; 3&sup2; &times; 5</code></li>
+          <li><code>1001 = 7 &times; 11 &times; 13</code> (very common CAT/Banking number)</li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- Modal 4: HCF & LCM -->
+  <!-- Modal 3: HCF & LCM -->
   <div class="modal-overlay" id="modal-hcf-lcm" onclick="handleBackdropClick(event, 'modal-hcf-lcm')">
     <div class="modal-dialog">
       <div class="modal-header">
-        <h2><span>➗</span> HCF &amp; LCM Reference</h2>
+        <h2><span>➗</span> HCF &amp; LCM — Aptitude Cheat Sheet</h2>
         <button class="modal-close" onclick="closeModal('modal-hcf-lcm')">&times;</button>
       </div>
       <div class="modal-body">
-        <h4>Highest Common Factor (HCF / GCF)</h4>
-        <p>The largest number that divides into two or more numbers with no remainder. Useful for dividing items into equal groups as large as possible.</p>
-        <div class="note-box">
-          <strong>Prime Factor Rule for HCF:</strong> Take only the <em>common prime factors</em> raised to their <em>lowest power</em>.
-        </div>
-
-        <h4>Lowest Common Multiple (LCM)</h4>
-        <p>The smallest positive number that is a multiple of two or more numbers. Useful for finding when repeating cycles, bells, or traffic lights coincide.</p>
-        <div class="note-box">
-          <strong>Prime Factor Rule for LCM:</strong> Take <em>every prime factor</em> that appears, raised to its <em>highest power</em>.
-        </div>
-
-        <h4>Key Relationship for Two Numbers</h4>
-        <p>For any two positive integers <code>a</code> and <code>b</code>:</p>
-        <p style="text-align:center; font-size:18px; margin:12px 0;"><strong>a &times; b = HCF(a, b) &times; LCM(a, b)</strong></p>
-
-        <h4>Worked Example (12 and 18)</h4>
+        <h4>1. Definitions &amp; Prime Power Rules</h4>
         <ul>
-          <li><code>12 = 2&sup2; &times; 3&sup1;</code></li>
-          <li><code>18 = 2&sup1; &times; 3&sup2;</code></li>
-          <li><code>HCF = 2&sup1; &times; 3&sup1; = 6</code></li>
-          <li><code>LCM = 2&sup2; &times; 3&sup2; = 4 &times; 9 = 36</code></li>
-          <li>Verification: <code>12 &times; 18 = 216 = 6 &times; 36</code>.</li>
+          <li><strong>HCF (Highest Common Factor):</strong> Product of <em>common</em> prime factors with their <em>lowest</em> exponents.</li>
+          <li><strong>LCM (Lowest Common Multiple):</strong> Product of <em>all</em> prime factors with their <em>highest</em> exponents.</li>
         </ul>
+
+        <h4>2. Two-Number Product Property</h4>
+        <div class="formula-box">
+          Product of two numbers = HCF &times; LCM<br>
+          A &times; B = HCF(A, B) &times; LCM(A, B)
+        </div>
+        <p><em>Warning:</em> This product identity is valid strictly for <strong>two</strong> numbers. It does NOT hold for three or more numbers.</p>
+
+        <h4>3. HCF &amp; LCM of Fractions</h4>
+        <div class="formula-box">
+          HCF(a/b, c/d) = HCF(a, c) / LCM(b, d)<br>
+          LCM(a/b, c/d) = LCM(a, c) / HCF(b, d)
+        </div>
+        <p><em>Note:</em> Ensure fractions are reduced to lowest terms before applying the formula.</p>
+
+        <h4>4. Classic Aptitude Application Models</h4>
+        <ul>
+          <li><strong>Simultaneous Bells / Traffic Lights / Circular Tracks:</strong> When will events coincide next? &rarr; <code>Time = LCM(individual cycle times)</code>.</li>
+          <li><strong>Equal Distribution / Largest Size:</strong> Maximum capacity of measuring vessel or greatest number of identical packs with no remainder &rarr; <code>HCF(quantities)</code>.</li>
+          <li><strong>Tiling a rectangular floor with minimum square tiles:</strong><br>
+            <code>Tile Side = HCF(Length, Width)</code><br>
+            <code>Number of Tiles = (Length &times; Width) / [HCF(Length, Width)]&sup2;</code>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Factors -->
+  <div class="modal-overlay" id="modal-factors" onclick="handleBackdropClick(event, 'modal-factors')">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2><span>🧮</span> Factors &amp; Multiples — Aptitude Cheat Sheet</h2>
+        <button class="modal-close" onclick="closeModal('modal-factors')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h4>1. Total Number of Factors Formula</h4>
+        <p>If the prime factorisation of <code>N = p<sup>a</sup> &times; q<sup>b</sup> &times; r<sup>c</sup></code>, then:</p>
+        <div class="formula-box">
+          Total Factors T(N) = (a + 1)(b + 1)(c + 1)
+        </div>
+        <p><em>Example:</em> 72 = 2<sup>3</sup> &times; 3<sup>2</sup> &rarr; Factors = (3 + 1)(2 + 1) = 4 &times; 3 = <strong>12 factors</strong>.</p>
+
+        <h4>2. Odd and Even Factors</h4>
+        <ul>
+          <li><strong>Odd Factors:</strong> Ignore the power of 2: <code>(b + 1)(c + 1)</code>. For 72: (2 + 1) = 3 odd factors (1, 3, 9).</li>
+          <li><strong>Even Factors:</strong> <code>a &times; (b + 1)(c + 1)</code>. For 72: 3 &times; 3 = 9 even factors.</li>
+        </ul>
+
+        <h4>3. Perfect Square Rule</h4>
+        <div class="note-box">
+          <strong>Crucial Aptitude Rule:</strong> A number has an <strong>odd number of factors</strong> if and only if it is a <strong>perfect square</strong> (e.g., 36 has 9 factors; 25 has 3 factors). All non-square numbers have an even number of factors.
+        </div>
+
+        <h4>4. Pairs of Factors</h4>
+        <p>The number of ways to write <code>N</code> as a product of two factors:</p>
+        <div class="formula-box">
+          For non-squares: T(N) / 2<br>
+          For perfect squares: [T(N) + 1] / 2
+        </div>
       </div>
     </div>
   </div>
 
   <footer>
-    <p>Mathematics Practice &amp; Assessment Suite • All tests run client-side with no install required.</p>
+    <p><strong>Quantitative Aptitude Assessment Suite</strong> • Built for Campus Placements, CAT, GATE, Banking, SSC &amp; CSAT</p>
+    <div class="footer-badges">
+      <span class="footer-badge">Zero Setup</span>
+      <span class="footer-badge">Offline Capable</span>
+      <span class="footer-badge">Mobile Responsive</span>
+      <span class="footer-badge">100% Client-Side</span>
+    </div>
   </footer>
 
   <script>

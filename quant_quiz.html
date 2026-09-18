@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quant Sprint — 50 Question Timed Test</title>
+<style>
+  :root{
+    --bg: #f6f4ee;
+    --panel: #ffffff;
+    --ink: #1c2430;
+    --ink-soft: #5b6472;
+    --line: #e2ddd0;
+    --accent: #1f6f5c;
+    --accent-ink: #ffffff;
+    --wrong: #b3432b;
+    --wrong-bg: #fbeae5;
+    --correct: #1f6f5c;
+    --correct-bg: #e9f3ee;
+    --amber: #c98a1f;
+    --track: #e2ddd0;
+    --shadow: 0 1px 2px rgba(28,36,48,0.06), 0 8px 24px rgba(28,36,48,0.06);
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --bg: #14181e;
+      --panel: #1b212a;
+      --ink: #e9ecef;
+      --ink-soft: #97a1ad;
+      --line: #2a323d;
+      --accent: #4fb894;
+      --accent-ink: #0d1410;
+      --wrong: #e0745a;
+      --wrong-bg: #331d18;
+      --correct: #4fb894;
+      --correct-bg: #16261f;
+      --amber: #e0ab54;
+      --track: #2a323d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #14181e;
+    --panel: #1b212a;
+    --ink: #e9ecef;
+    --ink-soft: #97a1ad;
+    --line: #2a323d;
+    --accent: #4fb894;
+    --accent-ink: #0d1410;
+    --wrong: #e0745a;
+    --wrong-bg: #331d18;
+    --correct: #4fb894;
+    --correct-bg: #16261f;
+    --amber: #e0ab54;
+    --track: #2a323d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family: "Iowan Old Style","Georgia","Charter",serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding: 28px 16px 60px;
+  }
+  .app{ width:100%; max-width:720px; }
+
+  .brand{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:18px; flex-wrap:wrap; gap:8px;
+  }
+  .brand h1{
+    font-size: 1.5rem; margin:0; font-weight:600; letter-spacing:0.2px;
+  }
+  .brand .tag{
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size:0.78rem; color:var(--ink-soft);
+  }
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+    padding:28px;
+  }
+
+  /* ---------- Start screen ---------- */
+  .start h2{ margin-top:0; font-size:1.2rem; font-weight:600;}
+  .start p{ color:var(--ink-soft); line-height:1.6; font-family:-apple-system,"Segoe UI",Roboto,sans-serif; font-size:0.95rem;}
+  .topics{
+    display:flex; gap:8px; flex-wrap:wrap; margin: 18px 0 22px;
+    font-family:-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  .chip{
+    border:1px solid var(--line); padding:6px 12px; border-radius:999px;
+    font-size:0.8rem; color:var(--ink-soft);
+  }
+  .stat-row{
+    display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin-bottom:24px;
+    font-family:-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  .stat-box{
+    text-align:center; border:1px solid var(--line); border-radius:8px; padding:14px 8px;
+  }
+  .stat-box .num{ font-family:"Iowan Old Style",Georgia,serif; font-size:1.5rem; font-weight:600; color:var(--accent); }
+  .stat-box .lbl{ font-size:0.72rem; color:var(--ink-soft); margin-top:2px; }
+
+  button.primary{
+    font-family:-apple-system,"Segoe UI",Roboto,sans-serif;
+    background:var(--accent); color:var(--accent-ink);
+    border:none; border-radius:8px; padding:13px 22px;
+    font-size:0.95rem; font-weight:600; cursor:pointer;
+    width:100%;
+  }
+  button.primary:hover{ filter:brightness(1.06); }
+  button.secondary{
+    font-family:-apple-system,"Segoe UI",Roboto,sans-serif;
+    background:transparent; color:var(--ink); border:1px solid var(--line);
+    border-radius:8px; padding:11px 20px; font-size:0.9rem; cursor:pointer;
+  }
+
+  /* ---------- Quiz header ---------- */
+  .quiz-top{
+    display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;
+    font-family:-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  .qcount{ font-size:0.85rem; color:var(--ink-soft); }
+  .timer{
+    font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size:1.05rem; font-weight:600; padding:5px 12px; border-radius:6px;
+    background:var(--track); color:var(--ink);
+  }
+  .timer.low{ background:var(--wrong-bg); color:var(--wrong); }
+
+  .progress-track{
+    height:6px; background:var(--track); border-radius:999px; overflow:hidden; margin-bottom:22px;
+  }
+  .progress-fill{
+    height:100%; background:var(--accent); width:0%; transition: width 0.3s ease;
+  }
+
+  .topic-badge{
+    display:inline-block; font-family:-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:0.72rem; color:var(--amber); border:1px solid var(--amber);
+    border-radius:999px; padding:3px 10px; margin-bottom:14px;
+  }
+
+  .question-text{
+    font-size:1.15rem; line-height:1.55; margin: 0 0 22px;
+  }
+
+  .options{ display:flex; flex-direction:column; gap:10px; }
+  .option{
+    font-family:-apple-system,"Segoe UI",Roboto,sans-serif;
+    text-align:left;
+    border:1px solid var(--line); background:transparent; color:var(--ink);
+    border-radius:8px; padding:13px 16px; font-size:0.95rem; cursor:pointer;
+    display:flex; align-items:center; gap:10px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .option:hover:not(:disabled){ border-color:var(--accent); }
+  .option:disabled{ cursor:default; }
+  .option .letter{
+    flex:0 0 auto; width:22px; height:22px; border-radius:50%; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:0.72rem; color:var(--ink-soft);
+  }
+  .option.correct{ background:var(--correct-bg); border-color:var(--correct); }
+  .option.correct .letter{ border-color:var(--correct); color:var(--correct); }
+  .option.wrong{ background:var(--wrong-bg); border-color:var(--wrong); }
+  .option.wrong .letter{ border-color:var(--wrong); color:var(--wrong); }
+
+  .feedback{
+    font-family:-apple-system,"Segoe UI",Roboto,sans-serif;
+    margin-top:18px; padding:14px 16px; border-radius:8px; font-size:0.88rem; line-height:1.55;
+  }
+  .feedback.wrong{ background:var(--wrong-bg); color:var(--ink); border:1px solid var(--wrong); }
+  .feedback .head{ font-weight:700; margin-bottom:5px; }
+  .feedback.wrong .head{ color:var(--wrong); }
+
+  .next-row{ margin-top:20px; display:flex; justify-content:flex-end; }
+  .next-row button{ padding:10px 22px; }
+
+  /* ---------- Score card ---------- */
+  .score-hero{ text-align:center; padding: 10px 0 20px; }
+  .score-hero .big{ font-size:3rem; font-weight:700; color:var(--accent); font-family:"Iowan Old Style",Georgia,serif; }
+  .score-hero .pct{ font-family:-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--ink-soft); font-size:0.95rem; margin-top:4px;}
+  .score-hero .reason{ font-family:-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--ink-soft); font-size:0.82rem; margin-top:8px;}
+
+  .summary-grid{
+    display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin: 10px 0 26px;
+    font-family:-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  .summary-grid .box{ text-align:center; border:1px solid var(--line); border-radius:8px; padding:14px 6px; }
+  .summary-grid .box .n{ font-family:"Iowan Old Style",Georgia,serif; font-size:1.4rem; font-weight:600; }
+  .summary-grid .box.correct .n{ color:var(--correct); }
+  .summary-grid .box.wrong .n{ color:var(--wrong); }
+  .summary-grid .box .l{ font-size:0.72rem; color:var(--ink-soft); margin-top:2px; }
+
+  .topic-perf{ margin-bottom: 8px; }
+  .topic-perf h3{ font-size:0.95rem; margin: 0 0 14px; font-weight:600; }
+  .topic-row{ margin-bottom:16px; font-family:-apple-system,"Segoe UI",Roboto,sans-serif; }
+  .topic-row .top-line{ display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:6px; }
+  .topic-row .top-line .name{ color:var(--ink); }
+  .topic-row .top-line .figs{ color:var(--ink-soft); }
+  .bar-track{ height:8px; background:var(--track); border-radius:999px; overflow:hidden; }
+  .bar-fill{ height:100%; background:var(--accent); }
+
+  .hidden{ display:none !important; }
+
+  @media (max-width: 480px){
+    .panel{ padding:20px; }
+    .brand h1{ font-size:1.25rem; }
+    .score-hero .big{ font-size:2.4rem; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="brand">
+    <h1>Quant Sprint</h1>
+    <span class="tag">Time & Work · Time, Speed & Distance · Percentage</span>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="panel start" id="startScreen">
+    <h2>50-question timed practice test</h2>
+    <p>You'll get 50 questions and 20 minutes on the clock. Pick an answer, and if it's wrong you'll see the worked explanation right away. The test ends the moment the timer hits zero or you finish all 50 — whichever comes first.</p>
+    <div class="topics">
+      <span class="chip">Time &amp; Work</span>
+      <span class="chip">Time, Speed &amp; Distance</span>
+      <span class="chip">Percentage</span>
+    </div>
+    <div class="stat-row">
+      <div class="stat-box"><div class="num">50</div><div class="lbl">Questions</div></div>
+      <div class="stat-box"><div class="num">20:00</div><div class="lbl">Time limit</div></div>
+      <div class="stat-box"><div class="num">3</div><div class="lbl">Topics</div></div>
+    </div>
+    <button class="primary" id="startBtn">Start the test</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="panel hidden" id="quizScreen">
+    <div class="quiz-top">
+      <span class="qcount" id="qcount">Question 1 of 50</span>
+      <span class="timer" id="timer">20:00</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+    <div class="topic-badge" id="topicBadge">Topic</div>
+    <p class="question-text" id="questionText">Question text</p>
+    <div class="options" id="optionsWrap"></div>
+
+    <div class="feedback wrong hidden" id="feedbackBox">
+      <div class="head">Not quite — here's why</div>
+      <div id="feedbackText"></div>
+    </div>
+
+    <div class="next-row">
+      <button class="primary hidden" id="nextBtn" style="width:auto;">Next question →</button>
+    </div>
+  </div>
+
+  <!-- SCORE SCREEN -->
+  <div class="panel hidden" id="scoreScreen">
+    <div class="score-hero">
+      <div class="big" id="scoreBig">0/50</div>
+      <div class="pct" id="scorePct">0% score</div>
+      <div class="reason" id="scoreReason"></div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="box correct"><div class="n" id="sumCorrect">0</div><div class="l">Correct</div></div>
+      <div class="box wrong"><div class="n" id="sumWrong">0</div><div class="l">Wrong</div></div>
+      <div class="box"><div class="n" id="sumSkipped">0</div><div class="l">Not attempted</div></div>
+    </div>
+
+    <div class="topic-perf">
+      <h3>Topic-wise performance</h3>
+      <div id="topicBreakdown"></div>
+    </div>
+
+    <button class="secondary" id="restartBtn" style="width:100%; margin-top:6px;">Retake the test</button>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  const TOPICS = {
+    TW: "Time & Work",
+    TSD: "Time, Speed & Distance",
+    PCT: "Percentage"
+  };
+
+  const questions = [
+    // ---------------- TIME & WORK (17) ----------------
+    {t:TOPICS.TW, q:"A can complete a work in 10 days and B in 15 days. In how many days will they complete it together?",
+      o:["6 days","5 days","7 days","8 days"], a:0,
+      e:"Combined rate = 1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6, so together they take 6 days."},
+    {t:TOPICS.TW, q:"A can do a piece of work in 12 days and B in 18 days. In how many days can they finish it together?",
+      o:["7.2 days","8 days","6 days","7.5 days"], a:0,
+      e:"Combined rate = 1/12 + 1/18 = 3/36 + 2/36 = 5/36, so time taken = 36/5 = 7.2 days."},
+    {t:TOPICS.TW, q:"A works twice as fast as B. If both together can finish a job in 12 days, in how many days can A alone finish it?",
+      o:["18 days","24 days","12 days","9 days"], a:0,
+      e:"Let B's rate be x and A's rate be 2x. Combined rate 3x = 1/12, so x = 1/36. A's rate = 2/36 = 1/18, meaning A alone takes 18 days."},
+    {t:TOPICS.TW, q:"A can finish a job in 20 days. B is 25% more efficient than A. In how many days can B alone finish the job?",
+      o:["16 days","15 days","18 days","20 days"], a:0,
+      e:"A's rate = 1/20 per day. B's rate = 1.25 × 1/20 = 1/16 per day, so B alone takes 16 days."},
+    {t:TOPICS.TW, q:"A and B together can do a work in 6 days. A alone can do it in 10 days. In how many days can B alone do it?",
+      o:["15 days","12 days","20 days","18 days"], a:0,
+      e:"B's rate = 1/6 − 1/10 = 5/30 − 3/30 = 2/30 = 1/15, so B alone takes 15 days."},
+    {t:TOPICS.TW, q:"10 men can complete a work in 15 days. How many men are required to complete the same work in 6 days?",
+      o:["25 men","20 men","30 men","15 men"], a:0,
+      e:"Total man-days = 10 × 15 = 150. To finish in 6 days: 150 ÷ 6 = 25 men."},
+    {t:TOPICS.TW, q:"A can do a work in 15 days and B in 10 days. If they work on alternate days starting with A, in how many days will the work be completed?",
+      o:["12 days","11 days","13 days","10 days"], a:0,
+      e:"In each 2-day cycle, work done = 1/15 + 1/10 = 2/30 + 3/30 = 5/30 = 1/6. After 6 such cycles (12 days), the work is exactly complete."},
+    {t:TOPICS.TW, q:"Pipe A can fill a tank in 12 hours while pipe B can empty it in 20 hours. If both are opened together, how long will it take to fill the tank?",
+      o:["30 hours","24 hours","36 hours","20 hours"], a:0,
+      e:"Net rate = 1/12 − 1/20 = 5/60 − 3/60 = 2/60 = 1/30, so the tank fills in 30 hours."},
+    {t:TOPICS.TW, q:"Pipes A and B can fill a tank in 24 minutes and 32 minutes respectively. Both are opened together, but B is closed after some time so that the tank is full in 18 minutes total. For how long was B kept open?",
+      o:["8 minutes","6 minutes","10 minutes","12 minutes"], a:0,
+      e:"A runs the full 18 minutes, doing 18/24 = 3/4 of the work. The remaining 1/4 is done by B: t/32 = 1/4, so t = 8 minutes."},
+    {t:TOPICS.TW, q:"A is thrice as good a workman as B and takes 10 days less than B to finish a piece of work. In how many days can A and B together complete the work?",
+      o:["3.75 days","5 days","4 days","7.5 days"], a:0,
+      e:"If B takes T days, A takes T/3 days. T − T/3 = 10 gives T = 15, so B = 15 days and A = 5 days. Combined rate = 1/5 + 1/15 = 4/15, so together they take 15/4 = 3.75 days."},
+    {t:TOPICS.TW, q:"12 men can complete a work in 8 days, and 16 women can complete the same work in 12 days. In how many days will 6 men and 8 women together complete the work?",
+      o:["9.6 days","10 days","8 days","12 days"], a:0,
+      e:"Total work = 96 man-days = 192 woman-days. 6 men's rate = 6/96 = 1/16; 8 women's rate = 8/192 = 1/24. Combined = 1/16 + 1/24 = 5/48, so time = 48/5 = 9.6 days."},
+    {t:TOPICS.TW, q:"A, B and C can individually do a piece of work in 10, 15 and 30 days respectively. In how many days can they finish it working together?",
+      o:["5 days","6 days","4 days","10 days"], a:0,
+      e:"Combined rate = 1/10 + 1/15 + 1/30 = 3/30 + 2/30 + 1/30 = 6/30 = 1/5, so together they take 5 days."},
+    {t:TOPICS.TW, q:"A can do 1/4 of a work in 6 days. In how many days can A complete the whole work?",
+      o:["24 days","20 days","18 days","30 days"], a:0,
+      e:"If 1/4 of the work takes 6 days, the whole work takes 6 × 4 = 24 days."},
+    {t:TOPICS.TW, q:"6 men and 8 boys can do a piece of work in 10 days, while 26 men and 48 boys can do the same work in 2 days. In how many days can 15 men and 20 boys complete it?",
+      o:["4 days","5 days","3 days","6 days"], a:0,
+      e:"Solving 6m+8b = 1/10 and 26m+48b = 1/2 gives m = 0.01 and b = 0.005 (work/day). 15 men + 20 boys rate = 0.15+0.10 = 0.25 per day, so time = 1/0.25 = 4 days."},
+    {t:TOPICS.TW, q:"A can finish a work in 18 days and B can do the same work in half the time A takes. Working together, what fraction of the work can they finish in a day?",
+      o:["1/6 of the work","1/9 of the work","1/12 of the work","1/18 of the work"], a:0,
+      e:"B takes 9 days. Combined rate = 1/18 + 1/9 = 1/18 + 2/18 = 3/18 = 1/6 of the work per day."},
+    {t:TOPICS.TW, q:"A and B together are paid Rs 3000 for finishing a work in 15 days. A alone can do the work in 20 days and B alone in 30 days. What is A's share of the payment?",
+      o:["Rs 1800","Rs 1500","Rs 2000","Rs 1200"], a:0,
+      e:"Wages split in the ratio of work done, i.e., their rates: 1/20 : 1/30 = 3 : 2. A's share = 3000 × 3/5 = Rs 1800."},
+    {t:TOPICS.TW, q:"4 men and 6 women can complete a work in 8 days, while 3 men and 7 women can complete it in 10 days. In how many days will 10 women alone complete it?",
+      o:["40 days","30 days","36 days","45 days"], a:0,
+      e:"Solving 4m+6w = 1/8 and 3m+7w = 1/10 gives w = 0.0025 per day. 10 women's rate = 0.025 per day, so time = 1/0.025 = 40 days."},
+
+    // ---------------- TIME, SPEED & DISTANCE (17) ----------------
+    {t:TOPICS.TSD, q:"A car travels 180 km in 3 hours. What is its speed?",
+      o:["60 km/h","50 km/h","65 km/h","70 km/h"], a:0,
+      e:"Speed = Distance/Time = 180/3 = 60 km/h."},
+    {t:TOPICS.TSD, q:"Convert 72 km/h into metres per second.",
+      o:["20 m/s","18 m/s","22 m/s","25 m/s"], a:0,
+      e:"To convert km/h to m/s, multiply by 5/18: 72 × 5/18 = 20 m/s."},
+    {t:TOPICS.TSD, q:"Convert 25 m/s into kilometres per hour.",
+      o:["90 km/h","80 km/h","100 km/h","75 km/h"], a:0,
+      e:"To convert m/s to km/h, multiply by 18/5: 25 × 18/5 = 90 km/h."},
+    {t:TOPICS.TSD, q:"A train 120 m long crosses a pole in 10 seconds. Find its speed in km/h.",
+      o:["43.2 km/h","40 km/h","45 km/h","50 km/h"], a:0,
+      e:"Speed = 120/10 = 12 m/s = 12 × 18/5 = 43.2 km/h."},
+    {t:TOPICS.TSD, q:"A train 150 m long crosses a platform 250 m long in 20 seconds. Find the speed of the train in m/s.",
+      o:["20 m/s","18 m/s","22 m/s","25 m/s"], a:0,
+      e:"Total distance covered = 150 + 250 = 400 m in 20 s, so speed = 400/20 = 20 m/s."},
+    {t:TOPICS.TSD, q:"Two trains of lengths 100 m and 150 m run in opposite directions at 54 km/h and 36 km/h. How long will they take to cross each other?",
+      o:["10 seconds","12 seconds","8 seconds","15 seconds"], a:0,
+      e:"Relative speed (opposite directions) = 54+36 = 90 km/h = 25 m/s. Total length = 250 m, so time = 250/25 = 10 seconds."},
+    {t:TOPICS.TSD, q:"Two trains, 120 m and 180 m long, run in the same direction at 60 km/h and 42 km/h. How long will the faster train take to cross the slower one?",
+      o:["60 seconds","50 seconds","45 seconds","70 seconds"], a:0,
+      e:"Relative speed (same direction) = 60−42 = 18 km/h = 5 m/s. Total length = 300 m, so time = 300/5 = 60 seconds."},
+    {t:TOPICS.TSD, q:"A boat's speed in still water is 15 km/h and the speed of the stream is 3 km/h. Find the boat's downstream speed.",
+      o:["18 km/h","12 km/h","15 km/h","20 km/h"], a:0,
+      e:"Downstream speed = boat speed + stream speed = 15 + 3 = 18 km/h."},
+    {t:TOPICS.TSD, q:"A boat goes 30 km upstream in 6 hours. If the speed of the stream is 2 km/h, find the boat's speed in still water.",
+      o:["7 km/h","6 km/h","8 km/h","5 km/h"], a:0,
+      e:"Upstream speed = 30/6 = 5 km/h = boat speed − stream speed. So boat speed = 5 + 2 = 7 km/h."},
+    {t:TOPICS.TSD, q:"A man rows 10 km upstream in 2 hours and returns downstream in 1 hour. Find his speed in still water.",
+      o:["7.5 km/h","7 km/h","8 km/h","6.5 km/h"], a:0,
+      e:"Upstream speed = 5 km/h, downstream speed = 10 km/h. Speed in still water = (5+10)/2 = 7.5 km/h."},
+    {t:TOPICS.TSD, q:"A car covers the first half of a journey at 40 km/h and the second half at 60 km/h. Find the average speed for the whole journey.",
+      o:["48 km/h","50 km/h","45 km/h","52 km/h"], a:0,
+      e:"For equal distances, average speed = 2xy/(x+y) = 2×40×60/100 = 4800/100 = 48 km/h."},
+    {t:TOPICS.TSD, q:"A man walks at 5 km/h for 3 hours and then at 4 km/h for 2 hours. Find his average speed for the whole journey.",
+      o:["4.6 km/h","4.5 km/h","5 km/h","4 km/h"], a:0,
+      e:"Total distance = 15+8 = 23 km, total time = 5 hours. Average speed = 23/5 = 4.6 km/h."},
+    {t:TOPICS.TSD, q:"A thief is spotted by a policeman from a distance of 200 m. The thief runs at 8 km/h and the policeman chases at 10 km/h. How far will the thief have run before being caught?",
+      o:["800 m","600 m","1000 m","500 m"], a:0,
+      e:"Relative speed = 10−8 = 2 km/h. Time to close 200 m (0.2 km) = 0.2/2 = 0.1 hour. Thief's distance = 8 × 0.1 = 0.8 km = 800 m."},
+    {t:TOPICS.TSD, q:"Excluding stoppages, a train's speed is 60 km/h, and including stoppages it is 50 km/h. For how many minutes per hour does the train stop?",
+      o:["10 minutes","12 minutes","8 minutes","15 minutes"], a:0,
+      e:"Speed lost due to stoppages = 10 km/h. Time lost per hour = 10/60 hour = 10 minutes."},
+    {t:TOPICS.TSD, q:"A man covers a certain distance in 40 minutes. If he increases his speed by 25%, how long will he take to cover the same distance?",
+      o:["32 minutes","30 minutes","35 minutes","28 minutes"], a:0,
+      e:"Time is inversely proportional to speed. New time = 40 ÷ 1.25 = 32 minutes."},
+    {t:TOPICS.TSD, q:"A train running at 72 km/h crosses a platform in 30 seconds and a man standing on the platform in 18 seconds. Find the length of the platform.",
+      o:["240 m","200 m","250 m","300 m"], a:0,
+      e:"Speed = 72 km/h = 20 m/s. Length of train = 20 × 18 = 360 m. Train + platform = 20 × 30 = 600 m, so platform length = 600 − 360 = 240 m."},
+    {t:TOPICS.TSD, q:"Two people start at the same time from two points 90 km apart and travel towards each other at 20 km/h and 25 km/h. After how many hours will they meet?",
+      o:["2 hours","1.5 hours","3 hours","2.5 hours"], a:0,
+      e:"Relative speed (towards each other) = 20+25 = 45 km/h. Time to meet = 90/45 = 2 hours."},
+
+    // ---------------- PERCENTAGE (16) ----------------
+    {t:TOPICS.PCT, q:"What is 25% of 400?",
+      o:["100","80","120","90"], a:0,
+      e:"25% of 400 = (25/100) × 400 = 100."},
+    {t:TOPICS.PCT, q:"45 is what percent of 180?",
+      o:["25%","20%","30%","35%"], a:0,
+      e:"Percentage = (45/180) × 100 = 25%."},
+    {t:TOPICS.PCT, q:"If 20% of a number is 50, find the number.",
+      o:["250","200","300","220"], a:0,
+      e:"Let the number be x. 0.20x = 50, so x = 50/0.20 = 250."},
+    {t:TOPICS.PCT, q:"A number is increased by 20% and then decreased by 20%. What is the net percentage change?",
+      o:["4% decrease","No change","4% increase","5% decrease"], a:0,
+      e:"Net change = −(20×20)/100 = −4%, i.e., a 4% decrease from the original number."},
+    {t:TOPICS.PCT, q:"The price of an item is increased by 25%. By what percentage must the new price be decreased to bring it back to the original price?",
+      o:["20%","25%","15%","30%"], a:0,
+      e:"Required decrease % = 25/(100+25) × 100 = 20%."},
+    {t:TOPICS.PCT, q:"In an election, a candidate got 60% of the votes and won by 4000 votes. Find the total number of votes cast.",
+      o:["20000","18000","22000","25000"], a:0,
+      e:"Winning margin = 60%−40% = 20% of total votes = 4000, so 1% = 200 and total votes = 200×100 = 20000."},
+    {t:TOPICS.PCT, q:"A student secured 480 marks out of 600. Find the percentage of marks obtained.",
+      o:["80%","75%","85%","90%"], a:0,
+      e:"Percentage = (480/600) × 100 = 80%."},
+    {t:TOPICS.PCT, q:"The population of a town increases by 10% every year. If the present population is 22000, find the population after 2 years.",
+      o:["26620","24200","26000","27000"], a:0,
+      e:"Population after 2 years = 22000 × 1.10 × 1.10 = 22000 × 1.21 = 26620."},
+    {t:TOPICS.PCT, q:"If A's income is 25% more than B's income, then B's income is what percent less than A's?",
+      o:["20%","25%","15%","30%"], a:0,
+      e:"If B = 100, A = 125. B is less than A by (25/125) × 100 = 20%."},
+    {t:TOPICS.PCT, q:"In a class of 50 students, 40% are girls. Find the number of boys.",
+      o:["30","20","25","35"], a:0,
+      e:"Girls = 40% of 50 = 20, so boys = 50 − 20 = 30."},
+    {t:TOPICS.PCT, q:"A 20% reduction in the price of sugar enables a person to buy 5 kg more for Rs 400. Find the reduced price per kg.",
+      o:["Rs 16","Rs 18","Rs 20","Rs 15"], a:0,
+      e:"Let original price = p. 400/(0.8p) − 400/p = 5 → (400/p)(0.25) = 5 → p = 20. Reduced price = 0.8 × 20 = Rs 16 per kg."},
+    {t:TOPICS.PCT, q:"Two numbers are respectively 20% and 50% more than a third number. Find the ratio of the first number to the second.",
+      o:["4:5","5:4","2:3","3:2"], a:0,
+      e:"First = 1.2x, Second = 1.5x. Ratio = 1.2 : 1.5 = 4 : 5."},
+    {t:TOPICS.PCT, q:"If the numerator of a fraction is increased by 20% and the denominator is decreased by 10%, the value becomes 4/5. Find the original fraction.",
+      o:["3/5","2/3","4/5","1/2"], a:0,
+      e:"(1.2a)/(0.9b) = 4/5 → a/b = (4/5) × (0.9/1.2) = 3/5. So the original fraction is 3/5."},
+    {t:TOPICS.PCT, q:"In an exam, 35% of candidates failed in one subject, 42% failed in another, and 15% failed in both. What percentage passed in both subjects?",
+      o:["38%","42%","36%","40%"], a:0,
+      e:"Failed in at least one = 35+42−15 = 62%. Passed both = 100−62 = 38%."},
+    {t:TOPICS.PCT, q:"A man's salary is increased by 10% and then decreased by 10%. What is the overall percentage change in his salary?",
+      o:["1% decrease","No change","1% increase","2% decrease"], a:0,
+      e:"Net change = −(10×10)/100 = −1%, i.e., a 1% decrease overall."},
+    {t:TOPICS.PCT, q:"60% of a number A equals 3/4 of another number B. Find the ratio A:B.",
+      o:["5:4","4:5","3:4","1:1"], a:0,
+      e:"0.6A = 0.75B → A/B = 0.75/0.6 = 5/4. So A:B = 5:4."}
+  ];
+
+  // -------- State --------
+  const TOTAL_TIME = 20*60;
+  let idx = 0;
+  let timeLeft = TOTAL_TIME;
+  let timerId = null;
+  let answered = false;
+  let results = []; // {topic, correct}
+
+  const startScreen = document.getElementById('startScreen');
+  const quizScreen = document.getElementById('quizScreen');
+  const scoreScreen = document.getElementById('scoreScreen');
+
+  const qcountEl = document.getElementById('qcount');
+  const timerEl = document.getElementById('timer');
+  const progressFill = document.getElementById('progressFill');
+  const topicBadge = document.getElementById('topicBadge');
+  const questionText = document.getElementById('questionText');
+  const optionsWrap = document.getElementById('optionsWrap');
+  const feedbackBox = document.getElementById('feedbackBox');
+  const feedbackText = document.getElementById('feedbackText');
+  const nextBtn = document.getElementById('nextBtn');
+
+  document.getElementById('startBtn').addEventListener('click', startQuiz);
+  document.getElementById('restartBtn').addEventListener('click', resetQuiz);
+  nextBtn.addEventListener('click', goNext);
+
+  function startQuiz(){
+    startScreen.classList.add('hidden');
+    quizScreen.classList.remove('hidden');
+    idx = 0; timeLeft = TOTAL_TIME; results = [];
+    renderQuestion();
+    timerId = setInterval(tick, 1000);
+  }
+
+  function resetQuiz(){
+    clearInterval(timerId);
+    scoreScreen.classList.add('hidden');
+    startScreen.classList.remove('hidden');
+  }
+
+  function tick(){
+    timeLeft--;
+    updateTimerDisplay();
+    if(timeLeft <= 0){
+      clearInterval(timerId);
+      finishQuiz();
+    }
+  }
+
+  function updateTimerDisplay(){
+    const m = Math.floor(Math.max(timeLeft,0)/60);
+    const s = Math.max(timeLeft,0)%60;
+    timerEl.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    timerEl.classList.toggle('low', timeLeft <= 60);
+  }
+
+  function renderQuestion(){
+    answered = false;
+    const item = questions[idx];
+    qcountEl.textContent = `Question ${idx+1} of ${questions.length}`;
+    progressFill.style.width = ((idx)/questions.length*100) + '%';
+    topicBadge.textContent = item.t;
+    questionText.textContent = item.q;
+    feedbackBox.classList.add('hidden');
+    nextBtn.classList.add('hidden');
+    optionsWrap.innerHTML = '';
+
+    item.o.forEach((optText, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      btn.innerHTML = `<span class="letter">${String.fromCharCode(65+i)}</span><span>${optText}</span>`;
+      btn.addEventListener('click', () => selectOption(i));
+      optionsWrap.appendChild(btn);
+    });
+  }
+
+  function selectOption(choiceIdx){
+    if(answered) return;
+    answered = true;
+    const item = questions[idx];
+    const correctIdx = item.a;
+    const isCorrect = choiceIdx === correctIdx;
+
+    const optionEls = optionsWrap.querySelectorAll('.option');
+    optionEls.forEach((el, i) => {
+      el.disabled = true;
+      if(i === correctIdx) el.classList.add('correct');
+      if(i === choiceIdx && !isCorrect) el.classList.add('wrong');
+    });
+
+    results.push({topic: item.t, correct: isCorrect});
+
+    if(!isCorrect){
+      feedbackText.textContent = item.e;
+      feedbackBox.classList.remove('hidden');
+    }
+    nextBtn.classList.remove('hidden');
+    nextBtn.textContent = (idx === questions.length-1) ? 'Finish test' : 'Next question →';
+  }
+
+  function goNext(){
+    if(idx === questions.length-1){
+      clearInterval(timerId);
+      finishQuiz();
+      return;
+    }
+    idx++;
+    renderQuestion();
+  }
+
+  function finishQuiz(){
+    quizScreen.classList.add('hidden');
+    scoreScreen.classList.remove('hidden');
+
+    const attempted = results.length;
+    const correct = results.filter(r => r.correct).length;
+    const wrong = attempted - correct;
+    const skipped = questions.length - attempted;
+    const pct = Math.round((correct/questions.length)*100);
+
+    document.getElementById('scoreBig').textContent = `${correct}/${questions.length}`;
+    document.getElementById('scorePct').textContent = `${pct}% score`;
+    document.getElementById('scoreReason').textContent = timeLeft <= 0
+      ? 'Time ran out — here is how you did.'
+      : 'You completed all 50 questions — here is how you did.';
+
+    document.getElementById('sumCorrect').textContent = correct;
+    document.getElementById('sumWrong').textContent = wrong;
+    document.getElementById('sumSkipped').textContent = skipped;
+
+    const topicOrder = [TOPICS.TW, TOPICS.TSD, TOPICS.PCT];
+    const breakdown = document.getElementById('topicBreakdown');
+    breakdown.innerHTML = '';
+
+    topicOrder.forEach(topic => {
+      const topicTotal = questions.filter(q => q.t === topic).length;
+      const topicResults = results.filter(r => r.topic === topic);
+      const topicCorrect = topicResults.filter(r => r.correct).length;
+      const topicAttempted = topicResults.length;
+      const topicPct = topicTotal > 0 ? Math.round((topicCorrect/topicTotal)*100) : 0;
+
+      const row = document.createElement('div');
+      row.className = 'topic-row';
+      row.innerHTML = `
+        <div class="top-line">
+          <span class="name">${topic}</span>
+          <span class="figs">${topicCorrect}/${topicTotal} correct · ${topicAttempted} attempted</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${topicPct}%"></div></div>
+      `;
+      breakdown.appendChild(row);
+    });
+  }
+
+  updateTimerDisplay();
+})();
+</script>
+</body>
+</html>

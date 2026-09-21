@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aptitude Workbook — Basics Made Simple</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EEF1F6;
+    --paper:#FFFFFF;
+    --ink:#1B2A4A;
+    --muted:#5B6478;
+    --line:#DCE2EE;
+    --c1:#F2A93B; /* LCM/HCF - amber */
+    --c2:#4FA37D; /* Time & Work - green */
+    --c3:#4A7FE0; /* Speed - blue */
+    --c4:#E0637A; /* Profit & Loss - rose */
+    --c5:#8E6FD1; /* Percentage - violet */
+    --c6:#2FADA8; /* Interest - teal */
+    --c7:#D9773F; /* Reasoning - burnt orange */
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif; margin:0; letter-spacing:-0.01em;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* ---------- Header ---------- */
+  header.hero{
+    padding:64px 24px 40px;
+    max-width:900px;
+    margin:0 auto;
+    text-align:left;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+  header.hero h1{
+    font-size:clamp(34px,5vw,54px);
+    font-weight:700;
+    line-height:1.05;
+  }
+  header.hero p.sub{
+    margin-top:16px;
+    font-size:17px;
+    color:var(--muted);
+    max-width:60ch;
+  }
+
+  /* ---------- Layout ---------- */
+  .layout{
+    max-width:1100px;
+    margin:0 auto;
+    display:flex;
+    gap:0;
+    padding:0 24px 80px;
+  }
+  nav.rail{
+    position:sticky;
+    top:24px;
+    align-self:flex-start;
+    width:210px;
+    flex-shrink:0;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    padding-right:20px;
+    margin-top:8px;
+  }
+  nav.rail a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:var(--muted);
+    font-size:13.5px;
+    font-weight:600;
+    padding:9px 10px;
+    border-radius:8px;
+    border-left:3px solid transparent;
+    transition:background .15s ease, color .15s ease;
+  }
+  nav.rail a .num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--muted);
+    width:18px;
+  }
+  nav.rail a:hover{ background:#fff; }
+  nav.rail a.active{
+    background:#fff;
+    color:var(--ink);
+    box-shadow:0 1px 2px rgba(27,42,74,0.06);
+  }
+
+  main.pages{
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+  }
+
+  section.topic{
+    background:var(--paper);
+    border-radius:16px;
+    padding:32px 36px 36px;
+    border:1px solid var(--line);
+    scroll-margin-top:24px;
+    box-shadow:0 1px 3px rgba(27,42,74,0.04);
+  }
+  section.topic .tab{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:5px 12px;
+    border-radius:999px;
+    margin-bottom:16px;
+    color:#fff;
+  }
+  section.topic h2{
+    font-size:26px;
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  section.topic .idea{
+    font-size:15.5px;
+    color:var(--muted);
+    max-width:70ch;
+    margin-bottom:6px;
+  }
+  .formula-box{
+    margin:18px 0;
+    padding:14px 18px;
+    background:#F7F8FB;
+    border-left:4px solid var(--accent);
+    border-radius:6px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:14.5px;
+    color:var(--ink);
+  }
+  .formula-box div{ margin:2px 0; }
+
+  .example{
+    margin-top:20px;
+    padding-top:18px;
+    border-top:1px dashed var(--line);
+  }
+  .example:first-of-type{ border-top:none; margin-top:22px; padding-top:0; }
+  .example .ex-label{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
+  }
+  .example .q{
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  .example ol{
+    margin:0;
+    padding-left:20px;
+    font-size:14.5px;
+    color:var(--ink);
+  }
+  .example ol li{ margin-bottom:5px; }
+  .example .answer{
+    display:inline-block;
+    margin-top:10px;
+    font-size:14px;
+    font-weight:700;
+    background:#F7F8FB;
+    padding:6px 12px;
+    border-radius:6px;
+  }
+  .example .note{
+    margin-top:8px;
+    font-size:13.5px;
+    color:var(--muted);
+    font-style:italic;
+  }
+
+  .trick{
+    margin-top:18px;
+    background:#F7F8FB;
+    border-radius:10px;
+    padding:12px 16px;
+    font-size:13.5px;
+    color:var(--muted);
+  }
+  .trick b{ color:var(--ink); }
+
+  /* ---------- Pictorial visuals ---------- */
+  .visual{
+    margin:18px 0 22px;
+    padding:20px 16px 16px;
+    background:#F7F8FB;
+    border-radius:12px;
+    text-align:center;
+  }
+  .visual svg{
+    width:100%;
+    height:auto;
+    max-width:520px;
+    color:var(--accent);
+  }
+  .visual-caption{
+    margin-top:10px;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+
+  /* topic accent bindings */
+  #lcm-hcf{ --accent:var(--c1); }
+  #time-work{ --accent:var(--c2); }
+  #speed{ --accent:var(--c3); }
+  #profit-loss{ --accent:var(--c4); }
+  #percentage{ --accent:var(--c5); }
+  #interest{ --accent:var(--c6); }
+  #reasoning{ --accent:var(--c7); }
+  section.topic .tab{ background:var(--accent); }
+
+  nav.rail a[href="#lcm-hcf"]{ border-left-color:var(--c1); }
+  nav.rail a[href="#time-work"]{ border-left-color:var(--c2); }
+  nav.rail a[href="#speed"]{ border-left-color:var(--c3); }
+  nav.rail a[href="#profit-loss"]{ border-left-color:var(--c4); }
+  nav.rail a[href="#percentage"]{ border-left-color:var(--c5); }
+  nav.rail a[href="#interest"]{ border-left-color:var(--c6); }
+  nav.rail a[href="#reasoning"]{ border-left-color:var(--c7); }
+
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    padding:20px 24px 60px;
+  }
+
+  /* ---------- Practice quiz ---------- */
+  .quiz{
+    margin-top:24px;
+    padding-top:20px;
+    border-top:2px solid var(--line);
+  }
+  .quiz-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:14px;
+  }
+  .question{
+    background:#F7F8FB;
+    border-radius:10px;
+    padding:16px 18px 18px;
+    margin-bottom:14px;
+  }
+  .question .q-text{
+    font-size:14.5px;
+    font-weight:600;
+    margin:0 0 12px;
+  }
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .opt{
+    text-align:left;
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    padding:9px 12px;
+    border-radius:7px;
+    border:1.5px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .opt:hover:not(.disabled){ border-color:var(--accent); }
+  .opt.disabled{ cursor:default; }
+  .opt.correct{ border-color:#3EA36B; background:#EAF7EF; font-weight:600; }
+  .opt.wrong{ border-color:#D9534F; background:#FBEAEA; }
+  .feedback{
+    margin-top:12px;
+    padding:10px 14px;
+    border-radius:7px;
+    font-size:13.5px;
+    line-height:1.5;
+  }
+  .feedback.good{ background:#EAF7EF; color:#256B44; }
+  .feedback.bad{ background:#FBEAEA; color:#8C3330; }
+  .try-again{
+    display:inline-block;
+    margin-top:8px;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--accent);
+    cursor:pointer;
+    text-decoration:underline;
+  }
+  @media (max-width:520px){
+    .options{ grid-template-columns:1fr; }
+  }
+
+  @media (max-width:820px){
+    .layout{ flex-direction:column; }
+    nav.rail{
+      position:sticky;
+      top:0;
+      width:100%;
+      flex-direction:row;
+      overflow-x:auto;
+      background:var(--bg);
+      padding:10px 0;
+      margin-top:0;
+      z-index:5;
+      border-bottom:1px solid var(--line);
+    }
+    nav.rail a{
+      flex-shrink:0;
+      border-left:none;
+      border-bottom:3px solid transparent;
+      border-radius:0;
+    }
+    nav.rail a.active{ box-shadow:none; }
+    section.topic{ padding:24px 20px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Aptitude Workbook · Chapter 1–7</div>
+  <h1>Aptitude Basics,<br>the simple way</h1>
+  <p class="sub">Seven topics that show up in almost every aptitude test. Each one gets a plain-English idea, the formula you actually need, and worked examples you can copy the method from.</p>
+</header>
+
+<div class="layout">
+  <nav class="rail" id="rail">
+    <a href="#lcm-hcf"><span class="num">01</span> LCM &amp; HCF</a>
+    <a href="#time-work"><span class="num">02</span> Time &amp; Work</a>
+    <a href="#speed"><span class="num">03</span> Speed, Time, Distance</a>
+    <a href="#profit-loss"><span class="num">04</span> Profit &amp; Loss</a>
+    <a href="#percentage"><span class="num">05</span> Percentage</a>
+    <a href="#interest"><span class="num">06</span> Simple &amp; Compound Interest</a>
+    <a href="#reasoning"><span class="num">07</span> Logical Reasoning</a>
+  </nav>
+
+  <main class="pages">
+
+    <!-- 1. LCM & HCF -->
+    <section class="topic" id="lcm-hcf">
+      <span class="tab">Chapter 01</span>
+      <h2>LCM &amp; HCF</h2>
+      <p class="idea">HCF (Highest Common Factor) is the biggest number that divides two or more numbers exactly. LCM (Lowest Common Multiple) is the smallest number that all of them divide into exactly. Think of HCF as "the biggest shared piece" and LCM as "the smallest number they all fit into."</p>
+
+      <div class="formula-box">
+        <div>HCF → break each number into prime factors, multiply the <b>common</b> primes (smallest power)</div>
+        <div>LCM → multiply <b>all</b> primes that appear, each raised to its <b>highest</b> power</div>
+      </div>
+
+      <div class="visual">
+        <svg viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="205" cy="110" r="95" fill="currentColor" opacity="0.14"/>
+          <circle cx="315" cy="110" r="95" fill="currentColor" opacity="0.14"/>
+          <circle cx="205" cy="110" r="95" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="315" cy="110" r="95" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="140" y="60" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#1B2A4A">12 = 2 × 2 × 3</text>
+          <text x="330" y="60" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#1B2A4A">18 = 2 × 3 × 3</text>
+          <text x="260" y="105" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="700" fill="#1B2A4A">2 × 3</text>
+          <text x="260" y="123" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#5B6478">common primes</text>
+          <text x="260" y="190" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#1B2A4A">Overlap → HCF = 2 × 3 = 6</text>
+          <text x="260" y="210" text-anchor="middle" font-family="Inter, sans-serif" font-size="12.5" fill="#5B6478">Whole diagram together → LCM = 2² × 3² = 36</text>
+        </svg>
+        <div class="visual-caption">The shared middle is the HCF. Everything in both circles combined (highest powers) is the LCM.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 1</div>
+        <div class="q">Find the HCF and LCM of 12 and 18.</div>
+        <ol>
+          <li>12 = 2 × 2 × 3 → 2² × 3</li>
+          <li>18 = 2 × 3 × 3 → 2 × 3²</li>
+          <li>HCF = common primes at lowest power = 2 × 3 = <b>6</b></li>
+          <li>LCM = all primes at highest power = 2² × 3² = <b>36</b></li>
+        </ol>
+        <div class="answer">HCF = 6, LCM = 36</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 2</div>
+        <div class="q">Three bells ring every 4, 6, and 8 minutes. If they ring together now, after how many minutes will they ring together again?</div>
+        <ol>
+          <li>This is asking for LCM(4, 6, 8)</li>
+          <li>4 = 2², 6 = 2×3, 8 = 2³</li>
+          <li>LCM = 2³ × 3 = <b>24</b></li>
+        </ol>
+        <div class="answer">They ring together again after 24 minutes</div>
+        <div class="note">Rule of thumb: "together again / repeats" questions → LCM. "Split into equal, largest groups" questions → HCF.</div>
+      </div>
+
+      <div class="trick"><b>Shortcut:</b> LCM × HCF = product of the two numbers (only works for exactly two numbers). So for 12 and 18: 6 × 36 = 216 = 12 × 18 ✓ — handy for checking your answer fast.</div>
+
+      <div class="quiz">
+        <div class="quiz-label">Practice</div>
+        <div class="question" data-explain="8 = 2³ and 12 = 2² × 3. LCM takes the highest power of each prime: 2³ × 3 = 24.">
+          <p class="q-text">1. Find the LCM of 8 and 12.</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) 16</button>
+            <button class="opt" data-correct="true">B) 24</button>
+            <button class="opt" data-correct="false">C) 36</button>
+            <button class="opt" data-correct="false">D) 48</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" data-explain="24 = 2³ × 3 and 36 = 2² × 3². HCF takes the common primes at their lowest power: 2² × 3 = 12.">
+          <p class="q-text">2. Find the HCF of 24 and 36.</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) 6</button>
+            <button class="opt" data-correct="false">B) 8</button>
+            <button class="opt" data-correct="true">C) 12</button>
+            <button class="opt" data-correct="false">D) 18</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Time and Work -->
+    <section class="topic" id="time-work">
+      <span class="tab">Chapter 02</span>
+      <h2>Time and Work</h2>
+      <p class="idea">The whole trick is to stop thinking in days and start thinking in "how much of the job gets done in one day." If someone finishes a job in 10 days, they complete 1/10th of it every single day.</p>
+
+      <div class="formula-box">
+        <div>One day's work = 1 ÷ (days taken to finish alone)</div>
+        <div>Combined one day's work = add each person's one-day work</div>
+        <div>Days to finish together = 1 ÷ (combined one day's work)</div>
+      </div>
+
+      <div class="visual">
+        <svg viewBox="0 0 520 190" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="30" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#1B2A4A">A — 10 days</text>
+          <rect x="150" y="16" width="228" height="20" rx="4" fill="currentColor" opacity="0.9"/>
+          <text x="386" y="31" font-family="'JetBrains Mono', monospace" font-size="12.5" fill="#5B6478">1/10 per day</text>
+
+          <text x="10" y="80" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#1B2A4A">B — 15 days</text>
+          <rect x="150" y="66" width="152" height="20" rx="4" fill="currentColor" opacity="0.6"/>
+          <text x="310" y="81" font-family="'JetBrains Mono', monospace" font-size="12.5" fill="#5B6478">1/15 per day</text>
+
+          <line x1="150" y1="105" x2="150" y2="150" stroke="#DCE2EE" stroke-width="1.5"/>
+          <text x="10" y="140" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#1B2A4A">Together</text>
+          <rect x="150" y="126" width="380" height="20" rx="4" fill="currentColor" opacity="1"/>
+          <text x="540" y="141" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="700" fill="#1B2A4A">1/6 per day</text>
+        </svg>
+        <div class="visual-caption">Stack each person's daily share end to end — the combined bar shows how much of the job disappears in one day when they work together.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 1</div>
+        <div class="q">A can finish a job in 10 days, B can finish it in 15 days. How long will they take working together?</div>
+        <ol>
+          <li>A's one-day work = 1/10, B's one-day work = 1/15</li>
+          <li>Together per day = 1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6</li>
+          <li>Days to finish = 1 ÷ (1/6) = <b>6 days</b></li>
+        </ol>
+        <div class="answer">6 days together</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 2</div>
+        <div class="q">A and B together finish a job in 12 days. A alone can do it in 20 days. How long will B alone take?</div>
+        <ol>
+          <li>Combined one-day work = 1/12</li>
+          <li>A's one-day work = 1/20</li>
+          <li>B's one-day work = 1/12 − 1/20 = 5/60 − 3/60 = 2/60 = 1/30</li>
+          <li>B alone takes 1 ÷ (1/30) = <b>30 days</b></li>
+        </ol>
+        <div class="answer">30 days</div>
+        <div class="note">Same logic extends to pipes filling/emptying a tank — just swap "work" for "tank filled."</div>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-label">Practice</div>
+        <div class="question" data-explain="A's rate = 1/8, B's rate = 1/12. Combined = 1/8 + 1/12 = 5/24 per day. Days = 24/5 = 4.8 days.">
+          <p class="q-text">1. A can do a job in 8 days, B in 12 days. How long will they take together?</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) 4 days</button>
+            <button class="opt" data-correct="true">B) 4.8 days</button>
+            <button class="opt" data-correct="false">C) 5 days</button>
+            <button class="opt" data-correct="false">D) 6 days</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" data-explain="Total work = 6 workers × 10 days = 60 worker-days. With 4 workers: 60 ÷ 4 = 15 days.">
+          <p class="q-text">2. 6 workers finish a job in 10 days. How many days will 4 workers take (same work rate each)?</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) 12 days</button>
+            <button class="opt" data-correct="true">B) 15 days</button>
+            <button class="opt" data-correct="false">C) 20 days</button>
+            <button class="opt" data-correct="false">D) 24 days</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Speed -->
+    <section class="topic" id="speed">
+      <span class="tab">Chapter 03</span>
+      <h2>Speed, Time &amp; Distance</h2>
+      <p class="idea">One relationship drives everything here: distance is speed multiplied by time. Almost every question is this formula rearranged, plus a unit conversion.</p>
+
+      <div class="formula-box">
+        <div>Distance = Speed × Time &nbsp;|&nbsp; Speed = Distance ÷ Time &nbsp;|&nbsp; Time = Distance ÷ Speed</div>
+        <div>km/hr → m/s: multiply by 5/18 &nbsp;&nbsp;|&nbsp;&nbsp; m/s → km/hr: multiply by 18/5</div>
+      </div>
+
+      <div class="visual">
+        <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="200,20 40,190 360,190" fill="currentColor" opacity="0.1" stroke="currentColor" stroke-width="2"/>
+          <line x1="40" y1="130" x2="360" y2="130" stroke="currentColor" stroke-width="2"/>
+          <line x1="200" y1="130" x2="200" y2="190" stroke="currentColor" stroke-width="2"/>
+          <text x="200" y="95" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="26" font-weight="700" fill="#1B2A4A">D</text>
+          <text x="115" y="168" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="24" font-weight="700" fill="#1B2A4A">S</text>
+          <text x="285" y="168" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="24" font-weight="700" fill="#1B2A4A">T</text>
+        </svg>
+        <div class="visual-caption">Cover the one you want to find. D on top of S and T means D = S × T; hide S and it's D ÷ T; hide T and it's D ÷ S.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 1</div>
+        <div class="q">A train 150 m long crosses a pole in 10 seconds. Find its speed in km/hr.</div>
+        <ol>
+          <li>Crossing a pole means the train covers a distance equal to its own length</li>
+          <li>Speed = distance/time = 150/10 = 15 m/s</li>
+          <li>Convert to km/hr: 15 × 18/5 = <b>54 km/hr</b></li>
+        </ol>
+        <div class="answer">54 km/hr</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 2</div>
+        <div class="q">A man travels from home to office at 40 km/hr and returns the same route at 60 km/hr. Find his average speed for the whole trip.</div>
+        <ol>
+          <li>For a round trip with the same distance both ways, do NOT just average the two speeds</li>
+          <li>Use: Average speed = 2 × S₁ × S₂ ÷ (S₁ + S₂)</li>
+          <li>= 2 × 40 × 60 ÷ (40 + 60) = 4800 ÷ 100 = <b>48 km/hr</b></li>
+        </ol>
+        <div class="answer">48 km/hr</div>
+        <div class="note">Common trap: the answer is NOT (40+60)/2 = 50. That only works if time, not distance, is equal on both legs.</div>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-label">Practice</div>
+        <div class="question" data-explain="Speed = distance ÷ time = 180 ÷ 3 = 60 km/hr.">
+          <p class="q-text">1. A car covers 180 km in 3 hours. Find its speed.</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) 40 km/hr</button>
+            <button class="opt" data-correct="false">B) 50 km/hr</button>
+            <button class="opt" data-correct="true">C) 60 km/hr</button>
+            <button class="opt" data-correct="false">D) 70 km/hr</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" data-explain="To convert km/hr to m/s, multiply by 5/18: 72 × 5/18 = 20 m/s.">
+          <p class="q-text">2. Convert 72 km/hr into m/s.</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) 15 m/s</button>
+            <button class="opt" data-correct="true">B) 20 m/s</button>
+            <button class="opt" data-correct="false">C) 25 m/s</button>
+            <button class="opt" data-correct="false">D) 30 m/s</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Profit and Loss -->
+    <section class="topic" id="profit-loss">
+      <span class="tab">Chapter 04</span>
+      <h2>Profit &amp; Loss</h2>
+      <p class="idea">CP is what something cost to buy or make. SP is what it sold for. If SP is more, it's profit; if less, it's loss — and the percentage is always measured against the CP.</p>
+
+      <div class="formula-box">
+        <div>Profit = SP − CP &nbsp;&nbsp;|&nbsp;&nbsp; Loss = CP − SP</div>
+        <div>Profit % = (Profit ÷ CP) × 100 &nbsp;&nbsp;|&nbsp;&nbsp; Loss % = (Loss ÷ CP) × 100</div>
+      </div>
+
+      <div class="visual">
+        <svg viewBox="0 0 520 190" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="34" font-family="Inter, sans-serif" font-size="12.5" font-weight="600" fill="#1B2A4A">Profit — SP is higher</text>
+          <line x1="10" y1="55" x2="510" y2="55" stroke="#DCE2EE" stroke-width="2"/>
+          <circle cx="110" cy="55" r="6" fill="#5B6478"/>
+          <text x="110" y="78" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" fill="#5B6478">CP</text>
+          <circle cx="330" cy="55" r="6" fill="currentColor"/>
+          <text x="330" y="78" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="700" fill="#1B2A4A">SP</text>
+          <line x1="122" y1="55" x2="318" y2="55" stroke="currentColor" stroke-width="3"/>
+          <text x="220" y="42" text-anchor="middle" font-family="Inter, sans-serif" font-size="12.5" font-weight="700" fill="#1B2A4A">Profit</text>
+
+          <text x="10" y="128" font-family="Inter, sans-serif" font-size="12.5" font-weight="600" fill="#1B2A4A">Loss — SP is lower</text>
+          <line x1="10" y1="150" x2="510" y2="150" stroke="#DCE2EE" stroke-width="2"/>
+          <circle cx="380" cy="150" r="6" fill="#5B6478"/>
+          <text x="380" y="173" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" fill="#5B6478">CP</text>
+          <circle cx="200" cy="150" r="6" fill="#D9534F"/>
+          <text x="200" y="173" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="700" fill="#8C3330">SP</text>
+          <line x1="212" y1="150" x2="368" y2="150" stroke="#D9534F" stroke-width="3"/>
+          <text x="290" y="137" text-anchor="middle" font-family="Inter, sans-serif" font-size="12.5" font-weight="700" fill="#8C3330">Loss</text>
+        </svg>
+        <div class="visual-caption">SP to the right of CP means profit; SP to the left of CP means loss. The gap between them, as a percentage of CP, is your answer.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 1</div>
+        <div class="q">A shopkeeper buys a fan for ₹1,200 and sells it for ₹1,380. Find the profit percentage.</div>
+        <ol>
+          <li>Profit = 1380 − 1200 = ₹180</li>
+          <li>Profit % = (180 ÷ 1200) × 100 = <b>15%</b></li>
+        </ol>
+        <div class="answer">15% profit</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 2</div>
+        <div class="q">A book costs ₹250. At what price should it be sold to make a 20% profit?</div>
+        <ol>
+          <li>SP = CP × (1 + profit%/100)</li>
+          <li>SP = 250 × 1.20 = <b>₹300</b></li>
+        </ol>
+        <div class="answer">₹300</div>
+        <div class="note">For a loss, use SP = CP × (1 − loss%/100) instead.</div>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-label">Practice</div>
+        <div class="question" data-explain="Profit = 960 − 800 = 160. Profit % = (160 ÷ 800) × 100 = 20%.">
+          <p class="q-text">1. CP = ₹800, SP = ₹960. Find the profit percentage.</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) 15%</button>
+            <button class="opt" data-correct="true">B) 20%</button>
+            <button class="opt" data-correct="false">C) 25%</button>
+            <button class="opt" data-correct="false">D) 30%</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" data-explain="SP = CP × (1 − loss%/100) = 500 × 0.90 = ₹450.">
+          <p class="q-text">2. An item bought for ₹500 is sold at a 10% loss. Find the selling price.</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) ₹430</button>
+            <button class="opt" data-correct="true">B) ₹450</button>
+            <button class="opt" data-correct="false">C) ₹470</button>
+            <button class="opt" data-correct="false">D) ₹480</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Percentage -->
+    <section class="topic" id="percentage">
+      <span class="tab">Chapter 05</span>
+      <h2>Percentage</h2>
+      <p class="idea">"Percent" just means "out of 100." Once you can convert between a percentage, a fraction, and a decimal in your head, most percentage questions become simple multiplication.</p>
+
+      <div class="formula-box">
+        <div>x% of a number N = (x ÷ 100) × N</div>
+        <div>% change = (change in value ÷ original value) × 100</div>
+      </div>
+
+      <div class="visual">
+        <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(12,12)">
+          <rect x="0" y="0" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="22" y="0" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="44" y="0" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="66" y="0" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="88" y="0" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="110" y="0" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="132" y="0" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="154" y="0" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="176" y="0" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="198" y="0" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="0" y="22" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="22" y="22" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="44" y="22" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="66" y="22" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="88" y="22" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="110" y="22" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="132" y="22" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="154" y="22" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="176" y="22" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="198" y="22" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="0" y="44" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="22" y="44" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="44" y="44" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="66" y="44" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="88" y="44" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="110" y="44" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="132" y="44" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="154" y="44" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="176" y="44" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="198" y="44" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="0" y="66" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="22" y="66" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="44" y="66" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="66" y="66" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="88" y="66" width="18" height="18" rx="3" fill="currentColor"/>
+          <rect x="110" y="66" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="132" y="66" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="154" y="66" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="176" y="66" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="198" y="66" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="0" y="88" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="22" y="88" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="44" y="88" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="66" y="88" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="88" y="88" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="110" y="88" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="132" y="88" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="154" y="88" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="176" y="88" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="198" y="88" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="0" y="110" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="22" y="110" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="44" y="110" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="66" y="110" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="88" y="110" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="110" y="110" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="132" y="110" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="154" y="110" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="176" y="110" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="198" y="110" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="0" y="132" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="22" y="132" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="44" y="132" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="66" y="132" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="88" y="132" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="110" y="132" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="132" y="132" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="154" y="132" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="176" y="132" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="198" y="132" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="0" y="154" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="22" y="154" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="44" y="154" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="66" y="154" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="88" y="154" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="110" y="154" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="132" y="154" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="154" y="154" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="176" y="154" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="198" y="154" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="0" y="176" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="22" y="176" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="44" y="176" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="66" y="176" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="88" y="176" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="110" y="176" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="132" y="176" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="154" y="176" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="176" y="176" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="198" y="176" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="0" y="198" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="22" y="198" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="44" y="198" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="66" y="198" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="88" y="198" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="110" y="198" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="132" y="198" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="154" y="198" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="176" y="198" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          <rect x="198" y="198" width="18" height="18" rx="3" fill="#DCE2EE"/>
+          </g>
+        </svg>
+        <div class="visual-caption">35 out of 100 squares shaded = 35%. That's really all "percent" means — a count out of a hundred.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 1</div>
+        <div class="q">What is 35% of 240?</div>
+        <ol>
+          <li>35% of 240 = (35 ÷ 100) × 240</li>
+          <li>= 0.35 × 240 = <b>84</b></li>
+        </ol>
+        <div class="answer">84</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 2</div>
+        <div class="q">A student's marks increased from 80 to 92. Find the percentage increase.</div>
+        <ol>
+          <li>Increase = 92 − 80 = 12</li>
+          <li>% increase = (12 ÷ 80) × 100 = <b>15%</b></li>
+        </ol>
+        <div class="answer">15% increase</div>
+        <div class="note">Always divide by the original (starting) value, never the new one.</div>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-label">Practice</div>
+        <div class="question" data-explain="25% of 160 = (25 ÷ 100) × 160 = 0.25 × 160 = 40.">
+          <p class="q-text">1. What is 25% of 160?</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) 35</button>
+            <button class="opt" data-correct="true">B) 40</button>
+            <button class="opt" data-correct="false">C) 45</button>
+            <button class="opt" data-correct="false">D) 50</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" data-explain="Increase = 250 − 200 = 50. % increase = (50 ÷ 200) × 100 = 25%.">
+          <p class="q-text">2. Price rises from ₹200 to ₹250. Find the percentage increase.</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) 20%</button>
+            <button class="opt" data-correct="true">B) 25%</button>
+            <button class="opt" data-correct="false">C) 30%</button>
+            <button class="opt" data-correct="false">D) 35%</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Simple & Compound Interest -->
+    <section class="topic" id="interest">
+      <span class="tab">Chapter 06</span>
+      <h2>Simple &amp; Compound Interest</h2>
+      <p class="idea">Simple interest is calculated only on the original amount, every year. Compound interest is calculated on the original amount plus whatever interest has already piled up — so it grows faster.</p>
+
+      <div class="formula-box">
+        <div>Simple Interest (SI) = (P × R × T) ÷ 100</div>
+        <div>Compound Interest (CI) = P × (1 + R/100)ᵀ − P</div>
+        <div>P = Principal, R = Rate % per year, T = Time in years</div>
+      </div>
+
+      <div class="visual">
+        <svg viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg">
+          <line x1="40" y1="20" x2="40" y2="190" stroke="#DCE2EE" stroke-width="1.5"/>
+          <line x1="40" y1="190" x2="490" y2="190" stroke="#DCE2EE" stroke-width="1.5"/>
+          <text x="40" y="208" font-family="Inter, sans-serif" font-size="11.5" fill="#5B6478">0 yrs</text>
+          <text x="480" y="208" text-anchor="end" font-family="Inter, sans-serif" font-size="11.5" fill="#5B6478">5 yrs</text>
+          <text x="14" y="24" font-family="Inter, sans-serif" font-size="11.5" fill="#5B6478">₹</text>
+
+          <line x1="40" y1="180" x2="480" y2="57" stroke="#5B6478" stroke-width="2.5" stroke-dasharray="6 5"/>
+          <path d="M40,180 L128,155.4 L216,128.3 L304,98.5 L392,65.8 L480,29.7" fill="none" stroke="currentColor" stroke-width="3"/>
+
+          <circle cx="480" cy="57" r="4.5" fill="#5B6478"/>
+          <circle cx="480" cy="29.7" r="4.5" fill="currentColor"/>
+          <text x="365" y="52" font-family="Inter, sans-serif" font-size="12.5" font-weight="600" fill="#5B6478">SI (straight)</text>
+          <text x="330" y="20" font-family="Inter, sans-serif" font-size="12.5" font-weight="700" fill="#1B2A4A">CI (curves upward)</text>
+        </svg>
+        <div class="visual-caption">Same starting amount and rate — SI grows in a straight line, CI curves upward because each year's interest also earns interest.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 1 — Simple Interest</div>
+        <div class="q">Find the simple interest on ₹5,000 at 8% per year for 3 years.</div>
+        <ol>
+          <li>SI = (5000 × 8 × 3) ÷ 100</li>
+          <li>= 120000 ÷ 100 = <b>₹1,200</b></li>
+        </ol>
+        <div class="answer">₹1,200</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 2 — Compound Interest</div>
+        <div class="q">Find the compound interest on ₹5,000 at 8% per year for 2 years.</div>
+        <ol>
+          <li>Amount = 5000 × (1 + 8/100)² = 5000 × (1.08)²</li>
+          <li>= 5000 × 1.1664 = ₹5,832</li>
+          <li>CI = 5832 − 5000 = <b>₹832</b></li>
+        </ol>
+        <div class="answer">₹832</div>
+        <div class="note">Notice CI (₹832 for 2 years) is a bit more than double one year's SI (8% of 5000 = ₹400) — that extra bit is "interest on interest."</div>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-label">Practice</div>
+        <div class="question" data-explain="SI = (P × R × T) ÷ 100 = (4000 × 5 × 2) ÷ 100 = ₹400.">
+          <p class="q-text">1. Find the simple interest on ₹4,000 at 5% per year for 2 years.</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) ₹350</button>
+            <button class="opt" data-correct="true">B) ₹400</button>
+            <button class="opt" data-correct="false">C) ₹450</button>
+            <button class="opt" data-correct="false">D) ₹500</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" data-explain="Amount = 2000 × (1.10)² = 2000 × 1.21 = ₹2,420. CI = 2420 − 2000 = ₹420.">
+          <p class="q-text">2. Find the compound interest on ₹2,000 at 10% per year for 2 years.</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) ₹400</button>
+            <button class="opt" data-correct="true">B) ₹420</button>
+            <button class="opt" data-correct="false">C) ₹440</button>
+            <button class="opt" data-correct="false">D) ₹460</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Logical Reasoning -->
+    <section class="topic" id="reasoning">
+      <span class="tab">Chapter 07</span>
+      <h2>Logical Reasoning</h2>
+      <p class="idea">Reasoning questions don't need formulas — they need pattern-spotting. Look for what changes between terms (add, multiply, alternate) or what rule connects letters, numbers, and positions.</p>
+
+      <div class="formula-box">
+        <div>Common types: number/letter series, coding-decoding, blood relations, direction sense, seating arrangement</div>
+      </div>
+
+      <div class="visual">
+        <svg viewBox="0 0 520 130" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="'JetBrains Mono', monospace" font-size="18" font-weight="700" fill="#1B2A4A" text-anchor="middle">
+            <rect x="10" y="35" width="60" height="46" rx="8" fill="currentColor" opacity="0.14" stroke="currentColor" stroke-width="1.5"/>
+            <text x="40" y="64">2</text>
+            <rect x="135" y="35" width="60" height="46" rx="8" fill="currentColor" opacity="0.14" stroke="currentColor" stroke-width="1.5"/>
+            <text x="165" y="64">6</text>
+            <rect x="260" y="35" width="60" height="46" rx="8" fill="currentColor" opacity="0.14" stroke="currentColor" stroke-width="1.5"/>
+            <text x="290" y="64">18</text>
+            <rect x="385" y="35" width="60" height="46" rx="8" fill="currentColor" opacity="0.14" stroke="currentColor" stroke-width="1.5"/>
+            <text x="415" y="64">54</text>
+            <rect x="450" y="35" width="60" height="46" rx="8" fill="none" stroke="#5B6478" stroke-width="1.5" stroke-dasharray="4 4"/>
+            <text x="480" y="64" fill="#5B6478">?</text>
+          </g>
+          <g stroke="currentColor" stroke-width="2" fill="currentColor">
+            <line x1="70" y1="58" x2="128" y2="58"/>
+            <polygon points="128,58 118,53 118,63"/>
+            <line x1="195" y1="58" x2="253" y2="58"/>
+            <polygon points="253,58 243,53 243,63"/>
+            <line x1="320" y1="58" x2="378" y2="58"/>
+            <polygon points="378,58 368,53 368,63"/>
+          </g>
+          <g font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="var(--accent)">
+            <text x="99" y="45" text-anchor="middle">×3</text>
+            <text x="224" y="45" text-anchor="middle">×3</text>
+            <text x="349" y="45" text-anchor="middle">×3</text>
+          </g>
+        </svg>
+        <div class="visual-caption">Spot the rule connecting each term to the next, then apply it one more time. Here every step is "×3", so the next term is 54 × 3 = 162.</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 1 — Number series</div>
+        <div class="q">Find the next number: 3, 6, 12, 24, ?</div>
+        <ol>
+          <li>Check the pattern between terms: 3→6 (×2), 6→12 (×2), 12→24 (×2)</li>
+          <li>Each term is double the previous one</li>
+          <li>Next term = 24 × 2 = <b>48</b></li>
+        </ol>
+        <div class="answer">48</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 2 — Coding-decoding</div>
+        <div class="q">If CAT is coded as DBU, how is DOG coded?</div>
+        <ol>
+          <li>Compare CAT → DBU letter by letter: C→D, A→B, T→U</li>
+          <li>Each letter has simply shifted forward by 1 in the alphabet</li>
+          <li>Apply the same shift to DOG: D→E, O→P, G→H</li>
+        </ol>
+        <div class="answer">EPH</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-label">Example 3 — Direction sense</div>
+        <div class="q">Riya walks 5 km North, then turns right and walks 3 km. Which direction is she facing now, and how would she head straight back to her starting point?</div>
+        <ol>
+          <li>Facing North, turning right means she now faces East</li>
+          <li>She walked 5 km North then 3 km East</li>
+          <li>To go straight back to the start, she'd need to head West and South — i.e. South-West</li>
+        </ol>
+        <div class="answer">She's facing East; the start point is to the South-West</div>
+        <div class="note">Tip: sketch a quick compass and trace the path — direction questions are much easier drawn than imagined.</div>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-label">Practice</div>
+        <div class="question" data-explain="Each term is multiplied by 3: 2×3=6, 6×3=18, 18×3=54, so the next term is 54×3 = 162.">
+          <p class="q-text">1. Find the next number: 2, 6, 18, 54, ?</p>
+          <div class="options">
+            <button class="opt" data-correct="false">A) 108</button>
+            <button class="opt" data-correct="false">B) 144</button>
+            <button class="opt" data-correct="true">C) 162</button>
+            <button class="opt" data-correct="false">D) 180</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" data-explain="In BOOK → CPPL, each letter shifts forward by 1 (B→C, O→P, O→P, K→L). Applying the same shift to CAT: C→D, A→B, T→U, giving DBU.">
+          <p class="q-text">2. If BOOK is coded as CPPL, how is CAT coded?</p>
+          <div class="options">
+            <button class="opt" data-correct="true">A) DBU</button>
+            <button class="opt" data-correct="false">B) DBV</button>
+            <button class="opt" data-correct="false">C) CBU</button>
+            <button class="opt" data-correct="false">D) EBU</button>
+          </div>
+          <div class="feedback"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>Work through each chapter's examples with pen and paper — reasoning "clicks" once you've solved a few yourself.</footer>
+
+<script>
+  const links = document.querySelectorAll('nav.rail a');
+  const sections = document.querySelectorAll('section.topic');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = entry.target.getAttribute('id');
+      const link = document.querySelector(`nav.rail a[href="#${id}"]`);
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+  sections.forEach(s => observer.observe(s));
+
+  // ---------- Practice quiz logic ----------
+  document.querySelectorAll('.question').forEach(question => {
+    const options = question.querySelectorAll('.opt');
+    const feedback = question.querySelector('.feedback');
+    const explain = question.dataset.explain;
+    const correctOpt = question.querySelector('.opt[data-correct="true"]');
+
+    const lockOptions = () => options.forEach(o => o.classList.add('disabled'));
+
+    const showFeedback = (isCorrect) => {
+      feedback.style.display = 'block';
+      feedback.classList.remove('good', 'bad');
+      feedback.classList.add(isCorrect ? 'good' : 'bad');
+      const correctLabel = correctOpt.textContent.trim();
+      feedback.innerHTML = isCorrect
+        ? `✅ Correct! ${explain}`
+        : `❌ Not quite. ${explain} The correct answer is <b>${correctLabel}</b>.`
+        + `<span class="try-again">Try again</span>`;
+      const tryAgain = feedback.querySelector('.try-again');
+      if (tryAgain) {
+        tryAgain.addEventListener('click', () => {
+          options.forEach(o => {
+            o.classList.remove('disabled', 'correct', 'wrong');
+          });
+          feedback.style.display = 'none';
+        });
+      }
+    };
+
+    options.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (opt.classList.contains('disabled')) return;
+        const isCorrect = opt.dataset.correct === 'true';
+        lockOptions();
+        opt.classList.add(isCorrect ? 'correct' : 'wrong');
+        if (!isCorrect) correctOpt.classList.add('correct');
+        showFeedback(isCorrect);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -105,6 +105,41 @@
     color:var(--ink);
     box-shadow:0 1px 2px rgba(27,42,74,0.06);
   }
+  nav.rail a.home-rail-link{
+    color:var(--ink);
+    font-weight:700;
+    margin-bottom:8px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink);
+    box-shadow:0 1px 2px rgba(27,42,74,0.04);
+  }
+  nav.rail a.home-rail-link:hover{
+    background:#fff;
+    border-color:var(--ink);
+  }
+
+  .home-hero-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    color:var(--ink);
+    font-weight:600;
+    font-size:13.5px;
+    background:var(--paper);
+    padding:8px 16px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    box-shadow:0 1px 2px rgba(27,42,74,0.05);
+    transition:background .15s ease, border-color .15s ease, transform .15s ease;
+    margin-bottom:18px;
+  }
+  .home-hero-link:hover{
+    background:#fff;
+    border-color:var(--muted);
+    transform:translateY(-1px);
+  }
 
   main.pages{
     flex:1;
@@ -346,6 +381,11 @@
       border-radius:0;
     }
     nav.rail a.active{ box-shadow:none; }
+    nav.rail a.home-rail-link{
+      margin-bottom:0;
+      margin-right:6px;
+      border-bottom:3px solid var(--ink);
+    }
     section.topic{ padding:24px 20px 28px; }
   }
 </style>
@@ -353,6 +393,12 @@
 <body>
 
 <header class="hero">
+  <div>
+    <a href="index.html" class="home-hero-link">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>Back to Home</span>
+    </a>
+  </div>
   <div class="eyebrow">Aptitude Workbook · Chapter 1–7</div>
   <h1>Aptitude Basics,<br>the simple way</h1>
   <p class="sub">Seven topics that show up in almost every aptitude test. Each one gets a plain-English idea, the formula you actually need, and worked examples you can copy the method from.</p>
@@ -360,6 +406,7 @@
 
 <div class="layout">
   <nav class="rail" id="rail">
+    <a href="index.html" class="home-rail-link"><span class="num" style="color:var(--ink);">←</span> Back to Home</a>
     <a href="#lcm-hcf"><span class="num">01</span> LCM &amp; HCF</a>
     <a href="#time-work"><span class="num">02</span> Time &amp; Work</a>
     <a href="#speed"><span class="num">03</span> Speed, Time, Distance</a>
@@ -1025,7 +1072,15 @@
   </main>
 </div>
 
-<footer>Work through each chapter's examples with pen and paper — reasoning "clicks" once you've solved a few yourself.</footer>
+<footer>
+  <div style="margin-bottom:14px;">
+    <a href="index.html" class="home-hero-link" style="margin-bottom:0;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>Back to Home</span>
+    </a>
+  </div>
+  Work through each chapter's examples with pen and paper — reasoning "clicks" once you've solved a few yourself.
+</footer>
 
 <script>
   const links = document.querySelectorAll('nav.rail a');

@@ -44,7 +44,8 @@
   .prog-fill{height:100%; width:0; background:var(--blue); transition:width .25s}
   .btn{
     border:2px solid var(--ink); background:var(--ink); color:#fff; padding:9px 16px; border-radius:8px;
-    font-weight:700; cursor:pointer; white-space:nowrap;
+    font-weight:700; cursor:pointer; white-space:nowrap; text-decoration:none;
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
   }
   .btn:hover{background:#1c2f57}
   .btn.ghost{background:#fff; color:var(--ink)}
@@ -159,6 +160,7 @@
 
 <div class="bar" id="bar" hidden>
   <div class="bar-in">
+    <a href="index.html" class="btn ghost bar-home" style="padding:7px 12px; font-size:14px;" title="Back to Home">Home</a>
     <div class="clock" id="clock" role="timer" aria-label="Time left">20:00</div>
     <div class="prog">
       <div class="prog-top"><span id="answered">0 of 50 answered</span><span id="timeNote" aria-live="polite"></span></div>
@@ -170,6 +172,9 @@
 
 <main>
   <section class="start" id="start">
+    <div style="margin-bottom:18px;">
+      <a href="index.html" class="btn ghost" style="font-size:14px; padding:7px 14px;">← Back to Home</a>
+    </div>
     <p class="hero-clock" aria-hidden="true">20:00</p>
     <h1>Maths practice test</h1>
     <p class="sub">Profit and loss, simple interest and compound interest. Work quickly and carefully.</p>
@@ -193,6 +198,9 @@
       <input id="nameInput" type="text" autocomplete="name" maxlength="60" placeholder="Type your name">
     </label>
     <button class="btn big" id="startBtn" type="button">Start test</button>
+    <div style="margin-top:14px;">
+      <a href="index.html" style="color:var(--muted); text-decoration:none; font-size:14px; font-weight:600; display:inline-flex; align-items:center; gap:4px;">← Back to Home</a>
+    </div>
   </section>
 
   <section id="result" hidden></section>
@@ -578,6 +586,7 @@ function showResult(used, auto){
         '<button class="btn" type="button" id="reviewBtn">Review answers</button>' +
         '<button class="btn ghost" type="button" id="printBtn">Print scorecard</button>' +
         '<button class="btn ghost" type="button" id="retakeBtn">Retake test</button>' +
+        '<a href="index.html" class="btn ghost" id="homeBtn">← Back to Home</a>' +
       '</div>' +
     '</div>';
   $("#whoName").textContent = studentName || "Student";

@@ -1557,7 +1557,7 @@
         </div>
 
         <div class="discovery-meta">
-          <span id="searchCount" class="results-count">Showing all 10 resources</span>
+          <span id="searchCount" class="results-count">Showing all 12 resources</span>
           <span class="catalog-hint">Numbered per Section (#01+)</span>
         </div>
       </div>
@@ -1681,8 +1681,33 @@
           </div>
         </div>
 
+        <!-- Card: Aptitude Basics Workbook -->
+      <div class="portal-card" data-category="numbers hcf-lcm" data-title="Aptitude Basics Workbook"
+        data-keywords="aptitude basics workbook 7 topics lcm hcf time work speed distance profit loss percentage interest reasoning formulas examples questions notes">
+        <div class="card-top">
+          <div class="card-header-bar">
+            <div class="card-badge-group">
+              <span class="card-num-badge" aria-hidden="true"></span>
+              <span class="card-icon" aria-hidden="true">📘</span>
+            </div>
+            <span class="card-tag gold">Workbook • 7 Topics</span>
+          </div>
+          <h3>Aptitude Basics Workbook</h3>
+          <p>Comprehensive 7-topic visual guide covering LCM &amp; HCF, Time &amp; Work, Speed &amp; Distance, Profit &amp; Loss, Percentages, Interest, and Reasoning with pictorial guides and chapter quizzes.</p>
+          <div class="card-topics">
+            <span class="topic-pill">7 Core Chapters</span>
+            <span class="topic-pill">Pictorial Visuals</span>
+            <span class="topic-pill">Worked Methods</span>
+            <span class="topic-pill">Chapter Quizzes</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="aptitude-basics-2.html" class="btn btn-primary" style="flex:1;">Open Workbook →</a>
+        </div>
       </div>
-    </section>
+
+    </div>
+  </section>
 
     <!-- SECTION 2: PRACTICE & VISUALIZERS -->
     <section id="visualizers" class="portal-section" aria-labelledby="heading-visualizers">
@@ -1859,6 +1884,31 @@
           </div>
           <div class="card-actions">
             <a href="quant_quiz.html" class="btn btn-primary">Start Quant Sprint →</a>
+          </div>
+        </div>
+
+        <!-- Card: Commercial Maths Practice Test (maths_practice_test.html) -->
+        <div class="portal-card" data-category="mocks" data-title="Commercial Maths Practice Test"
+          data-keywords="commercial maths practice test profit loss simple interest compound interest 50 questions timed mock scorecard">
+          <div class="card-top">
+            <div class="card-header-bar">
+              <div class="card-badge-group">
+                <span class="card-num-badge" aria-hidden="true"></span>
+                <span class="card-icon" aria-hidden="true">📊</span>
+              </div>
+              <span class="card-tag coral">20-Min Mock • 50 Qs</span>
+            </div>
+            <h3>Commercial Maths Practice</h3>
+            <p>50-question 20-minute timed sprint focusing on Profit &amp; Loss, Simple Interest, and Compound Interest. Features instant answer feedback, step-by-step explanations, and topic-wise diagnostic scorecard.</p>
+            <div class="card-topics">
+              <span class="topic-pill">Profit &amp; Loss (20 Qs)</span>
+              <span class="topic-pill">Simple Interest (15 Qs)</span>
+              <span class="topic-pill">Compound Interest (15 Qs)</span>
+              <span class="topic-pill">Diagnostic Scorecard</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <a href="maths_practice_test.html" class="btn btn-primary">Start Commercial Maths Mock →</a>
           </div>
         </div>
 
@@ -2300,12 +2350,12 @@
         const q = currentQuery.trim().toLowerCase();
 
         cards.forEach(function (card) {
-          const category = card.getAttribute('data-category') || '';
+          const cardCategories = (card.getAttribute('data-category') || '').split(/\s+/);
           const title = (card.getAttribute('data-title') || '').toLowerCase();
           const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
           const text = card.textContent.toLowerCase();
 
-          const matchesCategory = (currentCategory === 'all') || (category === currentCategory);
+          const matchesCategory = (currentCategory === 'all') || cardCategories.includes(currentCategory);
           const matchesQuery = !q || title.includes(q) || keywords.includes(q) || text.includes(q);
 
           if (matchesCategory && matchesQuery) {
